@@ -17,6 +17,8 @@ public class ScreenManager {
     private final Map<ScreenType, Screen> screensInMemory;
     private Screen curScreen;
     private ScreenType curScreenType;
+    private Screen lastScreen;
+    private ScreenType lastScreenType;
 
     /**
      * Initializes the ScreenManager with a reference to the main game class.
@@ -56,6 +58,10 @@ public class ScreenManager {
      */
     public void setScreen(ScreenType screenType, Object... args) {
         Gdx.input.setInputProcessor(null);
+        if(!screensInMemory.isEmpty()) { //don't want to  getScreen when there are no screens to get
+            lastScreenType = screenType;
+            lastScreen = getScreen(screenType);
+        }
         if (curScreen != null && !screensInMemory.containsKey(curScreenType)){
             curScreen.dispose();
         }
@@ -104,7 +110,21 @@ public class ScreenManager {
                 return new TypingGame(game, (int) args[0]);
             case END_SCREEN:
                 return new EndScreen(game);
+            case PAUSE_SCREEN:
+                return new PauseScreen(game);
         }
         return null;
+    }
+
+    public Screen getLastScreen() {
+        return this.lastScreen;
+    }
+
+    public ScreenType getLastScreenType() {
+        return this.lastScreenType;
+    }
+
+    public Screen getScreen(ScreenType type) {
+        return this.screensInMemory.get(type);
     }
 }

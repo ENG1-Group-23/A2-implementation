@@ -1,6 +1,7 @@
 package com.main.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
@@ -160,10 +161,22 @@ public class MainGameScreen implements Screen, InputProcessor {
         if (!lockMovement) player.update(delta);
         if (!lockTime) updateGameTime(delta); // Update the game clock
 
+        handleInput();
+
         ScreenUtils.clear(0, 0, 1, 1);
         drawWorldElements(delta);
         drawUIElements();
         drawGameTime(); // Draw current time
+    }
+
+    /**
+     * Handles user input,
+     * Ran every render loop of the main game
+     */
+    private void handleInput() {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            game.pause();
+        }
     }
 
 
@@ -621,7 +634,6 @@ public class MainGameScreen implements Screen, InputProcessor {
 
     @Override
     public void pause() {
-
     }
 
     @Override
@@ -692,5 +704,13 @@ public class MainGameScreen implements Screen, InputProcessor {
     @Override
     public boolean scrolled(float v, float v1) {
         return false;
+    }
+
+    /**
+     * Gets the screen type
+     * @return ScreenType.GAME_SCREEN
+     */
+    public ScreenType getType() {
+        return ScreenType.GAME_SCREEN;
     }
 }

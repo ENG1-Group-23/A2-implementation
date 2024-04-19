@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import static com.badlogic.gdx.Gdx.graphics;
+
 import com.main.utils.GameData;
 import com.main.utils.ScreenManager;
 import com.main.utils.ScreenType;
@@ -26,6 +27,7 @@ public class Main extends Game {
 	public OrthographicCamera defaultCamera;
 	public float scaleFactorX;
 	public float scaleFactorY;
+	private boolean isPaused = false;
 
     /**
 	 * Called when the game is first created.
@@ -95,10 +97,31 @@ public class Main extends Game {
 	}
 
 	/**
+	 * Pauses the game
+	 */
+	@Override
+	public void pause() {
+		this.isPaused = !this.isPaused;
+		if(isPaused) {
+			screenManager.setScreen(ScreenType.PAUSE_SCREEN);
+		} else {
+			screenManager.setScreen(ScreenType.GAME_SCREEN);
+		}
+	}
+
+	/**
 	 * Called when the game is closing.
 	 * Disposes of resources to avoid memory leaks.
 	 */
 	@Override
 	public void dispose () {
+	}
+
+	/**
+	 * Getter for isPaused
+	 * @return isPaused
+	 */
+	public boolean getPaused() {
+		return this.isPaused;
 	}
 }
