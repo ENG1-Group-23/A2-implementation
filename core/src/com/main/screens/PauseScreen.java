@@ -98,7 +98,8 @@ public class PauseScreen implements Screen, InputProcessor {
         return false;
     }
 
-    /**
+    /**Functionality for mouse button presses on the screen
+     *
      * @param touchX
      * @param touchY
      * @param pointer
