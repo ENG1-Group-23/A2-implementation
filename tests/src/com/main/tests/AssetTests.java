@@ -9,7 +9,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(GdxTestRunner.class)
 public class AssetTests {
   @Test
-  public void testShipAssetExists() {
+  public void testAssetExists() {
     assertTrue("The asset for ships exists",
         Gdx.files.internal("map/MainMap.tmx").exists());
   }
