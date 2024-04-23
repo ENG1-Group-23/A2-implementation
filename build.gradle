@@ -84,6 +84,7 @@ project(":tests") {
             }))
         }
     }
+    
     test {
         finalizedBy jacocoTestReport
     }
