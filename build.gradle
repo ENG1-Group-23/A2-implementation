@@ -10,7 +10,24 @@ buildscript {
 
 allprojects {
     apply plugin: "java-library"
+    apply plugin: "checkstyle"
+
     version = '1.0'
+
+    configurations {
+        checkstyleRules
+    }
+
+    checkstyle {
+        toolVersion = "10.4"
+        config = resources.text.fromArchiveEntry(configurations.checkstyleRules, 'google_checks.xml')
+    }
+
+    dependencies {
+        checkstyleRules("com.puppycrawl.tools:checkstyle:${checkstyle.toolVersion}") {
+            transitive = false
+        }
+    }
 
     ext {
         appName = "Heslington_Hustle"

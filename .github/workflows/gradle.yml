@@ -28,8 +28,18 @@ jobs:
       - name: Test with Gradle and JaCoCo
         run: ./gradlew jacocoTestReport
 
+      - name: Generate Checkstyle Reports
+        run: ./gradlew :core:checkstyleMain
+
       - name: Upload the generated JaCoCo report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
           path: tests/build/reports/jacoco/test/html
+
+      - name: Upload the generated Checkstyle report
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkstyle-core-report
+          path: core/build/reports/checkstyle/main.html
+          
