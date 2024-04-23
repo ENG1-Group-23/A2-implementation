@@ -9,7 +9,6 @@ import bytemusketeers.heslingtonhustle.screens.MainSettingsScreen;
 import bytemusketeers.heslingtonhustle.screens.TypingGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-
 import java.util.HashMap;
 import java.util.Map;
 

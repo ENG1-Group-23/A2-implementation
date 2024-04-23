@@ -1,7 +1,8 @@
-package bytemusketeers.heslingtonhustle.tests;
+package bytemusketeers.heslingtonhustle;
 
 import bytemusketeers.heslingtonhustle.sound.GameMusic;
 import bytemusketeers.heslingtonhustle.sound.GameSound;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -15,7 +16,7 @@ public class AudioTests {
         int initialVolume = music.getMusicLevel();
         music.incrementVolume();
         int finalVolume = music.getMusicLevel();
-        assertEquals(initialVolume, finalVolume);
+        Assert.assertEquals(initialVolume, finalVolume);
     }
 
     @Test
@@ -26,8 +27,8 @@ public class AudioTests {
             music.decrementVolume();
         }
         int finalVolume = music.getMusicLevel();
-        assertNotEquals(initialVolume, finalVolume); //make sure that the volume has changed
-        assertEquals(0, finalVolume);
+        Assert.assertNotEquals(initialVolume, finalVolume); //make sure that the volume has changed
+        Assert.assertEquals(0, finalVolume);
     }
 
     @Test
@@ -38,7 +39,7 @@ public class AudioTests {
             sound.incrementVolume();
         }
         int finalSoundLevel = sound.getSoundLevel();
-        assertEquals(initialSoundLevel, finalSoundLevel);
+        Assert.assertEquals(initialSoundLevel, finalSoundLevel);
     }
 
     @Test
@@ -49,8 +50,8 @@ public class AudioTests {
             sound.decrementVolume();
         }
         int finalSoundLevel = sound.getSoundLevel();
-        assertNotEquals(initialSoundLevel, finalSoundLevel);
-        assertEquals(0, finalSoundLevel);
+        Assert.assertNotEquals(initialSoundLevel, finalSoundLevel);
+        Assert.assertEquals(0, finalSoundLevel);
     }
 
     @Test
@@ -58,7 +59,7 @@ public class AudioTests {
         GameSound sound = new GameSound();
         sound.upSoundActivate();
         sound.upSoundActivate();
-        assertFalse(sound.getUpSound().isPlaying());
+        Assert.assertFalse(sound.getUpSound().isPlaying());
     }
 
     @Test
@@ -66,7 +67,7 @@ public class AudioTests {
         GameSound sound = new GameSound();
         sound.downSoundActivate();
         sound.downSoundActivate();
-        assertFalse(sound.getDownSound().isPlaying());
+        Assert.assertFalse(sound.getDownSound().isPlaying());
     }
 
     @Test
@@ -74,7 +75,7 @@ public class AudioTests {
         GameSound sound = new GameSound();
         sound.buttonClickedSoundActivate();
         sound.buttonClickedSoundActivate();
-        assertFalse(sound.getButtonClickedSound().isPlaying());
+        Assert.assertFalse(sound.getButtonClickedSound().isPlaying());
     }
 
     @Test
@@ -82,6 +83,6 @@ public class AudioTests {
         GameSound sound = new GameSound();
         sound.eatingSoundActivate();
         sound.eatingSoundActivate();
-        assertFalse(sound.getEatingSound().isPlaying());
+        Assert.assertFalse(sound.getEatingSound().isPlaying());
     }
 }

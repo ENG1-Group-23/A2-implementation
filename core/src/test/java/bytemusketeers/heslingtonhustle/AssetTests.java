@@ -1,6 +1,7 @@
-package bytemusketeers.heslingtonhustle.tests;
+package bytemusketeers.heslingtonhustle;
 
 import com.badlogic.gdx.Gdx;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -10,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 public class AssetTests {
   @Test
   public void testAssetExists() {
-    assertTrue("The asset for ships exists",
+    Assert.assertTrue("The asset for ships exists",
         Gdx.files.internal("map/MainMap.tmx").exists());
   }
 }

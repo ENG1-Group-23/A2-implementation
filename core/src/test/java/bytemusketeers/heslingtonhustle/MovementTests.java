@@ -1,11 +1,12 @@
-package bytemusketeers.heslingtonhustle.tests;
+package bytemusketeers.heslingtonhustle;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
-import bytemusketeers.heslingtonhustle.Main;
 import bytemusketeers.heslingtonhustle.utils.CollisionHandler;
+import bytemusketeers.heslingtonhustle.Main;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.assertEquals;
@@ -31,7 +32,7 @@ public class MovementTests {
 
         // Using a player's collision handler to derive the new position of a player after moving left
         Vector2 newPos = collisionHandler.adjustPos(worldX, worldY, targX, targY);
-        assertEquals(targX, newPos.x, 0.0001);
+        Assert.assertEquals(targX, newPos.x, 0.0001);
     }
 
     @Test
@@ -53,7 +54,7 @@ public class MovementTests {
 
         // Using a player's collision handler to derive the new position of a player after moving left
         Vector2 newPos = collisionHandler.adjustPos(worldX, worldY, targX, targY);
-        assertEquals(targX, newPos.x, 0.0001);
+        Assert.assertEquals(targX, newPos.x, 0.0001);
     }
 
     @Test
@@ -75,7 +76,7 @@ public class MovementTests {
 
         // Using a player's collision handler to derive the new position of a player after moving left
         Vector2 newPos = collisionHandler.adjustPos(worldX, worldY, targX, targY);
-        assertEquals(targX, newPos.x, 0.0001);
+        Assert.assertEquals(targX, newPos.x, 0.0001);
     }
 
     @Test
@@ -97,6 +98,6 @@ public class MovementTests {
 
         // Using a player's collision handler to derive the new position of a player after moving left
         Vector2 newPos = collisionHandler.adjustPos(worldX, worldY, targX, targY);
-        assertEquals(targX, newPos.x, 0.0001);
+        Assert.assertEquals(targX, newPos.x, 0.0001);
     }
 }
