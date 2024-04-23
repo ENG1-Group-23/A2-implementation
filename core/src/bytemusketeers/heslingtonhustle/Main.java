@@ -1,16 +1,17 @@
-package com.main;
+package bytemusketeers.heslingtonhustle;
 
+import bytemusketeers.heslingtonhustle.utils.GameData;
+import bytemusketeers.heslingtonhustle.utils.ScreenManager;
+import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+
 import static com.badlogic.gdx.Gdx.graphics;
-import com.main.utils.GameData;
-import com.main.utils.ScreenManager;
-import com.main.utils.ScreenType;
 
 /**
  * The main class for the game, extending the LibGDX Game class.

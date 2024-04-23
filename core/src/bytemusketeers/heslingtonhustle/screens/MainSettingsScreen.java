@@ -1,12 +1,12 @@
-package com.main.screens;
+package bytemusketeers.heslingtonhustle.screens;
 
+import bytemusketeers.heslingtonhustle.Main;
+import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.main.Main;
-import com.main.utils.ScreenType;
 
 /**
  * Represents the settings screen in the game, allowing players to adjust game settings like music and sound levels,

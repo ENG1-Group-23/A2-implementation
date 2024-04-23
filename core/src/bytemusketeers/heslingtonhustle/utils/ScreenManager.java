@@ -1,12 +1,17 @@
-package com.main.utils;
+package bytemusketeers.heslingtonhustle.utils;
 
+import bytemusketeers.heslingtonhustle.Main;
+import bytemusketeers.heslingtonhustle.screens.EndScreen;
+import bytemusketeers.heslingtonhustle.screens.MainControlScreen;
+import bytemusketeers.heslingtonhustle.screens.MainGameScreen;
+import bytemusketeers.heslingtonhustle.screens.MainMenuScreen;
+import bytemusketeers.heslingtonhustle.screens.MainSettingsScreen;
+import bytemusketeers.heslingtonhustle.screens.TypingGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.main.Main;
-import com.main.screens.*;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The ScreenManager class manages the game screens, including creation, switching,

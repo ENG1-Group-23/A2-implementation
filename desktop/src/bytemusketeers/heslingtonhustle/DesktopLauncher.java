@@ -1,9 +1,9 @@
-package com.main;
+package bytemusketeers.heslingtonhustle;
 
 import com.badlogic.gdx.Files;
+import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.badlogic.gdx.Graphics.DisplayMode;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 

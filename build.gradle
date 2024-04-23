@@ -1,16 +1,10 @@
 buildscript {
-    
-
     repositories {
         mavenLocal()
         mavenCentral()
         gradlePluginPortal()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         google()
-    }
-    dependencies {
-        
-
     }
 }
 
@@ -42,16 +36,13 @@ allprojects {
 project(":core") {
     apply plugin: "java-library"
 
-
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
-//        compile "com.badlogicgames.gdx:gdx-ai:1.8.1"
     }
 }
 
 project(":desktop") {
     apply plugin: "java-library"
-
 
     dependencies {
         implementation project(":core")

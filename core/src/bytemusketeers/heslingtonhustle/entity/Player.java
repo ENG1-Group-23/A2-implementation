@@ -1,5 +1,8 @@
-package com.main.entity;
+package bytemusketeers.heslingtonhustle.entity;
 
+import bytemusketeers.heslingtonhustle.Main;
+import bytemusketeers.heslingtonhustle.map.GameMap;
+import bytemusketeers.heslingtonhustle.utils.CollisionHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -9,9 +12,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
-import com.main.map.GameMap;
-import com.main.Main;
-import com.main.utils.CollisionHandler;
 
 /**
  * The Player class represents the character in the game, handling movement, collision,
@@ -197,8 +197,8 @@ public class Player extends Entity implements Disposable {
             walkSheet = new Texture("character/girl_walk.png");
         }
 
-        TextureRegion[][] idleSpriteSheet = TextureRegion.split(idleSheet, spriteX, spriteY); // Splits the sprite sheet up by its frames
-        TextureRegion[][] walkSpriteSheet = TextureRegion.split(walkSheet, spriteX, spriteY); // Splits the sprite sheet up by its frames
+        TextureRegion[][] idleSpriteSheet = split(idleSheet, spriteX, spriteY); // Splits the sprite sheet up by its frames
+        TextureRegion[][] walkSpriteSheet = split(walkSheet, spriteX, spriteY); // Splits the sprite sheet up by its frames
 
         walkDownAnimation = new Animation<>(animation_speed, walkSpriteSheet[0]); // First row for down
         walkLeftAnimation = new Animation<>(animation_speed, walkSpriteSheet[1]); // Second row for left

@@ -1,4 +1,4 @@
-package com.main.map;
+package bytemusketeers.heslingtonhustle.map;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapProperties;

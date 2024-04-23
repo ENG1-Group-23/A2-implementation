@@ -1,7 +1,7 @@
-package com.main.utils;
+package bytemusketeers.heslingtonhustle.utils;
 
-import com.main.sound.GameMusic;
-import com.main.sound.GameSound;
+import bytemusketeers.heslingtonhustle.sound.GameMusic;
+import bytemusketeers.heslingtonhustle.sound.GameSound;
 
 /**
  * Stores game settings and data.

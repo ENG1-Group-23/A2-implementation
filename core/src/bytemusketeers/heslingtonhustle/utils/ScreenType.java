@@ -1,4 +1,4 @@
-package com.main.utils;
+package bytemusketeers.heslingtonhustle.utils;
 
 /**
  * Enumerates the types of screens used in the game. This allows for easy identification and switching between different game screens.

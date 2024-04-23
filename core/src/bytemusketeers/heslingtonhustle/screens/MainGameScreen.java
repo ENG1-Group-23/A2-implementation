@@ -1,10 +1,16 @@
-package com.main.screens;
+package bytemusketeers.heslingtonhustle.screens;
 
+import bytemusketeers.heslingtonhustle.Main;
+import bytemusketeers.heslingtonhustle.entity.Player;
+import bytemusketeers.heslingtonhustle.map.GameMap;
+import bytemusketeers.heslingtonhustle.utils.CollisionHandler;
+import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -12,12 +18,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.main.Main;
-import com.main.entity.Player;
-import com.main.map.GameMap;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.main.utils.CollisionHandler;
-import com.main.utils.ScreenType;
 
 /**
  * The MainGameScreen class is responsible for rendering and updating all the game elements

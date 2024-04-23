@@ -1,4 +1,4 @@
-package com.main.entity;
+package bytemusketeers.heslingtonhustle.entity;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;

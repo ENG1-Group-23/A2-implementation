@@ -1,8 +1,8 @@
-sourceCompatibility = 1.8
+sourceCompatibility = 1.11
 sourceSets.main.java.srcDirs = [ "src/" ]
 sourceSets.main.resources.srcDirs = ["../assets"]
 
-project.ext.mainClassName = "com.main.DesktopLauncher"
+project.ext.mainClassName = "bytemusketeers.heslingtonhustle.DesktopLauncher"
 project.ext.assetsDir = new File("../assets")
 
 import org.gradle.internal.os.OperatingSystem

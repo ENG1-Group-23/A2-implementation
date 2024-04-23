@@ -1,4 +1,4 @@
-package com.main.sound;
+package bytemusketeers.heslingtonhustle.sound;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;

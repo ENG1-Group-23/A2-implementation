@@ -1,5 +1,6 @@
-package com.main.screens;
+package bytemusketeers.heslingtonhustle.screens;
 
+import bytemusketeers.heslingtonhustle.Main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -7,7 +8,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.main.Main;
 
 public class EndScreen implements Screen, InputProcessor {
     Main game;
