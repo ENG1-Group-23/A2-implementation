@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Music;
  * It handles sound effects for increasing volume, decreasing volume, and button clicks.
  */
 public class GameSound {
+
     Music upSound;
     Music downSound;
     Music buttonClickedSound;
@@ -99,6 +100,22 @@ public class GameSound {
             downSound.setVolume(floatingMusicLevel*25/100);
             buttonClickedSound.setVolume(floatingMusicLevel*25/100);
         }
+    }
+
+    public Music getUpSound() {
+        return upSound;
+    }
+
+    public Music getDownSound() {
+        return downSound;
+    }
+
+    public Music getButtonClickedSound() {
+        return buttonClickedSound;
+    }
+
+    public Music getEatingSound() {
+        return eatingSound;
     }
 }
 
