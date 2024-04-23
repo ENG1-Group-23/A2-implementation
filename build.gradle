@@ -83,17 +83,4 @@ project(":tests") {
         testImplementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     }
-
-    jacocoTestReport {
-        dependsOn test
-        sourceSets project(':core').sourceSets.main
-        afterEvaluate {
-            classDirectories.setFrom(files(classDirectories.files.collect {
-                fileTree(dir: it, exclude: ['**/*Tests.*', '**/GdxTestRunner.*'])
-            }))
-        }
-    }
-    test {
-        finalizedBy jacocoTestReport
-    }
 }
