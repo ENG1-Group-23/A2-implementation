@@ -30,8 +30,14 @@ jobs:
       - name: Upload the generated JaCoCo report
         uses: actions/upload-artifact@v4
         with:
-          name: jacoco-report
-          path: tests/build/reports/jacoco/test/html
+          name: coverage-report
+          path: '**/build/reports/jacoco/test/html/index.html'
+
+      - name: Upload the generated Gradle test report
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: '**/build/reports/tests/'
 
       - name: Generate Checkstyle Reports
         run: ./gradlew check
