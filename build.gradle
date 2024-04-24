@@ -8,25 +8,19 @@ buildscript {
     }
 }
 
-allprojects {
-    apply plugin: "java-library"
-    apply plugin: "checkstyle"
-
-    version = '1.0'
-
-    configurations {
-        checkstyleRules
+tasks.withType(Checkstyle) {
+    reports {
+        xml.required = true
+        html.required = false
     }
+}
+
+allprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'checkstyle'
 
     checkstyle {
-        toolVersion = "10.4"
-        config = resources.text.fromArchiveEntry(configurations.checkstyleRules, 'google_checks.xml')
-    }
-
-    dependencies {
-        checkstyleRules("com.puppycrawl.tools:checkstyle:${checkstyle.toolVersion}") {
-            transitive = false
-        }
+        toolVersion = "10.15.0"
     }
 
     ext {
@@ -48,58 +42,5 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
         maven { url "https://jitpack.io" }
-    }
-}
-
-project(":core") {
-    dependencies {
-        api "com.badlogicgames.gdx:gdx:$gdxVersion"
-    }
-
-    sourceSets.main.java.srcDirs = [ "src/" ]
-    sourceSets.main.resources.srcDirs = ["../assets"]
-}
-
-project(":desktop") {
-    dependencies {
-        implementation project(":core")
-        api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-    }
-}
-
-project(":tests") {
-    apply plugin: "jacoco"
-    sourceSets.test.java.srcDirs = ["src/"]
-
-    dependencies {
-        implementation project(":core")
-
-        implementation "junit:junit:4.+"
-        implementation "org.mockito:mockito-all:1.9.+"
-
-        implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
-        implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
-
-        testImplementation 'junit:junit:4.+'
-        testImplementation "org.mockito:mockito-all:1.9.+"
-
-        testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
-        testImplementation "com.badlogicgames.gdx:gdx:$gdxVersion"
-        testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-    }
-
-    jacocoTestReport {
-        dependsOn test
-        sourceSets project(':core').sourceSets.main
-        afterEvaluate {
-            classDirectories.setFrom(files(classDirectories.files.collect {
-                fileTree(dir: it, exclude: ['**/*Tests.*', '**/GdxTestRunner.*'])
-            }))
-        }
-    }
-    
-    test {
-        finalizedBy jacocoTestReport
     }
 }

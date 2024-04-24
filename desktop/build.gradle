@@ -3,6 +3,12 @@ sourceSets.main.java.srcDirs = [ "src/" ]
 project.ext.mainClassName = "bytemusketeers.heslingtonhustle.DesktopLauncher"
 project.ext.assetsDir = new File("../assets")
 
+dependencies {
+    implementation project(":core")
+    api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+    api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+}
+
 import org.gradle.internal.os.OperatingSystem
 
 tasks.register('run', JavaExec) {
@@ -40,6 +46,5 @@ tasks.register('dist', Jar) {
     }
     with jar
 }
-
 
 dist.dependsOn classes

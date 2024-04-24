@@ -1,0 +1,6 @@
+dependencies {
+    api "com.badlogicgames.gdx:gdx:$gdxVersion"
+}
+
+sourceSets.main.java.srcDirs = [ "src/" ]
+sourceSets.main.resources.srcDirs = ["../assets"]
