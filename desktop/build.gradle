@@ -1,7 +1,8 @@
-sourceSets.main.java.srcDirs = [ "src/" ]
-
 project.ext.mainClassName = "bytemusketeers.heslingtonhustle.DesktopLauncher"
 project.ext.assetsDir = new File("../assets")
+
+sourceSets.main.java.srcDirs = [ "src/main/java" ]
+sourceSets.test.java.srcDirs = [ "src/test/java" ]
 
 dependencies {
     implementation project(":core")

@@ -12,41 +12,34 @@ jobs:
       - name: Checkout Sources
         uses: actions/checkout@v4
 
+      - name: Setup JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: 'temurin'
+
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v3
 
       - name: Build with Gradle
         run: ./gradlew build
 
-  test:
-    name: Testing and Coverage
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v3
-
       - name: Test with Gradle and JaCoCo
         run: ./gradlew jacocoTestReport
 
-      - name: Generate Checkstyle Reports
-        run: ./gradlew check
-
-  upload-results:
-    name: Upload Workflow Results
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
       - name: Upload the generated JaCoCo report
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
           path: tests/build/reports/jacoco/test/html
 
+      - name: Generate Checkstyle Reports
+        run: ./gradlew check
+
       - name: Upload the generated Checkstyle reports as annotations
         uses: lcollins/checkstyle-github-action@v2
         with:
-          path: '**/build/reports/checkstyle/main.xml'
+          path: '**/build/reports/checkstyle/*.xml'
 
   distribute:
     name: Package and Distribute the Desktop JAR
@@ -54,6 +47,9 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     steps:
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v3
+
       - name: Package with Gradle
         run: ./gradlew :desktop:dist
 

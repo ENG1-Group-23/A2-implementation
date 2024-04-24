@@ -1,7 +1,5 @@
 package bytemusketeers.heslingtonhustle.screens;
 
-import bytemusketeers.heslingtonhustle.Main;
-import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -10,8 +8,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
-
 import java.util.concurrent.ThreadLocalRandom;
+import bytemusketeers.heslingtonhustle.Main;
+import bytemusketeers.heslingtonhustle.utils.ScreenType;
 
 /**
  * The TypingGame class implements a mini-game for the player to increase their study hours.

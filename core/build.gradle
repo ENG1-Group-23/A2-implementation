@@ -2,5 +2,37 @@ dependencies {
     api "com.badlogicgames.gdx:gdx:$gdxVersion"
 }
 
-sourceSets.main.java.srcDirs = [ "src/" ]
-sourceSets.main.resources.srcDirs = ["../assets"]
+sourceSets.main.java.srcDirs = [ "src/main/java" ]
+sourceSets.test.java.srcDirs = [ "src/test/java" ]
+sourceSets.main.resources.srcDirs = [ "../assets" ]
+
+test {
+    apply plugin: "jacoco"
+
+    dependencies {
+        implementation "junit:junit:4.+"
+        implementation "org.mockito:mockito-all:1.9.+"
+
+        implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+
+        testImplementation 'junit:junit:4.+'
+        testImplementation "org.mockito:mockito-all:1.9.+"
+
+        testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+        testImplementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+        testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    }
+
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
+    sourceSets project(':core').sourceSets.main
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: ['**/*Tests.*', '**/GdxTestRunner.*'])
+        }))
+    }
+}
