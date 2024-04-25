@@ -11,7 +11,9 @@ import static org.junit.Assert.assertTrue;
 public class AssetTests {
   @Test
   public void testAssetExists() {
-    Assert.assertTrue("The asset for ships exists",
+    Assert.assertTrue("The asset for the main map exists",
         Gdx.files.internal("map/MainMap.tmx").exists());
+    Assert.assertTrue("The asset for the water texture exists",
+            Gdx.files.internal("map/Water.png").exists());
   }
 }
