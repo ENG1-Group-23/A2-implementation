@@ -41,6 +41,10 @@ public class CollisionHandler {
         this.collisionLayers = new ArrayList<>();
     }
 
+    private void untestedMethod() {
+        System.out.println("I have no associated tests!");
+    }
+
     /**
      * Adds collision layers by name to the handler for collision detection.
      *
