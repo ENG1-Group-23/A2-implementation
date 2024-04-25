@@ -24,22 +24,22 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ${{ github.workspace }}/gradlew build
 
       - name: Test with Gradle and JaCoCo
-        run: ./gradlew jacocoTestReport
+        run: ${{ github.workspace }}/gradlew jacocoTestReport
 
       - name: Upload the generated JaCoCo report
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
-          path: '**/build/reports/jacoco/test/html/index.html'
+          path: '${{ github.workspace }}/**/build/reports/jacoco/test/html/index.html'
 
       - name: Upload the generated Gradle test report
         uses: actions/upload-artifact@v4
         with:
           name: test-report
-          path: '**/build/reports/tests/'
+          path: '${{ github.workspace }}/**/build/reports/tests/'
 
       - name: Generate Checkstyle Reports
         run: ./gradlew check
@@ -47,7 +47,7 @@ jobs:
       - name: Upload the generated Checkstyle reports as annotations
         uses: lcollins/checkstyle-github-action@v2
         with:
-          path: '**/build/reports/checkstyle/*.xml'
+          path: '${{ github.workspace }}/**/build/reports/checkstyle/*.xml'
 
   distribute:
     name: Package and Distribute the Desktop JAR
@@ -59,9 +59,9 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
 
       - name: Package with Gradle
-        run: ./gradlew :desktop:dist
+        run: ${{ github.workspace }}/gradlew :desktop:dist
 
       - name: Upload the JAR artifact
         uses: softprops/action-gh-release@v2
         with:
-          files: desktop/build/libs/desktop.jar
+          files: ${{ github.workspace }}/desktop/build/libs/desktop.jar
