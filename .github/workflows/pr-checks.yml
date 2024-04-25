@@ -24,7 +24,7 @@ jobs:
         run: ${{ github.workspace }}/gradlew jacocoTestReport
 
       - name: Attach the report to the PR
-        uses: madrapps/jacoco-report@v1.6.1
+        uses: Vadgyik/jacoco-report@master
         with:
           title: Coverage Report
           update-comment: true
