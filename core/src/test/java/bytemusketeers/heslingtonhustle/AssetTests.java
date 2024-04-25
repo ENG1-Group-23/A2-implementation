@@ -15,5 +15,7 @@ public class AssetTests {
         Gdx.files.internal("map/MainMap.tmx").exists());
     Assert.assertTrue("The asset for the water texture exists",
             Gdx.files.internal("map/Water.png").exists());
+    Assert.assertTrue("The GUI texture pack exists",
+            Gdx.files.internal("GUI.png").exists());
   }
 }

@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    name: Build Gradle Project
+    name: Test Gradle Project for PR
     runs-on: self-hosted
     steps:
       - name: Checkout Sources
@@ -26,6 +26,8 @@ jobs:
       - name: Attach the report to the PR
         uses: madrapps/jacoco-report@v1.6.1
         with:
+          title: Coverage Report
+          update-comment: true
           paths:
             ${{ github.workspace }}/**/build/reports/jacoco/test/jacocoTestReport.xml
           token: ${{ secrets.GITHUB_TOKEN }}
