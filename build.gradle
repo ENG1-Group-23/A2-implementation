@@ -8,7 +8,7 @@ buildscript {
     }
 }
 
-tasks.withType(Checkstyle) {
+tasks.withType(Checkstyle).configureEach {
     reports {
         xml.required = true
         html.required = false

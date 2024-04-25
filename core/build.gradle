@@ -11,13 +11,13 @@ test {
 
     dependencies {
         implementation "junit:junit:4.+"
-        implementation "org.mockito:mockito-all:1.9.+"
+        implementation "org.mockito:mockito-inline:5.0+"
 
         implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
 
         testImplementation 'junit:junit:4.+'
-        testImplementation "org.mockito:mockito-all:1.9.+"
+        testImplementation "org.mockito:mockito-inline:5.0+"
 
         testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
         testImplementation "com.badlogicgames.gdx:gdx:$gdxVersion"
@@ -30,6 +30,12 @@ test {
 jacocoTestReport {
     dependsOn test
     sourceSets project(':core').sourceSets.main
+
+    reports {
+        xml.required = true
+        html.required = true
+    }
+
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude: ['**/*Tests.*', '**/GdxTestRunner.*'])
