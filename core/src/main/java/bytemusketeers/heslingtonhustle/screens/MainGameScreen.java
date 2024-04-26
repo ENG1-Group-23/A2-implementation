@@ -58,7 +58,8 @@ public class MainGameScreen implements Screen, InputProcessor {
     private String activity, popupMenuType;
     private int energyCounter, duration, dayNum, recActivity, studyHours, mealCount, currentHour;
     private float timeElapsed, fadeTime, minShade;
-    private boolean fadeOut, lockTime, lockMovement, lockPopup, resetPos, popupVisible, showMenu, dayStudied;
+    private boolean fadeOut, lockTime, lockMovement, lockPopup, resetPos, popupVisible, showMenu, dayStudied,
+            hasEaten, hasExercised;
 
     /**
      * Constructs the main game screen with necessary game components.
@@ -95,6 +96,8 @@ public class MainGameScreen implements Screen, InputProcessor {
         this.fadeTime = 0;
         this.minShade = 0;
         this.dayStudied = false;
+        this.hasEaten = false;
+        this.hasExercised = false;
         this.fadeOut = this.lockTime = this.lockMovement = this.lockPopup = this.resetPos = this.popupVisible = this.showMenu = false;
 
         // Setting up the game
@@ -442,11 +445,22 @@ public class MainGameScreen implements Screen, InputProcessor {
     private void resetDay(){
         executeFadeOut(true);
         score.AddScore();
-        if (!dayStudied && score.ReadMissed() == 0) score.incrementMissed();
+
+        if (!dayStudied) {
+
+            if (score.ReadMissed() == 0) {
+                score.incrementMissed();
+            }
+
+            score.incrementNoStudy();
+        }
+
         currentHour = 8;
         dayNum++;
         timeElapsed = 0;
         energyCounter += 4;
+        hasExercised = false;
+        hasEaten = false;
         dayStudied = false;
         if (energyCounter > 10) energyCounter = 10;
         energyBar.dispose();
@@ -513,10 +527,13 @@ public class MainGameScreen implements Screen, InputProcessor {
                         lockMovement = fadeOut;
                         studyHours += duration;
                         score.incrementStudy(studyHours);
+
                         if (score.ReadMissed() == 1) {
                             score.incrementMissed();
                             score.incrementStudy(studyHours);
+                            score.decrementNoStudy();
                         }
+
                         dayStudied = true;
                         if (energyCounter > (duration+1)/2) energyCounter -= (duration+1)/2;
                         energyBar.dispose();
@@ -546,7 +563,12 @@ public class MainGameScreen implements Screen, InputProcessor {
                             lockMovement = fadeOut;
                             recActivity++;
                             score.incrementRec();
-                            recAch.IncrementStreak();
+
+                            if (!hasExercised) {
+                                hasExercised = true;
+                                recAch.IncrementStreak();
+                            }
+
                             energyCounter -= duration;
                             energyBar.dispose();
                             energyBar = setEnergyBar();
@@ -612,7 +634,12 @@ public class MainGameScreen implements Screen, InputProcessor {
                         game.gameData.eatingSoundActivate();
                         energyCounter += 3;
                         mealCount++;
-                        eatAch.IncrementStreak();
+
+                        if (!hasEaten) {
+                            eatAch.IncrementStreak();
+                            hasEaten = true;
+                        }
+
                         if (energyCounter > 10) energyCounter = 10;
                         energyBar.dispose();
                         energyBar = setEnergyBar();

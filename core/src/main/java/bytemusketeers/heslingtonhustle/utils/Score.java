@@ -10,20 +10,23 @@ public class Score {
     2 = Redeemed Missed Day
      */
     private int missedStudy;
+    private int totalStudiesMissed;
 
     public Score() {
         this.points = 0f;
         this.studyMult = 1f;
         this.recMult = 1f;
         this.missedStudy = 0;
+        this.totalStudiesMissed = 1;
     }
 
     public void AddScore() {
-        points += 20 * studyMult * recMult;
+        points += 15 * studyMult * recMult;
     }
 
     public void CalculateFinal(int achOne, int achTwo, int achThree) {
-        points += (achOne * 20) + (achTwo * 20) + (achThree * 20);
+        points += (achOne * 5) + (achTwo * 5) + (achThree * 5);
+        points /= totalStudiesMissed;
     }
 
     public void incrementStudy(int studyHours) {
@@ -31,12 +34,14 @@ public class Score {
     }
 
     public void incrementRec() {
-        recMult += .5f;
+        recMult += .1f;
     }
 
     public void incrementMissed() {
         missedStudy++;
     }
+    public void incrementNoStudy() { totalStudiesMissed++; }
+    public void decrementNoStudy() { totalStudiesMissed--; }
 
     public int ReadMissed() { return missedStudy; }
 
