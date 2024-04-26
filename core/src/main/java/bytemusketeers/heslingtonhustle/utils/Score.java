@@ -48,4 +48,9 @@ public class Score {
     public int ReadMissed() { return missedStudy; }
 
     public float ReadScore() { return points; }
+
+    public void ResetMults() {
+        studyMult = 1;
+        recMult = 1;
+    }
 }

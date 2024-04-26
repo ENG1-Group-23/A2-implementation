@@ -462,6 +462,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         hasExercised = false;
         hasEaten = false;
         dayStudied = false;
+        score.ResetMults();
         if (energyCounter > 10) energyCounter = 10;
         energyBar.dispose();
         energyBar = setEnergyBar();
