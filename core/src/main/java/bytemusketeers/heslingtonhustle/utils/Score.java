@@ -17,7 +17,7 @@ public class Score {
         this.studyMult = 1f;
         this.recMult = 1f;
         this.missedStudy = 0;
-        this.totalStudiesMissed = 1;
+        this.totalStudiesMissed = 0;
     }
 
     public void AddScore() {
