@@ -562,7 +562,7 @@ public class MainGameScreen implements Screen, InputProcessor {
                             showMenu = false;
                             lockMovement = fadeOut;
                             recActivity++;
-                            score.incrementRec();
+                            score.incrementRec(duration);
 
                             if (!hasExercised) {
                                 hasExercised = true;

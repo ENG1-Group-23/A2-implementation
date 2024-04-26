@@ -10,6 +10,8 @@ public class Score {
     2 = Redeemed Missed Day
      */
     private int missedStudy;
+
+    // One day buffer before penalty applied
     private int totalStudiesMissed;
 
     public Score() {
@@ -33,8 +35,8 @@ public class Score {
         studyMult += .5f * studyHours;
     }
 
-    public void incrementRec() {
-        recMult += .1f;
+    public void incrementRec(int recHours) {
+        recMult += .1f * recHours;
     }
 
     public void incrementMissed() {
