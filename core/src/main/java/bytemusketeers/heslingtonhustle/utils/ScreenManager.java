@@ -13,8 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The ScreenManager class manages the game screens, including creation, switching,
- * and memory management of screens.
+ * The ScreenManager class manages the game screens, including creation, switching, and memory management of screens.
+ *
+ * @author ENG1 Team 25
+ * @author ENG1 Team 23
  */
 public class ScreenManager {
     private final Main game;
@@ -27,7 +29,7 @@ public class ScreenManager {
      *
      * @param game The main game class instance.
      */
-    public ScreenManager(Main game){
+    public ScreenManager(Main game) {
         this.game = game;
         this.screensInMemory = new HashMap<>();
     }
@@ -37,38 +39,37 @@ public class ScreenManager {
      *
      * @param screenType The type of the screen to keep in memory.
      */
-    public void keepInMemory(ScreenType screenType){
-        if (screenType.equals(curScreenType) && curScreen != null){
+    public void keepInMemory(ScreenType screenType) {
+        if (screenType.equals(curScreenType) && curScreen != null)
             screensInMemory.put(screenType, curScreen);
-        }
-        else{
+        else
             screensInMemory.put(screenType, createScreen(screenType));
-        }
     }
 
-    public void clearMemory(){
-        for (Screen screen : screensInMemory.values()){
+    public void clearMemory() {
+        for (Screen screen : screensInMemory.values())
             screen.dispose();
-        }
+
         screensInMemory.clear();
     }
 
     /**
-     * Sets the current screen of the game. If the screen is stored in memory, it uses it; otherwise, it creates a new screen.
+     * Sets the current screen of the game. If the screen is stored in memory, it uses it; otherwise, it creates a new
+     * screen.
      *
      * @param screenType The type of the screen to display.
      */
     public void setScreen(ScreenType screenType, Object... args) {
         Gdx.input.setInputProcessor(null);
-        if (curScreen != null && !screensInMemory.containsKey(curScreenType)){
+
+        if (curScreen != null && !screensInMemory.containsKey(curScreenType))
             curScreen.dispose();
-        }
-        if (screensInMemory.containsKey(screenType)){
+
+        if (screensInMemory.containsKey(screenType))
             curScreen = screensInMemory.get(screenType);
-        }
-        else {
+        else
             curScreen = createScreen(screenType, args);
-        }
+
         curScreenType = screenType;
         game.setScreen(curScreen);
     }
@@ -81,11 +82,10 @@ public class ScreenManager {
      * @param width The new width of the window.
      * @param height The new height of the window.
      */
-    public void resize(int width, int height){
+    public void resize(int width, int height) {
         curScreen.resize(width, height);
-        for (Screen screen : screensInMemory.values()){
+        for (Screen screen : screensInMemory.values())
             screen.resize(width, height);
-        }
     }
 
     /**
@@ -94,8 +94,8 @@ public class ScreenManager {
      * @param type The type of the screen to create.
      * @return The created screen, or null if the type is unknown.
      */
-    private Screen createScreen(ScreenType type, Object... args){
-        switch (type){
+    private Screen createScreen(ScreenType type, Object... args) {
+        switch (type) {
             case MAIN_MENU:
                 return new MainMenuScreen(game);
             case GAME_SCREEN:
@@ -108,7 +108,8 @@ public class ScreenManager {
                 return new TypingGame(game, (int) args[0]);
             case END_SCREEN:
                 return new EndScreen(game);
+            default:
+                return null;
         }
-        return null;
     }
 }

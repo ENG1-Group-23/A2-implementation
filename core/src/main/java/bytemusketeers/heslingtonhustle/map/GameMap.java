@@ -10,6 +10,9 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 /**
  * Represents the game map, handling rendering and toggling layer visibility.
  * It extends TiledMap to use the functionalities provided by libGDX for tile maps.
+ *
+ * @author ENG1 Team 25
+ * @author ENG1 Team 23
  */
 public class GameMap extends TiledMap {
     private final int width, height;
@@ -69,7 +72,7 @@ public class GameMap extends TiledMap {
      * @param layerName The name of the layer to toggle.
      */
     public void toggleLayerVisibility(String layerName) {
-        TiledMapTileLayer layer = (TiledMapTileLayer)gameMap.getLayers().get(layerName);
+        TiledMapTileLayer layer = (TiledMapTileLayer) gameMap.getLayers().get(layerName);
         if (layer != null) {
             layer.setVisible(!layer.isVisible());
         }
@@ -80,7 +83,7 @@ public class GameMap extends TiledMap {
      *
      * @return The size of the tiles in the map.
      */
-    public int getTileSize(){
+    public int getTileSize() {
         return tileSize;
     }
 
@@ -89,7 +92,7 @@ public class GameMap extends TiledMap {
      *
      * @return The width of the map.
      */
-    public int getWidth(){
+    public int getWidth() {
         return width;
     }
 
@@ -98,7 +101,7 @@ public class GameMap extends TiledMap {
      *
      * @return The height of the map.
      */
-    public int getHeight(){
+    public int getHeight() {
         return height;
     }
 
@@ -107,7 +110,7 @@ public class GameMap extends TiledMap {
      *
      * @return The TiledMap instance.
      */
-    public TiledMap getMap(){
+    public TiledMap getMap() {
         return gameMap;
     }
 

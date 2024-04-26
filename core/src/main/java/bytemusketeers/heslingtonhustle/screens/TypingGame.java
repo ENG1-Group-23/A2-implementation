@@ -1,22 +1,26 @@
 package bytemusketeers.heslingtonhustle.screens;
 
+import bytemusketeers.heslingtonhustle.Main;
+import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
+
 import java.util.concurrent.ThreadLocalRandom;
-import bytemusketeers.heslingtonhustle.Main;
-import bytemusketeers.heslingtonhustle.utils.ScreenType;
 
 /**
  * The TypingGame class implements a mini-game for the player to increase their study hours.
  * Players are shown a number that they need to memorize and then type it correctly to succeed.
+ *
+ * @author ENG1 Team 25
+ * @author ENG1 Team 23
  */
-public class TypingGame implements Screen, InputProcessor {
+public class TypingGame extends ScreenAdapter implements InputProcessor {
     private final Main game;
     private final int studyDuration;
     private int attempts = 0;
@@ -39,7 +43,7 @@ public class TypingGame implements Screen, InputProcessor {
      * @param game The main game instance.
      * @param studyDuration The duration of the study session in attempts.
      */
-    public TypingGame(Main game, int studyDuration){
+    public TypingGame(Main game, int studyDuration) {
         this.game = game;
         displayText = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
         guessButton = new Texture("mini_games/guess_button.png");
@@ -60,7 +64,7 @@ public class TypingGame implements Screen, InputProcessor {
      * Begins a new challenge by generating a number for the player to memorize.
      * Handles the logic for correct and incorrect guesses and progresses the game.
      */
-    private void calculateDimensions(){
+    private void calculateDimensions() {
         displayText.getData().setScale(3f * game.scaleFactorX, 3f * game.scaleFactorY);
         displayTextHeight = 100 * game.scaleFactorY;
         gameObjectiveY = game.screenHeight - 280 * game.scaleFactorY;
@@ -70,34 +74,33 @@ public class TypingGame implements Screen, InputProcessor {
         titleHeight = title.getHeight() * game.scaleFactorY * 11;
     }
 
-    private void calculatePositions(){
-        displayTextY = game.screenHeight/2f - displayTextHeight;
-        guessButtonX = (game.screenWidth - guessButtonWidth)/2f;
-        guessButtonY = (game.screenHeight - guessButtonHeight)/2f - 300 * game.scaleFactorY;
-        titleX = (game.screenWidth - titleWidth)/2f;
-        titleY = (game.screenHeight - titleHeight)/2f + 400 * game.scaleFactorY;
+    private void calculatePositions() {
+        displayTextY = game.screenHeight / 2f - displayTextHeight;
+        guessButtonX = (game.screenWidth - guessButtonWidth) / 2f;
+        guessButtonY = (game.screenHeight - guessButtonHeight) / 2f - 300 * game.scaleFactorY;
+        titleX = (game.screenWidth - titleWidth) / 2f;
+        titleY = (game.screenHeight - titleHeight) / 2f + 400 * game.scaleFactorY;
     }
 
     /**
      * Begins a new challenge by generating a number for the player to memorize.
      * Handles the logic for correct and incorrect guesses and progresses the game.
      */
-    public void playGame(){
+    public void playGame() {
         userGuess = "";
         displayWrong = false;
         displayCorrect = false;
-        if (attempts < studyDuration){
+        if (attempts < studyDuration) {
             currentNumber = generateNumber();
             delay(5, this::makeUserGuess);
-        } else {
+        } else
             game.screenManager.setScreen(ScreenType.GAME_SCREEN);
-        }
     }
 
     /**
      * Allows the player to input their guess after a short delay.
      */
-    public void makeUserGuess(){
+    public void makeUserGuess() {
         acceptInput = true;
     }
 
@@ -107,7 +110,7 @@ public class TypingGame implements Screen, InputProcessor {
      * @param seconds The delay in seconds before running the task.
      * @param runnable The task to execute after the delay.
      */
-    public void delay(int seconds, Runnable runnable){
+    public void delay(int seconds, Runnable runnable) {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
@@ -126,19 +129,25 @@ public class TypingGame implements Screen, InputProcessor {
     public void render(float delta) {
         ScreenUtils.clear(0.3f, 0.55f, 0.7f, 1);
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
+
         game.batch.begin();
         game.batch.draw(title, titleX, titleY, titleWidth, titleHeight);
+
         displayText.draw(game.batch, gameObjective, 0, gameObjectiveY, game.screenWidth, Align.center, false);
-        if (acceptInput){
+
+        if (acceptInput) {
             displayText.draw(game.batch, userGuess, 0, displayTextY, game.screenWidth, Align.center, false);
             game.batch.draw(guessButton, guessButtonX, guessButtonY, guessButtonWidth, guessButtonHeight);
-        } else if (displayCorrect){
-            displayText.draw(game.batch, "Correct well done.", 0, displayTextY, game.screenWidth, Align.center, false);
-        } else if (displayWrong) {
-            displayText.draw(game.batch, "Incorrect. Answer: " + currentNumber, 0, displayTextY, game.screenWidth, Align.center, false);
-        } else {
-            displayText.draw(game.batch, String.valueOf(currentNumber), 0, displayTextY, game.screenWidth, Align.center, false);
-        }
+        } else if (displayCorrect)
+            displayText.draw(game.batch, "Correct well done.", 0, displayTextY, game.screenWidth, Align.center,
+                false);
+        else if (displayWrong)
+            displayText.draw(game.batch, "Incorrect. Answer: " + currentNumber, 0, displayTextY,
+                game.screenWidth, Align.center, false);
+        else
+            displayText.draw(game.batch, String.valueOf(currentNumber), 0, displayTextY, game.screenWidth,
+                Align.center, false);
+
         game.batch.end();
     }
 
@@ -147,12 +156,13 @@ public class TypingGame implements Screen, InputProcessor {
      *
      * @return The generated number.
      */
-    public int generateNumber(){
+    public int generateNumber() {
         int startingNumLength = 5;
-        int startingNum = (int) (10*Math.pow(10, startingNumLength -1));
-        int lowerLimit = (int) (startingNum*Math.pow(10, attempts-1));
-        int num = ThreadLocalRandom.current().nextInt(lowerLimit, lowerLimit*10-1);
+        int startingNum = (int) (10 * Math.pow(10, startingNumLength - 1));
+        int lowerLimit = (int) (startingNum * Math.pow(10, attempts - 1));
+        int num = ThreadLocalRandom.current().nextInt(lowerLimit, lowerLimit * 10 - 1);
         attempts++;
+
         return num;
     }
 
@@ -163,21 +173,6 @@ public class TypingGame implements Screen, InputProcessor {
     }
 
     @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
     public void dispose() {
         guessButton.dispose();
         title.dispose();
@@ -185,7 +180,7 @@ public class TypingGame implements Screen, InputProcessor {
     }
 
     @Override
-    public boolean keyDown(int keycode){
+    public boolean keyDown(int keycode) {
         return false;
     }
 
@@ -213,14 +208,14 @@ public class TypingGame implements Screen, InputProcessor {
         if (worldX >= guessButtonX && worldX <= guessButtonX + guessButtonWidth &&
                 worldY >= guessButtonY && worldY <= guessButtonY + guessButtonHeight) {
 
-            if (!userGuess.isEmpty()){
+            if (!userGuess.isEmpty()) {
                 acceptInput = false;
-                if (Integer.parseInt(userGuess) == currentNumber){
+                if (Integer.parseInt(userGuess) == currentNumber) {
                     correct = correct + 1;
                     displayCorrect = true;
-                } else {
+                } else
                     displayWrong = true;
-                }
+
                 delay(2, this::playGame);
             }
             

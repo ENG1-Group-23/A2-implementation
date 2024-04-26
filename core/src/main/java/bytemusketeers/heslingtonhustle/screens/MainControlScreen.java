@@ -4,27 +4,47 @@ import bytemusketeers.heslingtonhustle.Main;
 import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 /**
- * The MainControlScreen class provides a visual representation of control instructions
- * for the game, alongside a back button to navigate back to the main menu.
- * It implements both the Screen and InputProcessor interfaces from libGDX,
+ * The MainControlScreen class provides a visual representation of control instructions for the game, alongside a back
+ * button to navigate back to the main menu. It implements both the Screen and InputProcessor interfaces from libGDX,
  * handling rendering and input events within the control screen context.
+ *
+ * @author ENG1 Team 25
+ * @author ENG1 Team 23
  */
-public class MainControlScreen implements Screen, InputProcessor {
+public class MainControlScreen extends ScreenAdapter implements InputProcessor {
     Main game;
     BitmapFont font;
     String objective;
-    private final Texture backButton, controlLabel, controls;
+    private final Texture backButton;
+    private final Texture controlLabel;
+    private final Texture controls;
+
     // X and Y coordinates
-    private float backButtonX, backButtonY, controlLabelX, controlLabelY, controlsX, controlsY, objectiveY, instructionX, instructionY;
+    private float backButtonX;
+    private float backButtonY;
+    private float controlLabelX;
+    private float controlLabelY;
+    private float controlsX;
+    private float controlsY;
+    private float objectiveY;
+    private float instructionX;
+    private float instructionY;
+
     // Buttons dimensions
-    private float backButtonWidth, backButtonHeight, controlLabelWidth, controlLabelHeight, controlsHeight, controlsWidth, instructionGap;
+    private float backButtonWidth;
+    private float backButtonHeight;
+    private float controlLabelWidth;
+    private float controlLabelHeight;
+    private float controlsHeight;
+    private float controlsWidth;
+    private float instructionGap;
 
     /**
      * Constructor for MainControlScreen.
@@ -44,26 +64,24 @@ public class MainControlScreen implements Screen, InputProcessor {
         calculateDimensions();
         calculatePositions();
 
-        objective = "Welcome to Heslington Hustle! You are a second-year Computer Science student with exams in only 7 days. Explore the map, \n" +
-                "and interact with buildings to eat, study, sleep and have fun. To get a good grade, you need to balance hours of studying with \n" +
-                "self-care and recreation. Good luck!";
-
-
+        objective = "Welcome to Heslington Hustle! You are a second-year Computer Science student with exams in only"
+            + "7 days. Explore the map, \n and interact with buildings to eat, study, sleep and have fun. To get a"
+            + "good grade, you need to balance hours of studying with \n self-care and recreation. Good luck!";
     }
 
 
-    private void calculateDimensions(){
+    private void calculateDimensions() {
         font.getData().setScale(1.5f * game.scaleFactorX, 1.5f * game.scaleFactorY);
         backButtonWidth = 200 * game.scaleFactorX;
         backButtonHeight = 100 * game.scaleFactorY;
         controlLabelWidth = 500 * game.scaleFactorX;
         controlLabelHeight = 130 * game.scaleFactorY;
-        controlsWidth = 500/3f * game.scaleFactorX;
+        controlsWidth = 500 / 3f * game.scaleFactorX;
         controlsHeight = 500 * game.scaleFactorY;
         instructionGap = 87 * game.scaleFactorY;
     }
 
-    private void calculatePositions(){
+    private void calculatePositions() {
         backButtonX = (game.screenWidth - backButtonWidth) / 2f;
         backButtonY = game.screenHeight / 6f - 120 * game.scaleFactorY;
         controlLabelX = (game.screenWidth - controlLabelWidth) / 2f;
@@ -95,12 +113,12 @@ public class MainControlScreen implements Screen, InputProcessor {
         font.draw(game.batch, objective, 0, objectiveY, game.screenWidth, Align.center, false);
         float instructionY = this.instructionY;
         String[] instructions = {
-                "Up - Move forward",
-                "Left - Turn left",
-                "Right - Turn right",
-                "Down - Move backward",
-                "Shift - Sprint",
-                "Esc - Pause"
+            "Up - Move forward",
+            "Left - Turn left",
+            "Right - Turn right",
+            "Down - Move backward",
+            "Shift - Sprint",
+            "Esc - Pause"
         };
 
         for (String instruction : instructions) {
@@ -127,11 +145,12 @@ public class MainControlScreen implements Screen, InputProcessor {
     public boolean touchDown(int touchX, int touchY, int pointer, int button) {
         touchY = (game.screenHeight - touchY);
 
-        if (touchX >= backButtonX && touchX <= backButtonX + backButtonWidth &&
-                touchY >= backButtonY && touchY <= backButtonY + backButtonHeight) {
+        if (touchX >= backButtonX && touchX <= backButtonX + backButtonWidth
+                && touchY >= backButtonY && touchY <= backButtonY + backButtonHeight) {
             game.screenManager.setScreen(ScreenType.MAIN_MENU);
             game.gameData.buttonClickedSoundActivate();
         }
+
         return true;
     }
 
@@ -180,21 +199,6 @@ public class MainControlScreen implements Screen, InputProcessor {
     public void resize(int width, int height) {
         calculateDimensions();
         calculatePositions();
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
     }
 
     @Override
