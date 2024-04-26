@@ -36,7 +36,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     private final Main game;
     private final Texture menuButton, popupMenu, durationUpButton, durationDownButton,
             menuBackButton, menuStudyButton, menuSleepButton, menuGoButton,
-            durationMenuBackground, counterBackground;
+            durationMenuBackground, counterBackground, feedDuckButton;
     private final float gameDayLengthInSeconds;
     private final float secondsPerGameHour;
 
@@ -49,6 +49,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     private float durationUpButtonWidth, durationDownButtonWidth, durationMenuBackgroundWidth, durationUpButtonHeight, durationDownButtonHeight, durationMenuBackgroundHeight;
     private float menuBackButtonWidth, menuBackButtonHeight, activityButtonWidth, activityButtonHeight;
     private float menuBackButtonX, activityButtonX, durationMenuButtonY;
+    private float feedDuckButtonX, feedDuckButtonY, feedDuckButtonWidth, feedDuckButtonHeight;
     private float durationTextY, menuTitleY, hoursLabelY;
     private float energyBarY, energyBarX, energyBarWidth, energyBarHeight;
     private String activity, popupMenuType;
@@ -79,6 +80,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         this.menuStudyButton = new Texture("study_button.png");
         this.menuSleepButton = new Texture("sleep_button.png");
         this.menuGoButton = new Texture("go_button.png");
+        this.feedDuckButton = new Texture("feed_button.png");
 
         // Initialize non-final attributes
         this.activity = "";
@@ -216,6 +218,8 @@ public class MainGameScreen implements Screen, InputProcessor {
                 return menuSleepButton;
             case "exercise":
                 return menuGoButton;
+            case "feed-ducks":
+                return feedDuckButton;
             default:
                 return null;
         }
@@ -290,6 +294,10 @@ public class MainGameScreen implements Screen, InputProcessor {
     private void drawPopUpMenu(){
         popupMenuType = getDoorTouching();
         switch (popupMenuType) {
+            case "Pier":
+                drawMenuOption(player.worldX + 30, player.worldY + 20, "Feed", 0);
+                popupVisible = true;
+                break;
             case "Comp_sci_door":
                 drawMenuOption(player.worldX + 30, player.worldY + 20, "Study", 0);
                 popupVisible = true;
@@ -480,6 +488,17 @@ public class MainGameScreen implements Screen, InputProcessor {
         }
         else if (showMenu){
             switch (activity){
+                case "feed-ducks":
+                    if (touchX >= feedDuckButtonX && touchX <= feedDuckButtonX + feedDuckButtonWidth && touchY >= feedDuckButtonY && touchY <= feedDuckButtonY + feedDuckButtonHeight){
+                        game.gameData.buttonClickedSoundActivate();
+                        game.screenManager.setScreen(ScreenType.FEED_DUCKS);
+                    } else if (touchX >= menuBackButtonX && touchX <= menuBackButtonX + menuBackButtonWidth && touchY >= durationMenuButtonY && touchY <= durationMenuButtonY + menuBackButtonHeight) {
+                        game.gameData.buttonClickedSoundActivate();
+                        showMenu = false;
+                        lockMovement = fadeOut;
+                        duration = 1;
+                    }
+                    break;
                 case "study":
                     if (touchX >= durationUpButtonX && touchX <= durationUpButtonX + durationUpButtonWidth && touchY >= durationButtonY && touchY <= durationButtonY + durationUpButtonHeight) {
                         game.gameData.buttonClickedSoundActivate();
@@ -501,7 +520,7 @@ public class MainGameScreen implements Screen, InputProcessor {
                         energyBar.dispose();
                         energyBar = setEnergyBar();
                         timeElapsed += duration * secondsPerGameHour;
-                        game.screenManager.setScreen(ScreenType.MINI_GAME, duration);
+                        game.screenManager.setScreen(ScreenType.MEMORY_GAME, duration);
                     }
                     break;
 

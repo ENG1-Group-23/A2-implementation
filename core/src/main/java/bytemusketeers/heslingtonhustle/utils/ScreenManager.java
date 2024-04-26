@@ -1,12 +1,7 @@
 package bytemusketeers.heslingtonhustle.utils;
 
 import bytemusketeers.heslingtonhustle.Main;
-import bytemusketeers.heslingtonhustle.screens.EndScreen;
-import bytemusketeers.heslingtonhustle.screens.MainControlScreen;
-import bytemusketeers.heslingtonhustle.screens.MainGameScreen;
-import bytemusketeers.heslingtonhustle.screens.MainMenuScreen;
-import bytemusketeers.heslingtonhustle.screens.MainSettingsScreen;
-import bytemusketeers.heslingtonhustle.screens.TypingGame;
+import bytemusketeers.heslingtonhustle.screens.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import java.util.HashMap;
@@ -104,8 +99,10 @@ public class ScreenManager {
                 return new MainSettingsScreen(game);
             case CONTROLS:
                 return new MainControlScreen(game);
-            case MINI_GAME:
+            case MEMORY_GAME:
                 return new TypingGame(game, (int) args[0]);
+            case FEED_DUCKS:
+                return new FeedDucks(game, (int) args[0]);
             case END_SCREEN:
                 return new EndScreen(game);
         }

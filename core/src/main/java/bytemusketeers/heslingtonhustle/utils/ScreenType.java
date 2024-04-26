@@ -8,6 +8,7 @@ public enum ScreenType {
     GAME_SCREEN,
     SETTINGS,
     CONTROLS,
-    MINI_GAME,
+    MEMORY_GAME,
+    FEED_DUCKS,
     END_SCREEN
 }
