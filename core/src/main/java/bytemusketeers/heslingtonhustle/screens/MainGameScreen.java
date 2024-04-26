@@ -1,5 +1,7 @@
 package bytemusketeers.heslingtonhustle.screens;
 
+import bytemusketeers.heslingtonhustle.utils.Achievement;
+import bytemusketeers.heslingtonhustle.utils.Score;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -29,6 +31,8 @@ public class MainGameScreen implements Screen, InputProcessor {
     private final Color shader;
     private final float zoom = 3f;
     private final Player player;
+    private final Score score;
+    private final Achievement eatAch, recAch, sleepAch;
     private final BitmapFont font, popupFont, durationFont;
     private final GameMap gameMap;
     private final OrthographicCamera camera;
@@ -54,7 +58,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     private String activity, popupMenuType;
     private int energyCounter, duration, dayNum, recActivity, studyHours, mealCount, currentHour;
     private float timeElapsed, fadeTime, minShade;
-    private boolean fadeOut, lockTime, lockMovement, lockPopup, resetPos, popupVisible, showMenu;
+    private boolean fadeOut, lockTime, lockMovement, lockPopup, resetPos, popupVisible, showMenu, dayStudied;
 
     /**
      * Constructs the main game screen with necessary game components.
@@ -62,7 +66,7 @@ public class MainGameScreen implements Screen, InputProcessor {
      *
      * @param game The main game application instance.
      */
-    public MainGameScreen(Main game) {
+    public MainGameScreen(Main game, Score score, Achievement eatAch, Achievement recAch, Achievement sleepAch) {
         this.game = game;
         this.shader = new Color(0.5f, 0.5f, 0.5f, 1);
         this.gameDayLengthInSeconds = 60f;
@@ -90,12 +94,17 @@ public class MainGameScreen implements Screen, InputProcessor {
         this.currentHour = 10;
         this.fadeTime = 0;
         this.minShade = 0;
+        this.dayStudied = false;
         this.fadeOut = this.lockTime = this.lockMovement = this.lockPopup = this.resetPos = this.popupVisible = this.showMenu = false;
 
         // Setting up the game
         this.camera = new OrthographicCamera();
         this.gameMap = new GameMap(this.camera);
         this.player = new Player(this.game, this.gameMap, this.camera);
+        this.score = score;
+        this.eatAch = eatAch;
+        this.recAch = recAch;
+        this.sleepAch = sleepAch;
         this.font = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
         this.popupFont = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
         this.durationFont = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
@@ -419,7 +428,10 @@ public class MainGameScreen implements Screen, InputProcessor {
 
         // Ensure the hour cycles through the active hours correctly (8 AM to 12 AM)
         if (currentHour >= 24) { // If it reaches 12 AM, reset to 8 AM the next day
-            if (dayNum == 7) game.screenManager.setScreen(ScreenType.END_SCREEN);
+            if (dayNum == 7) {
+                score.CalculateFinal(eatAch.ReadStreak(), sleepAch.ReadStreak(), recAch.ReadStreak());
+                game.screenManager.setScreen(ScreenType.END_SCREEN);
+            }
             resetDay();
         }
     }
@@ -429,10 +441,13 @@ public class MainGameScreen implements Screen, InputProcessor {
      */
     private void resetDay(){
         executeFadeOut(true);
+        score.AddScore();
+        if (!dayStudied && score.ReadMissed() == 0) score.incrementMissed();
         currentHour = 8;
         dayNum++;
         timeElapsed = 0;
         energyCounter += 4;
+        dayStudied = false;
         if (energyCounter > 10) energyCounter = 10;
         energyBar.dispose();
         energyBar = setEnergyBar();
@@ -497,6 +512,12 @@ public class MainGameScreen implements Screen, InputProcessor {
                         showMenu = false;
                         lockMovement = fadeOut;
                         studyHours += duration;
+                        score.incrementStudy(studyHours);
+                        if (score.ReadMissed() == 1) {
+                            score.incrementMissed();
+                            score.incrementStudy(studyHours);
+                        }
+                        dayStudied = true;
                         if (energyCounter > (duration+1)/2) energyCounter -= (duration+1)/2;
                         energyBar.dispose();
                         energyBar = setEnergyBar();
@@ -524,6 +545,8 @@ public class MainGameScreen implements Screen, InputProcessor {
                             showMenu = false;
                             lockMovement = fadeOut;
                             recActivity++;
+                            score.incrementRec();
+                            recAch.IncrementStreak();
                             energyCounter -= duration;
                             energyBar.dispose();
                             energyBar = setEnergyBar();
@@ -549,6 +572,13 @@ public class MainGameScreen implements Screen, InputProcessor {
                         game.gameData.buttonClickedSoundActivate();
                         showMenu = false;
                         lockMovement = fadeOut;
+
+                        if (dayNum == 7) {
+                            score.CalculateFinal(eatAch.ReadStreak(), sleepAch.ReadStreak(), recAch.ReadStreak());
+                            game.screenManager.setScreen(ScreenType.END_SCREEN);
+                        }
+
+                        sleepAch.IncrementStreak();
                         resetDay();
                         duration = 1;
                     }
@@ -582,6 +612,7 @@ public class MainGameScreen implements Screen, InputProcessor {
                         game.gameData.eatingSoundActivate();
                         energyCounter += 3;
                         mealCount++;
+                        eatAch.IncrementStreak();
                         if (energyCounter > 10) energyCounter = 10;
                         energyBar.dispose();
                         energyBar = setEnergyBar();

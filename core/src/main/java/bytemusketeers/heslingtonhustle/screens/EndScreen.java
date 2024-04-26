@@ -1,6 +1,8 @@
 package bytemusketeers.heslingtonhustle.screens;
 
 import bytemusketeers.heslingtonhustle.Main;
+import bytemusketeers.heslingtonhustle.utils.Achievement;
+import bytemusketeers.heslingtonhustle.utils.Score;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -18,8 +20,14 @@ public class EndScreen implements Screen, InputProcessor {
     float buttonX, buttonWidth, buttonHeight;
     float titleY;
     boolean exitFlag;
-    public EndScreen(Main game){
+    private final Score score;
+    private final Achievement eatAch, recAch, sleepAch;
+    public EndScreen(Main game, Score score, Achievement eatAch, Achievement recAch, Achievement sleepAch){
         this.game = game;
+        this.score = score;
+        this.eatAch = eatAch;
+        this.recAch = recAch;
+        this.sleepAch = sleepAch;
         titleText = "The End";
         loadAssets();
         calculateDimensions();
@@ -45,6 +53,21 @@ public class EndScreen implements Screen, InputProcessor {
         titleY = game.screenHeight - 120f * game.scaleFactorY;
     }
 
+    private String AchievementText(int num, String name) {
+        if (num >= 6) {
+            return "Master " + name;
+        }
+        else if (num >= 4) {
+            return "Intermediate " + name;
+        }
+        else if (num >= 2) {
+            return "Novice " + name;
+        }
+        else {
+            return "Hidden";
+        }
+    }
+
     @Override
     public void render(float v) {
         if (exitFlag) return;
@@ -52,6 +75,15 @@ public class EndScreen implements Screen, InputProcessor {
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
         game.batch.begin();
         font.draw(game.batch, titleText, 0, titleY, game.screenWidth, Align.center, false);
+        font.draw(game.batch, "Score: " + score.ReadScore(), 0, titleY, game.screenWidth, Align.right, false);
+
+        font.draw(game.batch, AchievementText(eatAch.ReadStreak(), eatAch.ReadName()), 0,
+                titleY, game.screenWidth, Align.left, false);
+        font.draw(game.batch, AchievementText(recAch.ReadStreak(), recAch.ReadName()), 0,
+                titleY - 70f * game.scaleFactorY, game.screenWidth, Align.left, false);
+        font.draw(game.batch, AchievementText(sleepAch.ReadStreak(), sleepAch.ReadName()), 0,
+                titleY - 140f * game.scaleFactorY, game.screenWidth, Align.left, false);
+
         game.batch.draw(playAgainButton, buttonX, playAgainButtonY, buttonWidth, buttonHeight);
         game.batch.draw(exitButton, buttonX, exitButtonY, buttonWidth, buttonHeight);
         game.batch.end();
