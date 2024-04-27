@@ -1,6 +1,6 @@
 package bytemusketeers.heslingtonhustle.screens;
 
-import bytemusketeers.heslingtonhustle.Main;
+import bytemusketeers.heslingtonhustle.HeslingtonHustle;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class EndScreen implements Screen, InputProcessor {
-    Main game;
+    HeslingtonHustle game;
     Texture playAgainButton, exitButton;
     BitmapFont font;
     String titleText;
@@ -18,7 +18,7 @@ public class EndScreen implements Screen, InputProcessor {
     float buttonX, buttonWidth, buttonHeight;
     float titleY;
     boolean exitFlag;
-    public EndScreen(Main game){
+    public EndScreen(HeslingtonHustle game){
         this.game = game;
         titleText = "The End";
         loadAssets();

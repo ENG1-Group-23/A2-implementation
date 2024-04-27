@@ -1,6 +1,6 @@
 package bytemusketeers.heslingtonhustle.screens;
 
-import bytemusketeers.heslingtonhustle.Main;
+import bytemusketeers.heslingtonhustle.HeslingtonHustle;
 import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
  * @author ENG1 Team 23
  */
 public class MainSettingsScreen extends ScreenAdapter implements InputProcessor {
-    Main game;
+    HeslingtonHustle game;
     boolean gender;
     private final Texture backButton;
     private final Texture settingsLabel;
@@ -90,7 +90,7 @@ public class MainSettingsScreen extends ScreenAdapter implements InputProcessor 
      *
      * @param game The main game object for accessing global properties and methods.
      */
-    public MainSettingsScreen(Main game) {
+    public MainSettingsScreen(HeslingtonHustle game) {
         this.game = game;
         gender = game.gameData.getGender();
 

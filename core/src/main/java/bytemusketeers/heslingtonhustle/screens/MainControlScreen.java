@@ -1,6 +1,6 @@
 package bytemusketeers.heslingtonhustle.screens;
 
-import bytemusketeers.heslingtonhustle.Main;
+import bytemusketeers.heslingtonhustle.HeslingtonHustle;
 import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -19,7 +19,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
  * @author ENG1 Team 23
  */
 public class MainControlScreen extends ScreenAdapter implements InputProcessor {
-    Main game;
+    HeslingtonHustle game;
     BitmapFont font;
     String objective;
     private final Texture backButton;
@@ -53,7 +53,7 @@ public class MainControlScreen extends ScreenAdapter implements InputProcessor {
      *
      * @param game The main game object that this screen is a part of.
      */
-    public MainControlScreen(Main game) {
+    public MainControlScreen(HeslingtonHustle game) {
         this.game = game;
         font = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
 

@@ -1,6 +1,6 @@
 package bytemusketeers.heslingtonhustle.screens;
 
-import bytemusketeers.heslingtonhustle.Main;
+import bytemusketeers.heslingtonhustle.HeslingtonHustle;
 import bytemusketeers.heslingtonhustle.entity.Player;
 import bytemusketeers.heslingtonhustle.map.GameMap;
 import bytemusketeers.heslingtonhustle.utils.CollisionHandler;
@@ -36,7 +36,7 @@ public class MainGameScreen extends ScreenAdapter implements InputProcessor {
     private final GameMap gameMap;
     private final OrthographicCamera camera;
     private final ShapeRenderer shapeRenderer;
-    private final Main game;
+    private final HeslingtonHustle game;
     private final Texture menuButton;
     private final Texture popupMenu;
     private final Texture durationUpButton;
@@ -113,7 +113,7 @@ public class MainGameScreen extends ScreenAdapter implements InputProcessor {
      *
      * @param game The main game application instance.
      */
-    public MainGameScreen(Main game) {
+    public MainGameScreen(HeslingtonHustle game) {
         this.game = game;
         this.shader = new Color(0.5f, 0.5f, 0.5f, 1);
         this.gameDayLengthInSeconds = 60f;

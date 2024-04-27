@@ -20,7 +20,7 @@ import static com.badlogic.gdx.Gdx.graphics;
  * @author ENG1 Team 25
  * @author ENG1 Team 23
  */
-public class Main extends Game {
+public class HeslingtonHustle extends Game {
     public SpriteBatch batch;
     public GameData gameData;
     public ScreenManager screenManager;

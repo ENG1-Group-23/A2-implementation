@@ -1,6 +1,6 @@
 package bytemusketeers.heslingtonhustle.screens;
 
-import bytemusketeers.heslingtonhustle.Main;
+import bytemusketeers.heslingtonhustle.HeslingtonHustle;
 import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -21,7 +21,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author ENG1 Team 23
  */
 public class TypingGame extends ScreenAdapter implements InputProcessor {
-    private final Main game;
+    private final HeslingtonHustle game;
     private final int studyDuration;
     private int attempts = 0;
     private int currentNumber = 0;
@@ -43,7 +43,7 @@ public class TypingGame extends ScreenAdapter implements InputProcessor {
      * @param game The main game instance.
      * @param studyDuration The duration of the study session in attempts.
      */
-    public TypingGame(Main game, int studyDuration) {
+    public TypingGame(HeslingtonHustle game, int studyDuration) {
         this.game = game;
         displayText = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
         guessButton = new Texture("mini_games/guess_button.png");

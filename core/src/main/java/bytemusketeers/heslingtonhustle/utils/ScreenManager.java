@@ -1,6 +1,6 @@
 package bytemusketeers.heslingtonhustle.utils;
 
-import bytemusketeers.heslingtonhustle.Main;
+import bytemusketeers.heslingtonhustle.HeslingtonHustle;
 import bytemusketeers.heslingtonhustle.screens.EndScreen;
 import bytemusketeers.heslingtonhustle.screens.MainControlScreen;
 import bytemusketeers.heslingtonhustle.screens.MainGameScreen;
@@ -19,7 +19,7 @@ import java.util.Map;
  * @author ENG1 Team 23
  */
 public class ScreenManager {
-    private final Main game;
+    private final HeslingtonHustle game;
     private final Map<ScreenType, Screen> screensInMemory;
     private Screen curScreen;
     private ScreenType curScreenType;
@@ -29,7 +29,7 @@ public class ScreenManager {
      *
      * @param game The main game class instance.
      */
-    public ScreenManager(Main game) {
+    public ScreenManager(HeslingtonHustle game) {
         this.game = game;
         this.screensInMemory = new HashMap<>();
     }

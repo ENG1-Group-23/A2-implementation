@@ -9,17 +9,51 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 /**
  * Represents the game map, handling rendering and toggling layer visibility.
- * It extends TiledMap to use the functionalities provided by libGDX for tile maps.
  *
  * @author ENG1 Team 25
  * @author ENG1 Team 23
  */
 public class GameMap extends TiledMap {
-    private final int width, height;
+    /**
+     * The width of the total map
+     */
+    private final int width;
+
+    /**
+     * The height of the total map
+     */
+    private final int height;
+
+    /**
+     * The LibGDX-managed {@link TiledMap} resource corresponding to the tiled {@link com.badlogic.gdx.graphics.Texture}
+     * areas
+     */
     private final TiledMap gameMap;
+
+    /**
+     * The LibGDX-provided provision for rendering the map
+     *
+     * @see #gameMap
+     */
     private final OrthogonalTiledMapRenderer tiledMapRenderer;
+
+    /**
+     * The LibGDX-provided {@link com.badlogic.gdx.graphics.Camera} reference for viewport-tracking
+     *
+     * @see bytemusketeers.heslingtonhustle.entity.Player
+     */
     private final OrthographicCamera camera;
-    int tileSize = 16;
+
+    /**
+     * The required tile size of each TMX tile
+     */
+    private static final int TILE_SIZE = 16;
+
+    /**
+     * Render-time threshold for displaying secondary assets on the {@link #gameMap}
+     *
+     * @see #update(float)
+     */
     float layerToggleTime;
 
     /**
@@ -84,7 +118,7 @@ public class GameMap extends TiledMap {
      * @return The size of the tiles in the map.
      */
     public int getTileSize() {
-        return tileSize;
+        return TILE_SIZE;
     }
 
     /**
@@ -114,7 +148,9 @@ public class GameMap extends TiledMap {
         return gameMap;
     }
 
-    
+    /**
+     * Releases all non-managed resources used by the {@link GameMap}
+     */
     public void dispose() {
         gameMap.dispose();
         tiledMapRenderer.dispose();

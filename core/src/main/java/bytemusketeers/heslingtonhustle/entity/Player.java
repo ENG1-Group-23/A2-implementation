@@ -1,6 +1,6 @@
 package bytemusketeers.heslingtonhustle.entity;
 
-import bytemusketeers.heslingtonhustle.Main;
+import bytemusketeers.heslingtonhustle.HeslingtonHustle;
 import bytemusketeers.heslingtonhustle.map.GameMap;
 import bytemusketeers.heslingtonhustle.utils.CollisionHandler;
 import com.badlogic.gdx.Gdx;
@@ -14,32 +14,133 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 
 /**
- * The Player class represents the character in the game, handling movement, collision, and animations.
+ * The {@link Player} represents the in-{@link com.badlogic.gdx.Game} character; handling movement, collision,
+ * and animations.
  *
+ * @see Entity
  * @author ENG1 Team 25
  * @author ENG1 Team 23
  */
 public class Player extends Entity implements Disposable {
-    Main game;
+    /**
+     * The parental {@link com.badlogic.gdx.Game} reference, in particular {@link HeslingtonHustle}
+     */
+    HeslingtonHustle game;
+
+    /**
+     * The on-screen {@link GameMap}
+     *
+     * @implNote This is required to access the size of the map.
+     * @see GameMap#getWidth()
+     * @see GameMap#getHeight()
+     */
     GameMap gameMap;
+
+    /**
+     * The {@link com.badlogic.gdx.graphics.Camera} used for tracking the {@link Player} within the bounds of the
+     * {@link GameMap}
+     */
     OrthographicCamera camera;
+
+    /**
+     * The handler and manager for collisions between the user-controlled {@link Player} and various on-screen objects
+     */
     CollisionHandler collisionHandler;
-    char dir; // Current direction of the player
-    public static final float animation_speed = 0.5f; // speed that sprite will animate or frame duration
-    public static final int spriteX = 24; // this is in reference to the sprite sheet
+
+    /**
+     * The current direction of the {@link Player}, encoded in the following schema:
+     * <ul>
+     *     <li>'U': Up;</li>
+     *     <li>'D': Down;</li>
+     *     <li>'L': Left; and</li>
+     *     <li>'R': Right.</li>
+     * </ul>
+     */
+    char dir;
+
+    /**
+     * The frame duration of each animation step
+     *
+     * @see Entity#currentAnimation
+     * @see Animation
+     */
+    public static final float ANIMATION_SPEED = 0.5f;
+
+    /**
+     * The starting X position of the {@link Player} sprite with respect to the sprite-sheet
+     */
+    public static final int spriteX = 24;
+
+    /**
+     * The starting Y position of the {@link Player} sprite with respect to the sprite-sheet
+     */
     public static final int spriteY = 38;
+
+    /**
+     * The cached tile-size of the {@link GameMap}
+     *
+     * @see GameMap#getTileSize()
+     */
     int tileSize;
+
+    /**
+     * The X component of the default starting position
+     */
     public float startX;
+
+    /**
+     * The Y component of the default starting position
+     */
     public float startY;
+
+    /**
+     * The sprite-sheet of the {@link Player} sprites in its idle state
+     */
     Texture idleSheet;
+
+    /**
+     * The sprite-sheet of the {@link Player} sprites in its walking state
+     */
     Texture walkSheet;
+
+    /**
+     * The walk-down set of frames
+     */
     Animation<TextureRegion> walkDownAnimation;
+
+    /**
+     * The walk-right set of frames
+     */
     Animation<TextureRegion> walkRightAnimation;
+
+    /**
+     * The walk-left set of frames
+     */
     Animation<TextureRegion> walkLeftAnimation;
+
+    /**
+     * The walk-up set of frames
+     */
     Animation<TextureRegion> walkUpAnimation;
+
+    /**
+     * The idling-down set of frames
+     */
     Animation<TextureRegion> idleDownAnimation;
+
+    /**
+     * The idling-right set of frames
+     */
     Animation<TextureRegion> idleRightAnimation;
+
+    /**
+     * The idling-left set of frames
+     */
     Animation<TextureRegion> idleLeftAnimation;
+
+    /**
+     * The idling-up set of frames
+     */
     Animation<TextureRegion> idleUpAnimation;
 
 
@@ -50,7 +151,7 @@ public class Player extends Entity implements Disposable {
      * @param gameMap The game map for collision detection and boundaries.
      * @param camera The camera to follow the player.
      */
-    public Player(Main game, GameMap gameMap, OrthographicCamera camera) {
+    public Player(HeslingtonHustle game, GameMap gameMap, OrthographicCamera camera) {
         this.game = game;
         this.gameMap = gameMap;
         this.camera = camera;
@@ -204,21 +305,28 @@ public class Player extends Entity implements Disposable {
 
         TextureRegion[][] walkSpriteSheet = split(walkSheet, spriteX, spriteY); // Splits the sprite sheet up by frames
 
-        walkDownAnimation = new Animation<>(animation_speed, walkSpriteSheet[0]); // First row for down
-        walkLeftAnimation = new Animation<>(animation_speed, walkSpriteSheet[1]); // Second row for left
-        walkRightAnimation = new Animation<>(animation_speed, walkSpriteSheet[2]); // Third row for right
-        walkUpAnimation = new Animation<>(animation_speed, walkSpriteSheet[3]); // Fourth row for up
+        walkDownAnimation = new Animation<>(ANIMATION_SPEED, walkSpriteSheet[0]); // First row for down
+        walkLeftAnimation = new Animation<>(ANIMATION_SPEED, walkSpriteSheet[1]); // Second row for left
+        walkRightAnimation = new Animation<>(ANIMATION_SPEED, walkSpriteSheet[2]); // Third row for right
+        walkUpAnimation = new Animation<>(ANIMATION_SPEED, walkSpriteSheet[3]); // Fourth row for up
 
         TextureRegion[][] idleSpriteSheet = split(idleSheet, spriteX, spriteY); // Splits the sprite sheet up by frames
 
-        idleDownAnimation = new Animation<>(animation_speed, idleSpriteSheet[0][0], idleSpriteSheet[0][1]);
-        idleLeftAnimation = new Animation<>(animation_speed, idleSpriteSheet[1][0], idleSpriteSheet[1][1]);
-        idleRightAnimation = new Animation<>(animation_speed, idleSpriteSheet[2][0], idleSpriteSheet[2][1]);
-        idleUpAnimation = new Animation<>(animation_speed, idleSpriteSheet[3][0], idleSpriteSheet[3][1]);
+        idleDownAnimation = new Animation<>(ANIMATION_SPEED, idleSpriteSheet[0][0], idleSpriteSheet[0][1]);
+        idleLeftAnimation = new Animation<>(ANIMATION_SPEED, idleSpriteSheet[1][0], idleSpriteSheet[1][1]);
+        idleRightAnimation = new Animation<>(ANIMATION_SPEED, idleSpriteSheet[2][0], idleSpriteSheet[2][1]);
+        idleUpAnimation = new Animation<>(ANIMATION_SPEED, idleSpriteSheet[3][0], idleSpriteSheet[3][1]);
 
         setDirection(dir);
     }
 
+    /**
+     * Updates the direction of the {@link Player} according to the encoding specified in {@link #dir}, updating the
+     * animation frame-set as necessary.
+     *
+     * @param dir The new direction
+     * @see #dir
+     */
     public void setDirection(char dir) {
         this.dir = dir;
 
@@ -247,20 +355,33 @@ public class Player extends Entity implements Disposable {
     /**
      * Gets the current animation frame for the player based on the state time.
      *
-     * @return The current TextureRegion of the player's animation.
+     * @return The current {@link TextureRegion} of the {@link Player}'s {@link Animation}.
      */
     public TextureRegion getCurrentFrame() {
         return currentAnimation.getKeyFrame(stateTime, true);
     }
 
+    /**
+     * Retrieves the {@link CollisionHandler}
+     *
+     * @return The {@link Player}-registered {@link CollisionHandler}
+     */
     public CollisionHandler getCollisionHandler() {
         return collisionHandler;
     }
 
+    /**
+     * Encodes the {@link Player}'s hitbox as a LibGDX {@link Rectangle}
+     *
+     * @return The {@link Rectangle} with bounds corresponding to the collision area of the {@link Player}
+     */
     public Rectangle getHitBox() {
         return new Rectangle(worldX, worldY, spriteX, spriteY);
     }
 
+    /**
+     * Releases all non-managed resources used by the {@link Player}
+     */
     public void dispose() {
         idleSheet.dispose();
         walkSheet.dispose();

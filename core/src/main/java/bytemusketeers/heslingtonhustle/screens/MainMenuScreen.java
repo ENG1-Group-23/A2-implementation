@@ -1,6 +1,6 @@
 package bytemusketeers.heslingtonhustle.screens;
 
-import bytemusketeers.heslingtonhustle.Main;
+import bytemusketeers.heslingtonhustle.HeslingtonHustle;
 import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
  * @author ENG1 Team 23
  */
 public class MainMenuScreen extends ScreenAdapter implements InputProcessor {
-    Main game;
+    HeslingtonHustle game;
     Texture heslingtonHustleLabel;
     Texture playButton;
     Texture controlsButton;
@@ -51,7 +51,7 @@ public class MainMenuScreen extends ScreenAdapter implements InputProcessor {
      *
      * @param game the game instance this screen belongs to.
      */
-    public MainMenuScreen(Main game) {
+    public MainMenuScreen(HeslingtonHustle game) {
         this.game = game;
 
         loadTextures();
