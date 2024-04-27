@@ -4,17 +4,36 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 
 /**
- * Manages game sound effects including sound level adjustments and playing specific sounds.
- * It handles sound effects for increasing volume, decreasing volume, and button clicks.
+ * Manages game sound effects including sound level adjustments and playing specific sounds. It handles sound effects
+ * for increasing volume, decreasing volume, and button clicks.
  *
  * @author ENG1 Team 25
  * @author ENG1 Team 23
  */
 public class GameSound {
-    Music upSound;
-    Music downSound;
-    Music buttonClickedSound;
-    Music eatingSound;
+    /**
+     * The {@link Music} sound associated with increasing the volume
+     */
+    private final Music upSound;
+
+    /**
+     * The {@link Music} sound associated with decreasing the volume
+     */
+    private final Music downSound;
+
+    /**
+     * The {@link Music} sound associated with clicking of a button
+     */
+    private final Music buttonClickedSound;
+
+    /**
+     * The {@link Music} sound associated with the {@link bytemusketeers.heslingtonhustle.entity.Player} consuming food
+     */
+    private final Music eatingSound;
+
+    /**
+     * The transient volume, in quarters
+     */
     private int soundLevel = 4;
 
     /**
@@ -109,18 +128,38 @@ public class GameSound {
         }
     }
 
+    /**
+     * Retrieves the volume-increasing indicator sound
+     *
+     * @return The {@link #upSound}
+     */
     public Music getUpSound() {
         return upSound;
     }
 
+    /**
+     * Retrieves the volume-decreasing indicator sound
+     *
+     * @return The {@link #downSound}
+     */
     public Music getDownSound() {
         return downSound;
     }
 
+    /**
+     * Retrieves the button-actuate indicator sound
+     *
+     * @return The {@link #buttonClickedSound}
+     */
     public Music getButtonClickedSound() {
         return buttonClickedSound;
     }
 
+    /**
+     * Retrieves the {@link bytemusketeers.heslingtonhustle.entity.Player}-eating indicator sound
+     *
+     * @return The {@link #eatingSound}
+     */
     public Music getEatingSound() {
         return eatingSound;
     }
