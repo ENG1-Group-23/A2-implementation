@@ -5,6 +5,8 @@ import bytemusketeers.heslingtonhustle.entity.Player;
 import bytemusketeers.heslingtonhustle.map.GameMap;
 import bytemusketeers.heslingtonhustle.utils.CollisionHandler;
 import bytemusketeers.heslingtonhustle.utils.ScreenType;
+import bytemusketeers.heslingtonhustle.utils.Achievement;
+import bytemusketeers.heslingtonhustle.utils.Score;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
@@ -30,6 +32,13 @@ public class MainGameScreen extends ScreenAdapter implements InputProcessor {
     private final Color shader;
     private final float zoom = 3f;
     private final Player player;
+    private final BitmapFont font;
+    private final BitmapFont popupFont;
+    private final BitmapFont durationFont;
+    private final Score score;
+    private final Achievement eatAch;
+    private final Achievement recAch;
+    private final Achievement sleepAch;
     private final BitmapFont font;
     private final BitmapFont popupFont;
     private final BitmapFont durationFont;
@@ -106,6 +115,9 @@ public class MainGameScreen extends ScreenAdapter implements InputProcessor {
     private boolean resetPos;
     private boolean popupVisible;
     private boolean showMenu;
+    private boolean dayStudied;
+    private boolean hasEaten;
+    private boolean hasExercised;
 
     /**
      * Constructs the main game screen with necessary game components.
@@ -113,7 +125,7 @@ public class MainGameScreen extends ScreenAdapter implements InputProcessor {
      *
      * @param game The main game application instance.
      */
-    public MainGameScreen(HeslingtonHustle game) {
+    public MainGameScreen(HeslingtonHustle game, Score score, Achievement eatAch, Achievement recAch, Achievement sleepAch) {
         this.game = game;
         this.shader = new Color(0.5f, 0.5f, 0.5f, 1);
         this.gameDayLengthInSeconds = 60f;
@@ -141,6 +153,9 @@ public class MainGameScreen extends ScreenAdapter implements InputProcessor {
         this.currentHour = 10;
         this.fadeTime = 0;
         this.minShade = 0;
+        this.dayStudied = false;
+        this.hasEaten = false;
+        this.hasExercised = false;
         this.fadeOut = this.lockTime = this.lockMovement = this.lockPopup = this.resetPos = this.popupVisible =
                 this.showMenu = false;
 
@@ -148,6 +163,10 @@ public class MainGameScreen extends ScreenAdapter implements InputProcessor {
         this.camera = new OrthographicCamera();
         this.gameMap = new GameMap(this.camera);
         this.player = new Player(this.game, this.gameMap, this.camera);
+        this.score = score;
+        this.eatAch = eatAch;
+        this.recAch = recAch;
+        this.sleepAch = sleepAch;
         this.font = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
         this.popupFont = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
         this.durationFont = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
@@ -494,7 +513,10 @@ public class MainGameScreen extends ScreenAdapter implements InputProcessor {
 
         // Ensure the hour cycles through the active hours correctly (8 AM to 12 AM)
         if (currentHour >= 24) { // If it reaches 12 AM, reset to 8 AM the next day
-            if (dayNum == 7) game.screenManager.setScreen(ScreenType.END_SCREEN);
+            if (dayNum == 7) {
+                score.CalculateFinal(eatAch.ReadStreak(), sleepAch.ReadStreak(), recAch.ReadStreak());
+                game.screenManager.setScreen(ScreenType.END_SCREEN);
+            }
             resetDay();
         }
     }
@@ -504,10 +526,25 @@ public class MainGameScreen extends ScreenAdapter implements InputProcessor {
      */
     private void resetDay() {
         executeFadeOut(true);
+        score.AddScore();
+
+        if (!dayStudied) {
+
+            if (score.ReadMissed() == 0) {
+                score.incrementMissed();
+            }
+
+            score.incrementNoStudy();
+        }
+
         currentHour = 8;
         dayNum++;
         timeElapsed = 0;
         energyCounter += 4;
+        hasExercised = false;
+        hasEaten = false;
+        dayStudied = false;
+        score.ResetMults();
         if (energyCounter > 10) energyCounter = 10;
         energyBar.dispose();
         energyBar = setEnergyBar();
@@ -579,6 +616,15 @@ public class MainGameScreen extends ScreenAdapter implements InputProcessor {
                         showMenu = false;
                         lockMovement = fadeOut;
                         studyHours += duration;
+                        score.incrementStudy(studyHours);
+
+                        if (score.ReadMissed() == 1) {
+                            score.incrementMissed();
+                            score.incrementStudy(studyHours);
+                            score.decrementNoStudy();
+                        }
+
+                        dayStudied = true;
                         if (energyCounter > (duration + 1) / 2)
                             energyCounter -= (duration + 1) / 2;
                         energyBar.dispose();
@@ -614,6 +660,13 @@ public class MainGameScreen extends ScreenAdapter implements InputProcessor {
                             showMenu = false;
                             lockMovement = fadeOut;
                             recActivity++;
+                            score.incrementRec(duration);
+
+                            if (!hasExercised) {
+                                hasExercised = true;
+                                recAch.IncrementStreak();
+                            }
+
                             energyCounter -= duration;
                             energyBar.dispose();
                             energyBar = setEnergyBar();
@@ -643,6 +696,13 @@ public class MainGameScreen extends ScreenAdapter implements InputProcessor {
                         game.gameData.buttonClickedSoundActivate();
                         showMenu = false;
                         lockMovement = fadeOut;
+
+                        if (dayNum == 7) {
+                            score.CalculateFinal(eatAch.ReadStreak(), sleepAch.ReadStreak(), recAch.ReadStreak());
+                            game.screenManager.setScreen(ScreenType.END_SCREEN);
+                        }
+
+                        sleepAch.IncrementStreak();
                         resetDay();
                         duration = 1;
                     }
@@ -680,6 +740,12 @@ public class MainGameScreen extends ScreenAdapter implements InputProcessor {
                         game.gameData.eatingSoundActivate();
                         energyCounter += 3;
                         mealCount++;
+
+                        if (!hasEaten) {
+                            eatAch.IncrementStreak();
+                            hasEaten = true;
+                        }
+
                         if (energyCounter > 10) energyCounter = 10;
                         energyBar.dispose();
                         energyBar = setEnergyBar();

@@ -31,6 +31,10 @@ public class ScreenManager {
      *
      * @see ScreenType
      */
+    private final Score score;
+    private final Achievement eatAch;
+    private final Achievement recAch;
+    private final Achievement sleepAch;
     private final Map<ScreenType, Screen> screensInMemory;
 
     /**
@@ -56,6 +60,10 @@ public class ScreenManager {
      */
     public ScreenManager(HeslingtonHustle game) {
         this.game = game;
+        this.score = new Score();
+        this.eatAch = new Achievement("FAT BOI");
+        this.recAch = new Achievement("FIT BOI");
+        this.sleepAch = new Achievement("NAP BOI");
         this.screensInMemory = new HashMap<>();
     }
 
@@ -130,7 +138,7 @@ public class ScreenManager {
             case MAIN_MENU:
                 return new MainMenuScreen(game);
             case GAME_SCREEN:
-                return new MainGameScreen(game);
+                return new MainGameScreen(game, score, eatAch, recAch, sleepAch);
             case SETTINGS:
                 return new MainSettingsScreen(game);
             case CONTROLS:
@@ -138,7 +146,7 @@ public class ScreenManager {
             case MINI_GAME:
                 return new TypingGame(game, (int) args[0]);
             case END_SCREEN:
-                return new EndScreen(game);
+                return new EndScreen(game, score, eatAch, recAch, sleepAch);
             default:
                 return null;
         }
