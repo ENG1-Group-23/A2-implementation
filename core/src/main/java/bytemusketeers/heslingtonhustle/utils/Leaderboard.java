@@ -1,11 +1,13 @@
 package bytemusketeers.heslingtonhustle.utils;
 
+import bytemusketeers.heslingtonhustle.screens.EndScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -23,11 +25,6 @@ public class Leaderboard {
     private final Table table = new Table();
 
     /**
-     * The standard padding between columns, in pixels
-     */
-    private static final int HORIZONTAL_PADDING = 50;
-
-    /**
      * The given {@link Label.LabelStyle} style to use for typesetting entries
      */
     private final Label.LabelStyle labelStyle;
@@ -40,7 +37,8 @@ public class Leaderboard {
     /**
      * The LibGDX {@link Preferences} reference to be used for persistent high-score storage.
      */
-    private final Preferences preferences = Gdx.app.getPreferences("bytemusketeers.heslingtonhustle.highscores");
+    private static final Preferences preferences =
+        Gdx.app.getPreferences("bytemusketeers.heslingtonhustle.highscores");
 
     /**
      * Register a new score for the user of the current {@link com.badlogic.gdx.Game}. The {@link #preferences} is
@@ -76,11 +74,12 @@ public class Leaderboard {
         preferences.get().forEach((key, value) -> scores.add(new AbstractMap.SimpleEntry<>(key,
             Integer.parseUnsignedInt(value.toString()))));
 
-        scores.stream().sorted().limit(MAX_ENTRY_COUNT).forEach(record -> {
-            table.row();
-            table.add(new Label(record.getKey(), labelStyle)).padRight(HORIZONTAL_PADDING);
-            table.add(new Label(record.getValue().toString(), labelStyle));
-        });
+        scores.stream().sorted(Collections.reverseOrder(Map.Entry.comparingByValue())).limit(MAX_ENTRY_COUNT)
+            .forEach(record -> {
+                table.row();
+                table.add(new Label(record.getKey(), labelStyle)).padRight(EndScreen.HORIZONTAL_PADDING);
+                table.add(new Label(record.getValue().toString(), labelStyle));
+            });
     }
 
     /**
@@ -92,11 +91,11 @@ public class Leaderboard {
     public Leaderboard(Table parent, Label.LabelStyle labelStyle) {
         this.labelStyle = labelStyle;
 
-        table.setDebug(true);
-        registerScore(10);
+        table.setDebug(true); // TODO: remove
 
-        table.add(new Label("User", labelStyle)).padRight(HORIZONTAL_PADDING);
-        table.add(new Label("Score", labelStyle));
+        table.add(new Label("User", labelStyle)).padRight(EndScreen.HORIZONTAL_PADDING)
+                .padBottom(EndScreen.VERTICAL_PADDING);
+        table.add(new Label("Score", labelStyle)).padBottom(EndScreen.VERTICAL_PADDING);
 
         populateBoard();
 
