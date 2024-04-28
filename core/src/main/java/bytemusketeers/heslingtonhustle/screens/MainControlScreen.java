@@ -4,6 +4,7 @@ import bytemusketeers.heslingtonhustle.HeslingtonHustle;
 import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -11,47 +12,132 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 /**
- * The MainControlScreen class provides a visual representation of control instructions for the game, alongside a back
- * button to navigate back to the main menu. It implements both the Screen and InputProcessor interfaces from libGDX,
- * handling rendering and input events within the control screen context.
+ * The {@link MainControlScreen} provides a visual representation of control instructions for the game, alongside a back
+ * button to navigate back to the {@link MainMenuScreen}.
  *
  * @author ENG1 Team 25
  * @author ENG1 Team 23
  */
-public class MainControlScreen extends ScreenAdapter implements InputProcessor {
+public class MainControlScreen extends ScreenAdapter implements Screen, InputProcessor {
+    /**
+     * The parental {@link com.badlogic.gdx.Game}/{@link HeslingtonHustle} reference
+     */
     HeslingtonHustle game;
+
+    /**
+     * The LibGDX-managed {@link BitmapFont} used to render on-screen text
+     */
     BitmapFont font;
-    String objective;
+
+    /**
+     * The human-readable objective text of {@link HeslingtonHustle}, outlining the responsibility of the
+     * {@link bytemusketeers.heslingtonhustle.entity.Player}
+     */
+    private static final String OBJECTIVE = "Welcome to Heslington Hustle! You are a second-year Computer Science "
+            + "student with exams in only 7 days. Explore the map, \n and interact with buildings to eat, study, sleep "
+            + "and have fun. To get a good grade, you need to balance hours of studying with \n self-care and "
+            + "recreation. Good luck!";
+
+    /**
+     * The LibGDX-managed {@link Texture} of the 'back' button
+     */
     private final Texture backButton;
+
+    /**
+     * The LibGDX-managed {@link Texture} of the 'control' label
+     */
     private final Texture controlLabel;
+
+    /**
+     * The LibGDX-managed {@link Texture} of the 'controls' button
+     */
     private final Texture controls;
 
-    // X and Y coordinates
+    /**
+     * The X co-ordinate of the 'back' button
+     */
     private float backButtonX;
+
+    /**
+     * The Y co-ordinate of the 'back' button
+     */
     private float backButtonY;
+
+    /**
+     * The X co-ordinate of the 'control' label
+     */
     private float controlLabelX;
+
+    /**
+     * The Y co-ordinate of the 'control' label
+     */
     private float controlLabelY;
+
+    /**
+     * The X co-ordinate of the 'controls' button
+     */
     private float controlsX;
+
+    /**
+     * The Y co-ordinate of the 'controls' button
+     */
     private float controlsY;
+
+    /**
+     * The Y co-ordinate of the 'objective' text
+     */
     private float objectiveY;
+
+    /**
+     * The X co-ordinate of the 'playing instructions' label
+     */
     private float instructionX;
+
+    /**
+     * The Y co-ordinate of the 'playing instructions' label
+     */
     private float instructionY;
 
-    // Buttons dimensions
+    /**
+     * The width of the 'back' button
+     */
     private float backButtonWidth;
+
+    /**
+     * The height of the 'back' button
+     */
     private float backButtonHeight;
+
+    /**
+     * The width of the 'control' label
+     */
     private float controlLabelWidth;
+
+    /**
+     * The height of the 'control' label
+     */
     private float controlLabelHeight;
+
+    /**
+     * The height of the 'controls' button
+     */
     private float controlsHeight;
+
+    /**
+     * The width of the 'controls' button
+     */
     private float controlsWidth;
+
+    /**
+     * The padding around the 'playing instructions' label
+     */
     private float instructionGap;
 
     /**
-     * Constructor for MainControlScreen.
-     * Initializes the screen with game controls instructions, sets up textures for display elements,
-     * and configures input processing.
+     * Initialises the screen with game controls instructions, sets up textures for display elements, and configures
+     * input processing.
      *
-     * @param game The main game object that this screen is a part of.
+     * @param game The parental {@link com.badlogic.gdx.Game} reference
      */
     public MainControlScreen(HeslingtonHustle game) {
         this.game = game;
@@ -63,13 +149,15 @@ public class MainControlScreen extends ScreenAdapter implements InputProcessor {
 
         calculateDimensions();
         calculatePositions();
-
-        objective = "Welcome to Heslington Hustle! You are a second-year Computer Science student with exams in only"
-            + "7 days. Explore the map, \n and interact with buildings to eat, study, sleep and have fun. To get a"
-            + "good grade, you need to balance hours of studying with \n self-care and recreation. Good luck!";
     }
 
-
+    /**
+     * Computes and updates the dimensions of the on-screen elements, according to the scale factor required by the
+     * parental {@link HeslingtonHustle} instance.
+     *
+     * @see HeslingtonHustle#scaleFactorX
+     * @see HeslingtonHustle#scaleFactorY
+     */
     private void calculateDimensions() {
         font.getData().setScale(1.5f * game.scaleFactorX, 1.5f * game.scaleFactorY);
         backButtonWidth = 200 * game.scaleFactorX;
@@ -81,6 +169,13 @@ public class MainControlScreen extends ScreenAdapter implements InputProcessor {
         instructionGap = 87 * game.scaleFactorY;
     }
 
+    /**
+     * Computes and updates the positions of the on-screen elements, according to the scale factor required by the
+     * parental {@link HeslingtonHustle} instance.
+     *
+     * @see HeslingtonHustle#scaleFactorX
+     * @see HeslingtonHustle#scaleFactorY
+     */
     private void calculatePositions() {
         backButtonX = (game.screenWidth - backButtonWidth) / 2f;
         backButtonY = game.screenHeight / 6f - 120 * game.scaleFactorY;
@@ -93,15 +188,8 @@ public class MainControlScreen extends ScreenAdapter implements InputProcessor {
         instructionX = game.screenWidth / 2f - 90 * game.scaleFactorX;
     }
 
-    @Override
-    public void show() {
-        Gdx.input.setInputProcessor(this);
-        game.batch.setProjectionMatrix(game.defaultCamera.combined);
-    }
-
     /**
-     * The main render method for the screen. Called every frame and responsible for
-     * drawing the screen's contents.
+     * The main render method for the screen. Called every frame and responsible for drawing the screen's contents.
      *
      * @param delta The time in seconds since the last render.
      */
@@ -110,7 +198,7 @@ public class MainControlScreen extends ScreenAdapter implements InputProcessor {
         ScreenUtils.clear(0.3f, 0.55f, 0.7f, 1);
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
         game.batch.begin();
-        font.draw(game.batch, objective, 0, objectiveY, game.screenWidth, Align.center, false);
+        font.draw(game.batch, OBJECTIVE, 0, objectiveY, game.screenWidth, Align.center, false);
         float instructionY = this.instructionY;
         String[] instructions = {
             "Up - Move forward",
@@ -155,6 +243,12 @@ public class MainControlScreen extends ScreenAdapter implements InputProcessor {
     }
 
     @Override
+    public void show() {
+        Gdx.input.setInputProcessor(this);
+        game.batch.setProjectionMatrix(game.defaultCamera.combined);
+    }
+
+    @Override
     public boolean keyDown(int i) {
         return false;
     }
@@ -191,8 +285,7 @@ public class MainControlScreen extends ScreenAdapter implements InputProcessor {
 
     @Override
     public boolean scrolled(float amountX, float amountY) {
-        // Implement scrolling behavior if needed
-        return false; // Return false if the event was not handled
+        return false;
     }
 
     @Override
@@ -208,5 +301,4 @@ public class MainControlScreen extends ScreenAdapter implements InputProcessor {
         controls.dispose();
         font.dispose();
     }
-
 }

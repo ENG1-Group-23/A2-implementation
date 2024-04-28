@@ -2,9 +2,9 @@ package bytemusketeers.heslingtonhustle.screens;
 
 import bytemusketeers.heslingtonhustle.HeslingtonHustle;
 import bytemusketeers.heslingtonhustle.utils.ScreenType;
-import bytemusketeers.heslingtonhustle.utils.Score;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -20,7 +20,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author ENG1 Team 25
  * @author ENG1 Team 23
  */
-public class TypingGame extends ScreenAdapter implements InputProcessor {
+public class TypingGame extends ScreenAdapter implements Screen, InputProcessor {
     private final HeslingtonHustle game;
     private final int studyDuration;
     private int attempts = 0;

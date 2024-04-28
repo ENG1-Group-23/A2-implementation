@@ -6,12 +6,13 @@ import bytemusketeers.heslingtonhustle.utils.Score;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class EndScreen implements Screen, InputProcessor {
+public class EndScreen extends ScreenAdapter implements Screen, InputProcessor {
     HeslingtonHustle game;
     Texture playAgainButton, exitButton;
     BitmapFont font;
@@ -78,13 +79,13 @@ public class EndScreen implements Screen, InputProcessor {
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
         game.batch.begin();
         font.draw(game.batch, titleText, 0, titleY, game.screenWidth, Align.center, false);
-        font.draw(game.batch, "Score: " + score.ReadScore(), 0, titleY, game.screenWidth, Align.right, false);
+        font.draw(game.batch, "Score: " + score.getScore(), 0, titleY, game.screenWidth, Align.right, false);
 
-        font.draw(game.batch, AchievementText(eatAch.ReadStreak(), eatAch.ReadName()), 0,
+        font.draw(game.batch, AchievementText(eatAch.getStreak(), eatAch.getAchievementName()), 0,
                 titleY, game.screenWidth, Align.left, false);
-        font.draw(game.batch, AchievementText(recAch.ReadStreak(), recAch.ReadName()), 0,
+        font.draw(game.batch, AchievementText(recAch.getStreak(), recAch.getAchievementName()), 0,
                 titleY - 70f * game.scaleFactorY, game.screenWidth, Align.left, false);
-        font.draw(game.batch, AchievementText(sleepAch.ReadStreak(), sleepAch.ReadName()), 0,
+        font.draw(game.batch, AchievementText(sleepAch.getStreak(), sleepAch.getAchievementName()), 0,
                 titleY - 140f * game.scaleFactorY, game.screenWidth, Align.left, false);
 
         game.batch.draw(playAgainButton, buttonX, playAgainButtonY, buttonWidth, buttonHeight);
@@ -110,19 +111,19 @@ public class EndScreen implements Screen, InputProcessor {
     @Override
     public boolean touchDown(int touchX, int touchY, int pointer, int button) {
         touchY = game.screenHeight - touchY;
-        if (touchX >= buttonX && touchX <= buttonX + buttonWidth &&
-                touchY >= playAgainButtonY && touchY <= playAgainButtonY + buttonHeight) {
+        if (touchX >= buttonX && touchX <= buttonX + buttonWidth
+                && touchY >= playAgainButtonY && touchY <= playAgainButtonY + buttonHeight) {
             game.gameData.buttonClickedSoundActivate();
             game.setup();
-        }
-        else if (touchX >= buttonX && touchX <= buttonX + buttonWidth &&
-                touchY >= exitButtonY && touchY <= exitButtonY + buttonHeight) {
+        } else if (touchX >= buttonX && touchX <= buttonX + buttonWidth
+                && touchY >= exitButtonY && touchY <= exitButtonY + buttonHeight) {
             game.gameData.buttonClickedSoundActivate();
             game.screenManager.clearMemory();
             exitFlag = true;
             dispose();
             Gdx.app.exit();
         }
+
         return true;
     }
 
@@ -161,21 +162,6 @@ public class EndScreen implements Screen, InputProcessor {
     public void resize(int i, int i1) {
         calculateDimensions();
         calculatePositions();
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
     }
 
     @Override

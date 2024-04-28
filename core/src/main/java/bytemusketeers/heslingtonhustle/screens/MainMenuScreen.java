@@ -4,6 +4,7 @@ import bytemusketeers.heslingtonhustle.HeslingtonHustle;
 import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -16,7 +17,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
  * @author ENG1 Team 25
  * @author ENG1 Team 23
  */
-public class MainMenuScreen extends ScreenAdapter implements InputProcessor {
+public class MainMenuScreen extends ScreenAdapter implements Screen, InputProcessor {
     HeslingtonHustle game;
     Texture heslingtonHustleLabel;
     Texture playButton;

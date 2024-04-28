@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
  * @author ENG1 Team 25
  * @author ENG1 Team 23
  */
-public class MainSettingsScreen extends ScreenAdapter implements InputProcessor {
+public class MainSettingsScreen extends ScreenAdapter implements Screen, InputProcessor {
     HeslingtonHustle game;
     boolean gender;
     private final Texture backButton;
