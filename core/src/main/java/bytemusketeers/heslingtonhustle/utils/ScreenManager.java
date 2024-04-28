@@ -13,15 +13,40 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The ScreenManager class manages the game screens, including creation, switching, and memory management of screens.
+ * The {@link ScreenManager} manages the required {@link Screen} implementations, including creation, switching, and
+ * memory-management.
  *
  * @author ENG1 Team 25
  * @author ENG1 Team 23
  */
 public class ScreenManager {
+    /**
+     * The parental {@link com.badlogic.gdx.Game} reference
+     */
     private final HeslingtonHustle game;
+
+    /**
+     * The {@link Screen} storage map, associating constituent values with their corresponding {@link ScreenType}
+     * identifier
+     *
+     * @see ScreenType
+     */
     private final Map<ScreenType, Screen> screensInMemory;
+
+    /**
+     * The currently visible {@link Screen}
+     *
+     * @see #curScreenType
+     * @see #screensInMemory
+     */
     private Screen curScreen;
+
+    /**
+     * The type of the currently visible {@link Screen}
+     *
+     * @see #curScreen
+     * @see #screensInMemory
+     */
     private ScreenType curScreenType;
 
     /**
@@ -46,6 +71,12 @@ public class ScreenManager {
             screensInMemory.put(screenType, createScreen(screenType));
     }
 
+    /**
+     * Clears the entire memory, disposing of all loaded {@link Screen} objects
+     *
+     * @see Screen#dispose()
+     * @see com.badlogic.gdx.utils.Disposable
+     */
     public void clearMemory() {
         for (Screen screen : screensInMemory.values())
             screen.dispose();

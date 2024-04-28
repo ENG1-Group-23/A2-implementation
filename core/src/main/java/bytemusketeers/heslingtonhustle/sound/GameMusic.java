@@ -14,7 +14,7 @@ public class GameMusic {
     /**
      * The generic audio track played during game-time
      */
-    Music audio;
+    private final Music audio;
 
     /**
      * The transient volume of the {@link #audio}

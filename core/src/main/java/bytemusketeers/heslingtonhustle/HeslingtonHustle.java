@@ -140,14 +140,6 @@ public class HeslingtonHustle extends Game {
     }
 
     /**
-     * Called each frame, responsible for rendering the game.
-     */
-    @Override
-    public void render() {
-        super.render();
-    }
-
-    /**
      * Called when the application is resized.
      *
      * @param width The new width of the application.

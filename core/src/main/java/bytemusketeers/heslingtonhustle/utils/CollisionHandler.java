@@ -5,24 +5,56 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * The CollisionHandler class handles collisions for each layer called through.
- * A layer has tiles that the player should collide with if the layer has the property "blocked"
+ * The {@link CollisionHandler} handles collisions for each layer through which it is invoked. A layer has tiles that
+ * the {@link bytemusketeers.heslingtonhustle.entity.Player} should collide with if the layer has the property "blocked"
  * and determines the resulting position after collisions have been resolved.
  *
  * @author ENG1 Team 25
  * @author ENG1 Team 23
  */
 public class CollisionHandler {
+    /**
+     * The primary {@link TiledMap} reference, used to determine collision zones in the playing environment
+     */
     private final TiledMap tiledMap;
+
+    /**
+     * The width of a single TMX tile, in pixels
+     */
     private final int tileWidth;
+
+    /**
+     * The height of a single TMX tile, in pixels
+     */
     private final int tileHeight;
+
+    /**
+     * The width of the target object checking for collisions, in {@link com.badlogic.gdx.Game}-scaled pixels
+     */
     private final float objWidth;
+
+    /**
+     * The height of the target object checking for collisions, in {@link com.badlogic.gdx.Game}-scaled pixels
+     */
     private final float objHeight;
+
+    /**
+     * The {@link #objWidth}-based horizontal offset to use in collision calculations
+     */
     private final float offSetX;
+
+    /**
+     * The {@link #objHeight}-based vertical offset to use in collision calculations
+     */
     private final float offSetY;
-    private final ArrayList<TiledMapTileLayer> collisionLayers;
+
+    /**
+     * The {@link TiledMapTileLayer} on which the target should collide
+     */
+    private final List<TiledMapTileLayer> collisionLayers;
 
     /**
      * Constructs a CollisionHandler with specified parameters.
