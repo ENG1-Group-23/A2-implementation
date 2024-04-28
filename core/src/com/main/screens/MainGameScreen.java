@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -94,7 +97,9 @@ public class MainGameScreen implements Screen, InputProcessor {
 
         // Setting up the game
         this.camera = new OrthographicCamera();
-        this.gameMap = new GameMap(this.camera);
+        TiledMap tiledMap = new TmxMapLoader().load("map/MainMap.tmx");
+        OrthogonalTiledMapRenderer renderer = new OrthogonalTiledMapRenderer(tiledMap);
+        this.gameMap = new GameMap(this.camera, renderer, tiledMap);
         this.player = new Player(this.game, this.gameMap, this.camera);
         this.font = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
         this.popupFont = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
