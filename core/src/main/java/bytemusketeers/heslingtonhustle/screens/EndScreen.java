@@ -1,7 +1,9 @@
 package bytemusketeers.heslingtonhustle.screens;
 
 import bytemusketeers.heslingtonhustle.Main;
+import bytemusketeers.heslingtonhustle.utils.Achievement;
 import bytemusketeers.heslingtonhustle.utils.Leaderboard;
+import bytemusketeers.heslingtonhustle.utils.Score;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
@@ -58,6 +60,26 @@ public class EndScreen extends ScreenAdapter implements Screen {
      * The standard vertical padding around leader rows, in pixels
      */
     public static final int VERTICAL_PADDING = 20;
+
+    private final Achievement eatAch; // TODO
+    private final Achievement recAch; // TODO
+    private final Achievement sleepAch; // TODO
+
+    // TODO
+    private String AchievementText(int num, String name) {
+        if (num >= 6) {
+            return "Master " + name;
+        }
+        else if (num >= 4) {
+            return "Intermediate " + name;
+        }
+        else if (num >= 2) {
+            return "Novice " + name;
+        }
+        else {
+            return "Hidden";
+        }
+    }
 
     /**
      * Construct a single {@link ImageButton} with the given {@link Texture} and {@link EventListener}-defined action.
