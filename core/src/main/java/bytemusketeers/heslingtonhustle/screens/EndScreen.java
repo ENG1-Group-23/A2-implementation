@@ -79,7 +79,16 @@ public class EndScreen extends ScreenAdapter implements Screen, InputProcessor {
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
         game.batch.begin();
         font.draw(game.batch, titleText, 0, titleY, game.screenWidth, Align.center, false);
-        font.draw(game.batch, "Score: " + score.getScore(), 0, titleY, game.screenWidth, Align.right, false);
+        String passText = "";
+
+        if (score.getScore() >= 400) passText = "PASS";
+        else passText = "FAIL";
+
+        //float newScale = font.getScaleX() / 2;
+        //font.getData().setScale(newScale, newScale);
+
+        font.draw(game.batch, passText, 0, titleY, game.screenWidth, Align.right, false);
+        font.draw(game.batch, "Score: " + score.getScore(), 0, titleY - 70f * game.scaleFactorY, game.screenWidth, Align.right, false);
 
         font.draw(game.batch, AchievementText(eatAch.getStreak(), eatAch.getAchievementName()), 0,
                 titleY, game.screenWidth, Align.left, false);

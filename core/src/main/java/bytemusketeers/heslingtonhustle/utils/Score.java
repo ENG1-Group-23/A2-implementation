@@ -62,6 +62,7 @@ public class Score {
     public void computeFinalScore(int achOne, int achTwo, int achThree) {
         score += 5 * (achOne + achTwo + achThree);
         score /= totalStudiesMissed;
+        score = Math.round(score);
     }
 
     /**
