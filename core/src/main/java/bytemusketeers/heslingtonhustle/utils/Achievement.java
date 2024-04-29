@@ -8,6 +8,13 @@ package bytemusketeers.heslingtonhustle.utils;
  */
 public class Achievement {
     /**
+     * The minimum streak attained to warrant the {@link Achievement} being annotated
+     *
+     * @see #getAnnotatedName()
+     */
+    private static final int MENTION_THRESHOLD = 2;
+
+    /**
      * The current streak quantifier
      */
     private int streak = 0;
@@ -43,11 +50,29 @@ public class Achievement {
     }
 
     /**
+     * Determines whether the streak has met the {@link #MENTION_THRESHOLD}
+     *
+     * @return Has the streak met the {@link #MENTION_THRESHOLD}?
+     */
+    public boolean hasMetThreshold() {
+        return streak >= MENTION_THRESHOLD;
+    }
+
+    /**
      * Retrieves the name of the current {@link Achievement} tracker
      *
      * @return The name of the {@link Achievement}
      */
-    public String getAchievementName() {
+    public String getAnnotatedName() {
+        if (streak >= MENTION_THRESHOLD) {
+            if (streak >= 6)
+                return "Master " + name;
+            else if (streak >= 4)
+                return "Intermediate " + name;
+
+            return "Novice " + name;
+        }
+
         return name;
     }
 }

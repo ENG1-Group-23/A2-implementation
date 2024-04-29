@@ -61,9 +61,9 @@ public class ScreenManager {
     public ScreenManager(HeslingtonHustle game) {
         this.game = game;
         this.score = new Score();
-        this.eatAch = new Achievement("FAT BOI");
-        this.recAch = new Achievement("FIT BOI");
-        this.sleepAch = new Achievement("NAP BOI");
+        this.eatAch = new Achievement("Eater");
+        this.recAch = new Achievement("Recreator");
+        this.sleepAch = new Achievement("Sleeper");
         this.screensInMemory = new HashMap<>();
     }
 
@@ -146,7 +146,7 @@ public class ScreenManager {
             case MINI_GAME:
                 return new TypingGame(game, (int) args[0]);
             case END_SCREEN:
-                return new EndScreen(game, score, eatAch, recAch, sleepAch);
+                return new EndScreen(game, score, new Achievement[]{ eatAch, recAch, sleepAch });
             default:
                 return null;
         }

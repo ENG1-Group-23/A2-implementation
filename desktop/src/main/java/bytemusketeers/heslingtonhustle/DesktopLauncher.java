@@ -47,7 +47,7 @@ public class DesktopLauncher {
         config.setWindowIcon(Files.FileType.Internal, "icon/icon_32.png"); // icon for windows/linux
         config.setWindowIcon(Files.FileType.Internal, "icon/icon_128.png"); // icon for macOS
 
-        config.setTitle("Heslington_Hustle");
+        config.setTitle("Heslington Hustle");
         new Lwjgl3Application(new HeslingtonHustle(), config);
     }
 }

@@ -117,12 +117,31 @@ public class Score {
     }
 
     /**
-     * Retrieves the final score
+     * Retrieves the score {@link String}
      *
-     * @return The final computed score
+     * @return The requested score
      */
     public float getScore() {
         return score;
+    }
+
+    /**
+     * Retrieves the score as a formatting decimal {@link String}
+     *
+     * @return The requested human-readable score {@link String}
+     */
+    @Override
+    public String toString() {
+        return formatLoadedScore(score);
+    }
+
+    /**
+     * Formats a number of points as a 1-point decimal {@link String}
+     *
+     * @return The requested human-readable score {@link String}
+     */
+    public static String formatLoadedScore(float score) {
+        return String.format("%.1f", score);
     }
 
     /**

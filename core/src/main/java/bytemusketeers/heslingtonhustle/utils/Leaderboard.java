@@ -32,7 +32,7 @@ public class Leaderboard {
     /**
      * The maximum number of entries to be displayed
      */
-    private static final int MAX_ENTRY_COUNT = 5;
+    private static final int MAX_ENTRY_COUNT = 10;
 
     /**
      * The LibGDX {@link Preferences} reference to be used for persistent high-score storage.
@@ -47,9 +47,11 @@ public class Leaderboard {
      * @param name The name of the user
      * @param score The new score
      */
-    public void registerScore(String name, int score) {
-        if (score > preferences.getInteger(name, 0)) {
-            preferences.putInteger(name, score);
+    public void registerScore(String name, Score score) {
+        float points = score.getScore();
+
+        if (points > preferences.getFloat(name, -Float.MAX_VALUE)) {
+            preferences.putFloat(name, points);
             preferences.flush();
         }
     }
@@ -59,9 +61,9 @@ public class Leaderboard {
      * updated only if this is a new high score for the current Java user.
      *
      * @param score The new score
-     * @see #registerScore(int)
+     * @see #registerScore(Score)
      */
-    public void registerScore(int score) {
+    public void registerScore(Score score) {
         registerScore(System.getProperty("user.name"), score);
     }
 
@@ -69,36 +71,38 @@ public class Leaderboard {
      * Populate the {@link Leaderboard} {@link Table} based on the {@link Preferences} scores, up to a maximum of
      * {@link #MAX_ENTRY_COUNT} entries.
      */
-    private void populateBoard() {
-        List<Map.Entry<String, Integer>> scores = new ArrayList<>();
-        preferences.get().forEach((key, value) -> scores.add(new AbstractMap.SimpleEntry<>(key,
-            Integer.parseUnsignedInt(value.toString()))));
+    public void populateBoard() {
+        List<Map.Entry<String, Float>> scores = new ArrayList<>();
+        preferences.get().forEach((key, value) -> scores.add(new AbstractMap.SimpleEntry<>(key, Float.parseFloat(value
+            .toString()))));
 
         scores.stream().sorted(Collections.reverseOrder(Map.Entry.comparingByValue())).limit(MAX_ENTRY_COUNT)
             .forEach(record -> {
                 table.row();
                 table.add(new Label(record.getKey(), labelStyle)).padRight(EndScreen.HORIZONTAL_PADDING);
-                table.add(new Label(record.getValue().toString(), labelStyle));
+                table.add(new Label(Score.formatLoadedScore(record.getValue()), labelStyle));
             });
+    }
+
+    /**
+     * Retrieves the populated LibGDX {@link Table}
+     *
+     * @return The {@link Table}, populated with high-score information
+     */
+    public Table getTable() {
+        return table;
     }
 
     /**
      * Instantiates a new {@link Leaderboard} to contain high-score entries.
      *
-     * @param parent The parental {@link Table} to which the {@link Leaderboard} should be added
      * @param labelStyle The {@link Label.LabelStyle} required for entry text
      */
-    public Leaderboard(Table parent, Label.LabelStyle labelStyle) {
+    public Leaderboard(Label.LabelStyle labelStyle) {
         this.labelStyle = labelStyle;
 
-        table.setDebug(true); // TODO: remove
-
         table.add(new Label("User", labelStyle)).padRight(EndScreen.HORIZONTAL_PADDING)
-                .padBottom(EndScreen.VERTICAL_PADDING);
+            .padBottom(EndScreen.VERTICAL_PADDING);
         table.add(new Label("Score", labelStyle)).padBottom(EndScreen.VERTICAL_PADDING);
-
-        populateBoard();
-
-        parent.add(table);
     }
 }

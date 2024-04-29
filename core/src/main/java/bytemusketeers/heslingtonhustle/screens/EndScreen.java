@@ -1,6 +1,6 @@
 package bytemusketeers.heslingtonhustle.screens;
 
-import bytemusketeers.heslingtonhustle.Main;
+import bytemusketeers.heslingtonhustle.HeslingtonHustle;
 import bytemusketeers.heslingtonhustle.utils.Achievement;
 import bytemusketeers.heslingtonhustle.utils.Leaderboard;
 import bytemusketeers.heslingtonhustle.utils.Score;
@@ -21,9 +21,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * The {@link EndScreen} represents a {@link Screen} displayed at the end of the {@link Main} game.
+ * The {@link EndScreen} represents a {@link Screen} displayed at the end of the {@link HeslingtonHustle} game.
  *
  * @author ENG1 Team 25
  * @author ENG1 Team 23
@@ -47,6 +49,12 @@ public class EndScreen extends ScreenAdapter implements Screen {
     private final BitmapFont font = new BitmapFont();
 
     /**
+     * The {@link Label.LabelStyle} used to inform all constructed LibGDX {@link Label}
+     * {@link com.badlogic.gdx.scenes.scene2d.Actor} objects.
+     */
+    private final Label.LabelStyle labelStyle;
+
+    /**
      * The {@link Stage} object for organising on-{@link Screen} {@link com.badlogic.gdx.scenes.scene2d.Actor} objects.
      */
     private final Stage stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -60,26 +68,6 @@ public class EndScreen extends ScreenAdapter implements Screen {
      * The standard vertical padding around leader rows, in pixels
      */
     public static final int VERTICAL_PADDING = 20;
-
-    private final Achievement eatAch; // TODO
-    private final Achievement recAch; // TODO
-    private final Achievement sleepAch; // TODO
-
-    // TODO
-    private String AchievementText(int num, String name) {
-        if (num >= 6) {
-            return "Master " + name;
-        }
-        else if (num >= 4) {
-            return "Intermediate " + name;
-        }
-        else if (num >= 2) {
-            return "Novice " + name;
-        }
-        else {
-            return "Hidden";
-        }
-    }
 
     /**
      * Construct a single {@link ImageButton} with the given {@link Texture} and {@link EventListener}-defined action.
@@ -100,14 +88,14 @@ public class EndScreen extends ScreenAdapter implements Screen {
     /**
      * Construct the 'Exit' and 'Play Again' buttons.
      *
-     * @param game The parental {@link Main} object, containing scaling information.
+     * @param game The parental {@link HeslingtonHustle} object, containing scaling information.
      * @return A {@link Table} of the constructed buttons
      */
-    private Table constructButtons(Main game) {
+    private Table constructButtons(HeslingtonHustle game) {
         final int BUTTON_WIDTH = playAgainButton.getWidth() * 10 * (int) game.scaleFactorX;
         final int BUTTON_HEIGHT = playAgainButton.getHeight() * 10 * (int) game.scaleFactorY;
 
-        Table buttonsTable = new Table();
+        final Table buttonsTable = new Table();
 
         buttonsTable.add(createButton(exitButton, new ClickListener() {
             @Override
@@ -130,23 +118,70 @@ public class EndScreen extends ScreenAdapter implements Screen {
         return buttonsTable;
     }
 
+    private Table constructAchievementTable(Achievement[] achievements) {
+        final Table achievementTable = new Table();
+        final AtomicInteger mentioned = new AtomicInteger();
+
+        Arrays.stream(achievements).forEach(
+            achievement -> {
+                if (achievement.hasMetThreshold()) {
+                    achievementTable.add(new Label(achievement.getAnnotatedName(), labelStyle));
+                    achievementTable.row();
+                    mentioned.getAndIncrement();
+                }
+            }
+        );
+
+        if (mentioned.get() == 0)
+            achievementTable.add(new Label("No achievements earned in this session", labelStyle));
+
+        return achievementTable;
+    }
+
     /**
-     * Construct an {@link EndScreen} with the assets.
+     * Construct the main body {@link Table} consisting of the {@link Leaderboard}, and, if applicable, the index of
+     * attained {@link Achievement} awards.
+     *
+     * @param score The overall game {@link Score}
+     * @param achievements The {@link Achievement} trackers
+     * @return The constructed {@link Table}
+     */
+    private Table constructBodyTable(Score score, Achievement[] achievements) {
+        final Table bodyTable = new Table();
+        final Leaderboard leaderboard = new Leaderboard(labelStyle);
+        final Table achievementsTable = constructAchievementTable(achievements);
+        leaderboard.registerScore(score);
+        leaderboard.populateBoard();
+
+        bodyTable.add(leaderboard.getTable()).padBottom(VERTICAL_PADDING);
+        bodyTable.row();
+        bodyTable.add(achievementsTable);
+
+        return bodyTable;
+    }
+
+    /**
+     * Construct an {@link EndScreen} with the assets. The {@link Score} of the
+     * {@link bytemusketeers.heslingtonhustle.entity.Player} is also registered and recorded as a 'high-score' if
+     * appropriate.
      *
      * @param game The parental {@link com.badlogic.gdx.Game} reference
+     * @param score The final {@link com.badlogic.gdx.Game} score
+     * @param achievements Array of {@link Achievement} objects to display next to the {@link Leaderboard}
+     * @see Score
+     * @see Leaderboard
      */
-    public EndScreen(Main game) {
-        Table table = new Table();
+    public EndScreen(HeslingtonHustle game, Score score, Achievement[] achievements) {
+        final Table table = new Table();
         table.setFillParent(true);
-        table.setDebug(true); // TODO: remove
 
         font.getData().setScale(game.scaleFactorX * 3, game.scaleFactorY * 3);
-        Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.WHITE);
+        labelStyle = new Label.LabelStyle(font, Color.WHITE);
 
-        table.add(new Label("The End!", labelStyle)).padBottom(VERTICAL_PADDING);
+        table.add(new Label("The End! Your Score is " + score + ".", labelStyle)).padBottom(VERTICAL_PADDING);
         table.row();
 
-        new Leaderboard(table, labelStyle);
+        table.add(constructBodyTable(score, achievements));
         table.row();
         table.add(constructButtons(game)).padTop(VERTICAL_PADDING);
 
@@ -181,5 +216,10 @@ public class EndScreen extends ScreenAdapter implements Screen {
         exitButton.dispose();
         font.dispose();
         stage.dispose();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height);
     }
 }
