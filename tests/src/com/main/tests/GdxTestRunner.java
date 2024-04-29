@@ -19,6 +19,8 @@ package com.main.tests;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.Graphics;
+import com.main.Main;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
@@ -42,6 +44,8 @@ public class GdxTestRunner extends BlockJUnit4ClassRunner implements Application
 
 		new HeadlessApplication(this, conf);
 		Gdx.gl = mock(GL20.class);
+		Gdx.gl20 = mock(GL20.class);
+		Gdx.graphics = mock(Graphics.class);
 	}
 
 	@Override
