@@ -15,7 +15,6 @@ import java.util.Map;
  * The {@link Leaderboard} manages and displays a set of high-scoring players. The player scores are based on the
  * current username, and data is persisted with the LibGDX {@link Preferences} API.
  *
- * @author ENG1 Team 25
  * @author ENG1 Team 23
  */
 public class Leaderboard {
