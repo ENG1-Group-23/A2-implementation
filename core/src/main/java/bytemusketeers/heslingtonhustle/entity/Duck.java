@@ -13,6 +13,12 @@ public class Duck extends Entity implements Disposable {
     GameMap gameMap;
     OrthographicCamera camera;
     CollisionHandler collisionHandler;
+
+    @Override
+    public Texture getTexture() {
+        return texture;
+    }
+
     Texture texture;
 
     public Duck(Main game, GameMap gameMap, OrthographicCamera camera) {

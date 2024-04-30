@@ -1,6 +1,7 @@
 package bytemusketeers.heslingtonhustle.utils;
 
 import bytemusketeers.heslingtonhustle.Main;
+import bytemusketeers.heslingtonhustle.map.GameMap;
 import bytemusketeers.heslingtonhustle.screens.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -104,7 +105,7 @@ public class ScreenManager {
             case MEMORY_GAME:
                 return new TypingGame(game, (int) args[0]);
             case FEED_DUCKS:
-                return new FeedDucks(game, new OrthographicCamera());
+                return new FeedDucks(game, (OrthographicCamera) args[0], (GameMap) args[1]);
             case END_SCREEN:
                 return new EndScreen(game);
         }

@@ -49,7 +49,6 @@ public class MainGameScreen implements Screen, InputProcessor {
     private float durationUpButtonWidth, durationDownButtonWidth, durationMenuBackgroundWidth, durationUpButtonHeight, durationDownButtonHeight, durationMenuBackgroundHeight;
     private float menuBackButtonWidth, menuBackButtonHeight, activityButtonWidth, activityButtonHeight;
     private float menuBackButtonX, activityButtonX, durationMenuButtonY;
-    private float feedDuckButtonX, feedDuckButtonY, feedDuckButtonWidth, feedDuckButtonHeight;
     private float durationTextY, menuTitleY, hoursLabelY;
     private float energyBarY, energyBarX, energyBarWidth, energyBarHeight;
     private String activity, popupMenuType;
@@ -573,7 +572,7 @@ public class MainGameScreen implements Screen, InputProcessor {
                 case "pier":
                     activity = "feed-ducks";
                     game.gameData.buttonClickedSoundActivate();
-                    game.screenManager.setScreen(ScreenType.FEED_DUCKS);
+                    game.screenManager.setScreen(ScreenType.FEED_DUCKS, camera, gameMap);
                 case "Comp_sci_door":
                     if (touchX >= studyOpt.x && touchX <= studyOpt.x + popupMenuWidth * zoom && touchY >= studyOpt.y && touchY <= studyOpt.y + popupMenuHeight * zoom) {
                         game.gameData.buttonClickedSoundActivate();
@@ -658,7 +657,6 @@ public class MainGameScreen implements Screen, InputProcessor {
         durationMenuBackground.dispose();
         durationUpButton.dispose();
         durationDownButton.dispose();
-        feedDuckButton.dispose();
         menuBackButton.dispose();
         menuStudyButton.dispose();
         menuSleepButton.dispose();

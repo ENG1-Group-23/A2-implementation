@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Timer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -25,6 +26,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class FeedDucks implements Screen, InputProcessor {
     private final Main game;
     private final OrthographicCamera camera;
+    private final GameMap gameMap;
     private final int initialDuckCount = 3;
     private int ducksFed, ducksToFeed;
     private List<Duck> ducks = new ArrayList<>();
@@ -39,9 +41,10 @@ public class FeedDucks implements Screen, InputProcessor {
      *
      * @param game The main game instance.
      */
-    public FeedDucks(Main game, OrthographicCamera camera) {
+    public FeedDucks(Main game, OrthographicCamera camera, GameMap gameMap) {
         this.game = game;
         this.camera = camera;
+        this.gameMap = gameMap;
         displayText = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
 
         calculateDimensions();
@@ -78,12 +81,14 @@ public class FeedDucks implements Screen, InputProcessor {
         ducksFed = 0;
         ducksToFeed = 0;
         initialiseDucks();
-
     }
 
     private void initialiseDucks() {
         for(int i = 0; i < initialDuckCount; i++) {
-            ducks.add(new Duck(game, new GameMap(camera), camera));
+            Random random = new Random();
+            Duck tmp = new Duck(game, gameMap, camera);
+            tmp.setPosition(random.nextFloat(), random.nextFloat());
+            ducks.add(tmp);
         }
     }
 
@@ -97,6 +102,9 @@ public class FeedDucks implements Screen, InputProcessor {
         ScreenUtils.clear(0.3f, 0.55f, 0.7f, 1);
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
         game.batch.begin();
+        for(Duck duck : ducks) {
+            game.batch.draw(duck.getTexture(), duck.getX(), duck.getY());
+        }
         displayText.draw(game.batch, gameObjective, 0, gameObjectiveY, game.screenWidth, Align.center, false);
         game.batch.end();
     }
