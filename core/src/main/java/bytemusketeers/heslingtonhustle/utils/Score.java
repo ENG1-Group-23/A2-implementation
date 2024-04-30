@@ -42,6 +42,8 @@ public class Score {
      */
     private int totalStudiesMissed = 0;
 
+    private float overStudiedPen = 1;
+
     /**
      * Updates the {@link #score} according to the current multipliers
      *
@@ -49,7 +51,7 @@ public class Score {
      * @see #recreationalMultiplier
      */
     public void updateScore() {
-        score += 15 * studyMultiplier * recreationalMultiplier;
+        score += 15 * studyMultiplier * recreationalMultiplier * overStudiedPen;
     }
 
     /**
@@ -62,6 +64,7 @@ public class Score {
     public void computeFinalScore(int achOne, int achTwo, int achThree) {
         score += 5 * (achOne + achTwo + achThree);
         score /= totalStudiesMissed;
+        score = Math.round(score);
     }
 
     /**
@@ -150,5 +153,8 @@ public class Score {
     public void resetMultipliers() {
         studyMultiplier = 1f;
         recreationalMultiplier = 1f;
+        overStudiedPen = 1f;
     }
+
+    public void hasOverStudied() { overStudiedPen = 0.75f; }
 }
