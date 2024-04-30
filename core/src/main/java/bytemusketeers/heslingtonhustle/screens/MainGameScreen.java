@@ -196,6 +196,8 @@ public class MainGameScreen implements Screen, InputProcessor {
      */
     private String getMenuTitle() {
         switch (activity) {
+            case "feed-ducks":
+                return "Feed the ducks";
             case "study":
                 return "Study Schedule";
             case "sleep":
@@ -406,7 +408,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     private void drawUIElements(){
         String counterString = String.format("Recreation Activities done: " + recActivity + "\nStudy hours: " + studyHours + "\nMeals Eaten: " + mealCount, dayNum, timeElapsed );
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
-        if (showMenu) drawDurationMenu();
+        if (showMenu && !activity.equals("feed-ducks")) drawDurationMenu();
         game.batch.begin();
         game.batch.draw(menuButton, menuButtonX, menuButtonY, menuButtonWidth, menuButtonHeight);
         game.batch.draw(energyBar, energyBarX, energyBarY, energyBarWidth, energyBarHeight);
@@ -489,17 +491,6 @@ public class MainGameScreen implements Screen, InputProcessor {
         }
         else if (showMenu){
             switch (activity){
-                case "feed-ducks":
-                    if (touchX >= feedDuckButtonX && touchX <= feedDuckButtonX + feedDuckButtonWidth && touchY >= feedDuckButtonY && touchY <= feedDuckButtonY + feedDuckButtonHeight){
-                        game.gameData.buttonClickedSoundActivate();
-                        game.screenManager.setScreen(ScreenType.FEED_DUCKS);
-                    } else if (touchX >= menuBackButtonX && touchX <= menuBackButtonX + menuBackButtonWidth && touchY >= durationMenuButtonY && touchY <= durationMenuButtonY + menuBackButtonHeight) {
-                        game.gameData.buttonClickedSoundActivate();
-                        showMenu = false;
-                        lockMovement = fadeOut;
-                        duration = 1;
-                    }
-                    break;
                 case "study":
                     if (touchX >= durationUpButtonX && touchX <= durationUpButtonX + durationUpButtonWidth && touchY >= durationButtonY && touchY <= durationButtonY + durationUpButtonHeight) {
                         game.gameData.buttonClickedSoundActivate();
@@ -580,13 +571,9 @@ public class MainGameScreen implements Screen, InputProcessor {
             Vector3 eatOpt = camera.project(new Vector3(player.worldX + 30, player.worldY + 35, 0));
             switch (popupMenuType) {
                 case "pier":
-                    if (touchX >= feedDuckButtonX && touchX <= feedDuckButtonX + popupMenuWidth * zoom && touchY >= feedDuckButtonY && touchY <= feedDuckButtonY + popupMenuHeight * zoom) {
-                        game.gameData.buttonClickedSoundActivate();
-                        showMenu = true;
-                        lockMovement = true;
-                        activity = "feed-ducks";
-                        duration = 1;
-                    }
+                    activity = "feed-ducks";
+                    game.gameData.buttonClickedSoundActivate();
+                    game.screenManager.setScreen(ScreenType.FEED_DUCKS);
                 case "Comp_sci_door":
                     if (touchX >= studyOpt.x && touchX <= studyOpt.x + popupMenuWidth * zoom && touchY >= studyOpt.y && touchY <= studyOpt.y + popupMenuHeight * zoom) {
                         game.gameData.buttonClickedSoundActivate();
@@ -671,6 +658,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         durationMenuBackground.dispose();
         durationUpButton.dispose();
         durationDownButton.dispose();
+        feedDuckButton.dispose();
         menuBackButton.dispose();
         menuStudyButton.dispose();
         menuSleepButton.dispose();

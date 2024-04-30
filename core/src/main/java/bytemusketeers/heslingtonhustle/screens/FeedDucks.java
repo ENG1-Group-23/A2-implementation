@@ -1,16 +1,21 @@
 package bytemusketeers.heslingtonhustle.screens;
 
 import bytemusketeers.heslingtonhustle.Main;
+import bytemusketeers.heslingtonhustle.entity.Duck;
+import bytemusketeers.heslingtonhustle.map.GameMap;
 import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -19,18 +24,13 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class FeedDucks implements Screen, InputProcessor {
     private final Main game;
-    private final int studyDuration;
-    private int attempts = 0;
-    private int currentNumber = 0;
-    private int correct = 0;
-    private final Texture guessButton;
-    private String userGuess = "";
-    Boolean acceptInput = false, displayCorrect = false, displayWrong = false;
+    private final OrthographicCamera camera;
+    private final int initialDuckCount = 3;
+    private int ducksFed, ducksToFeed;
+    private List<Duck> ducks = new ArrayList<>();
     BitmapFont displayText;
     private float displayTextY, displayTextHeight;
     private float gameObjectiveY;
-    private float guessButtonX, guessButtonY, guessButtonWidth, guessButtonHeight;
-    private final Texture title;
     private float titleX, titleY, titleWidth, titleHeight;
     String gameObjective;
 
@@ -38,21 +38,18 @@ public class FeedDucks implements Screen, InputProcessor {
      * Constructs a TypingGame screen with the game instance and study duration.
      *
      * @param game The main game instance.
-     * @param studyDuration The duration of the study session in attempts.
      */
-    public FeedDucks(Main game, int studyDuration){
+    public FeedDucks(Main game, OrthographicCamera camera) {
         this.game = game;
+        this.camera = camera;
         displayText = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
-        guessButton = new Texture("mini_games/guess_button.png");
-        title = new Texture("mini_games/number_memoriser_label.png");
 
         calculateDimensions();
         calculatePositions();
 
         Gdx.input.setInputProcessor(this);
-        this.studyDuration = studyDuration;
 
-        gameObjective = "Remember the number given and try to input the number from memory";
+        gameObjective = "Feed the ducks";
 
         playGame();
     }
@@ -65,16 +62,10 @@ public class FeedDucks implements Screen, InputProcessor {
         displayText.getData().setScale(3f * game.scaleFactorX, 3f * game.scaleFactorY);
         displayTextHeight = 100 * game.scaleFactorY;
         gameObjectiveY = game.screenHeight - 280 * game.scaleFactorY;
-        guessButtonWidth = 156 * game.scaleFactorX;
-        guessButtonHeight = 84 * game.scaleFactorY;
-        titleWidth = title.getWidth() * game.scaleFactorX * 11;
-        titleHeight = title.getHeight() * game.scaleFactorY * 11;
     }
 
     private void calculatePositions(){
         displayTextY = game.screenHeight/2f - displayTextHeight;
-        guessButtonX = (game.screenWidth - guessButtonWidth)/2f;
-        guessButtonY = (game.screenHeight - guessButtonHeight)/2f - 300 * game.scaleFactorY;
         titleX = (game.screenWidth - titleWidth)/2f;
         titleY = (game.screenHeight - titleHeight)/2f + 400 * game.scaleFactorY;
     }
@@ -84,39 +75,17 @@ public class FeedDucks implements Screen, InputProcessor {
      * Handles the logic for correct and incorrect guesses and progresses the game.
      */
     public void playGame(){
-        userGuess = "";
-        displayWrong = false;
-        displayCorrect = false;
-        if (attempts < studyDuration){
-            currentNumber = generateNumber();
-            delay(5, this::makeUserGuess);
-        } else {
-            game.screenManager.setScreen(ScreenType.GAME_SCREEN);
+        ducksFed = 0;
+        ducksToFeed = 0;
+        initialiseDucks();
+
+    }
+
+    private void initialiseDucks() {
+        for(int i = 0; i < initialDuckCount; i++) {
+            ducks.add(new Duck(game, new GameMap(camera), camera));
         }
     }
-
-    /**
-     * Allows the player to input their guess after a short delay.
-     */
-    public void makeUserGuess(){
-        acceptInput = true;
-    }
-
-    /**
-     * Implements a delay before executing a given runnable task.
-     *
-     * @param seconds The delay in seconds before running the task.
-     * @param runnable The task to execute after the delay.
-     */
-    public void delay(int seconds, Runnable runnable){
-        Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                runnable.run();
-            }
-        }, seconds);
-    }
-  
 
     @Override
     public void show() {
@@ -128,33 +97,8 @@ public class FeedDucks implements Screen, InputProcessor {
         ScreenUtils.clear(0.3f, 0.55f, 0.7f, 1);
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
         game.batch.begin();
-        game.batch.draw(title, titleX, titleY, titleWidth, titleHeight);
         displayText.draw(game.batch, gameObjective, 0, gameObjectiveY, game.screenWidth, Align.center, false);
-        if (acceptInput){
-            displayText.draw(game.batch, userGuess, 0, displayTextY, game.screenWidth, Align.center, false);
-            game.batch.draw(guessButton, guessButtonX, guessButtonY, guessButtonWidth, guessButtonHeight);
-        } else if (displayCorrect){
-            displayText.draw(game.batch, "Correct well done.", 0, displayTextY, game.screenWidth, Align.center, false);
-        } else if (displayWrong) {
-            displayText.draw(game.batch, "Incorrect. Answer: " + currentNumber, 0, displayTextY, game.screenWidth, Align.center, false);
-        } else {
-            displayText.draw(game.batch, String.valueOf(currentNumber), 0, displayTextY, game.screenWidth, Align.center, false);
-        }
         game.batch.end();
-    }
-
-    /**
-     * Generates a random number for the player to memorize.
-     *
-     * @return The generated number.
-     */
-    public int generateNumber(){
-        int startingNumLength = 5;
-        int startingNum = (int) (10*Math.pow(10, startingNumLength -1));
-        int lowerLimit = (int) (startingNum*Math.pow(10, attempts-1));
-        int num = ThreadLocalRandom.current().nextInt(lowerLimit, lowerLimit*10-1);
-        attempts++;
-        return num;
     }
 
     @Override
@@ -180,8 +124,9 @@ public class FeedDucks implements Screen, InputProcessor {
 
     @Override
     public void dispose() {
-        guessButton.dispose();
-        title.dispose();
+        for(Duck duck : ducks) {
+            duck.dispose();
+        }
         displayText.dispose();
     }
 
@@ -196,36 +141,11 @@ public class FeedDucks implements Screen, InputProcessor {
     }
 
     @Override
-    public boolean keyTyped(char character) {
-        if (acceptInput) {
-            if (character == '\b' && !userGuess.isEmpty()) { // Handles backspace
-                userGuess = userGuess.substring(0, userGuess.length() - 1);
-            } else if (Character.isDigit(character) && userGuess.length() < String.valueOf(currentNumber).length()) {
-                userGuess += character;
-            }
-        }
-        return true;
-    }
+    public boolean keyTyped(char character) { return true; }
 
     @Override
     public boolean touchDown(int worldX, int worldY, int pointer, int button) {
         worldY = game.screenHeight - worldY;
-
-        if (worldX >= guessButtonX && worldX <= guessButtonX + guessButtonWidth &&
-                worldY >= guessButtonY && worldY <= guessButtonY + guessButtonHeight) {
-
-            if (!userGuess.isEmpty()){
-                acceptInput = false;
-                if (Integer.parseInt(userGuess) == currentNumber){
-                    correct = correct + 1;
-                    displayCorrect = true;
-                } else {
-                    displayWrong = true;
-                }
-                delay(2, this::playGame);
-            }
-            
-        }
         return false;
     }
 

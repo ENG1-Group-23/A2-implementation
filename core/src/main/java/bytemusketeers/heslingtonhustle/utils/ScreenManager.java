@@ -4,6 +4,8 @@ import bytemusketeers.heslingtonhustle.Main;
 import bytemusketeers.heslingtonhustle.screens.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -102,7 +104,7 @@ public class ScreenManager {
             case MEMORY_GAME:
                 return new TypingGame(game, (int) args[0]);
             case FEED_DUCKS:
-                return new FeedDucks(game, (int) args[0]);
+                return new FeedDucks(game, new OrthographicCamera());
             case END_SCREEN:
                 return new EndScreen(game);
         }
