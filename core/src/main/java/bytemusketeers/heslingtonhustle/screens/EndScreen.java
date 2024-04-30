@@ -17,8 +17,8 @@ public class EndScreen extends ScreenAdapter implements Screen, InputProcessor {
     Texture playAgainButton, exitButton;
     BitmapFont font;
     String titleText;
-    float playAgainButtonY, exitButtonY;
-    float buttonX, buttonWidth, buttonHeight;
+    float playAgainButtonX, exitButtonX;
+    float buttonX, buttonY, buttonWidth, buttonHeight;
     float titleY;
     boolean exitFlag;
     private final Score score;
@@ -52,8 +52,9 @@ public class EndScreen extends ScreenAdapter implements Screen, InputProcessor {
 
     private void calculatePositions(){
         buttonX = (game.screenWidth - buttonWidth)/2f;
-        playAgainButtonY = game.screenHeight - buttonHeight * 4.5f;
-        exitButtonY = game.screenHeight - buttonHeight * 6f;
+        playAgainButtonX = buttonX + 250f * game.scaleFactorY;
+        exitButtonX = buttonX - 250f * game.scaleFactorY;
+        buttonY = game.screenHeight - buttonHeight * 6f;
         titleY = game.screenHeight - 120f * game.scaleFactorY;
     }
 
@@ -87,18 +88,18 @@ public class EndScreen extends ScreenAdapter implements Screen, InputProcessor {
         //float newScale = font.getScaleX() / 2;
         //font.getData().setScale(newScale, newScale);
 
-        font.draw(game.batch, passText, 0, titleY, game.screenWidth, Align.right, false);
-        font.draw(game.batch, "Score: " + score.getScore(), 0, titleY - 70f * game.scaleFactorY, game.screenWidth, Align.right, false);
+        font.draw(game.batch, passText, 0, titleY - 160f * game.scaleFactorY, game.screenWidth, Align.right, false);
+        font.draw(game.batch, "Score: " + score.getScore(), 0, titleY - 260f * game.scaleFactorY, game.screenWidth, Align.right, false);
 
         font.draw(game.batch, AchievementText(eatAch.getStreak(), eatAch.getAchievementName()), 0,
-                titleY, game.screenWidth, Align.left, false);
+                titleY - 160f * game.scaleFactorY, game.screenWidth, Align.left, false);
         font.draw(game.batch, AchievementText(recAch.getStreak(), recAch.getAchievementName()), 0,
-                titleY - 70f * game.scaleFactorY, game.screenWidth, Align.left, false);
+                titleY - 260f * game.scaleFactorY, game.screenWidth, Align.left, false);
         font.draw(game.batch, AchievementText(sleepAch.getStreak(), sleepAch.getAchievementName()), 0,
-                titleY - 140f * game.scaleFactorY, game.screenWidth, Align.left, false);
+                titleY - 360f * game.scaleFactorY, game.screenWidth, Align.left, false);
 
-        game.batch.draw(playAgainButton, buttonX, playAgainButtonY, buttonWidth, buttonHeight);
-        game.batch.draw(exitButton, buttonX, exitButtonY, buttonWidth, buttonHeight);
+        game.batch.draw(playAgainButton, buttonX + 250f * game.scaleFactorY, buttonY, buttonWidth, buttonHeight);
+        game.batch.draw(exitButton, buttonX - 250f * game.scaleFactorY, buttonY, buttonWidth, buttonHeight);
         game.batch.end();
     }
 
@@ -120,12 +121,12 @@ public class EndScreen extends ScreenAdapter implements Screen, InputProcessor {
     @Override
     public boolean touchDown(int touchX, int touchY, int pointer, int button) {
         touchY = game.screenHeight - touchY;
-        if (touchX >= buttonX && touchX <= buttonX + buttonWidth
-                && touchY >= playAgainButtonY && touchY <= playAgainButtonY + buttonHeight) {
+        if (touchX >= playAgainButtonX && touchX <= playAgainButtonX + buttonWidth
+                && touchY >= buttonY && touchY <= buttonY + buttonHeight) {
             game.gameData.buttonClickedSoundActivate();
             game.setup();
-        } else if (touchX >= buttonX && touchX <= buttonX + buttonWidth
-                && touchY >= exitButtonY && touchY <= exitButtonY + buttonHeight) {
+        } else if (touchX >= exitButtonX && touchX <= exitButtonX + buttonWidth
+                && touchY >= buttonY && touchY <= buttonY + buttonHeight) {
             game.gameData.buttonClickedSoundActivate();
             game.screenManager.clearMemory();
             exitFlag = true;

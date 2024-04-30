@@ -103,6 +103,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
     private int studyHours;
     private int mealCount;
     private int currentHour;
+    private int dailyStudyHours;
     private float timeElapsed;
     private float fadeTime;
     private float minShade;
@@ -151,6 +152,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
         this.currentHour = 10;
         this.fadeTime = 0;
         this.minShade = 0;
+        this.dailyStudyHours = 0;
         this.dayStudied = false;
         this.hasEaten = false;
         this.hasExercised = false;
@@ -524,6 +526,9 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
      */
     private void resetDay() {
         executeFadeOut(true);
+
+        if (dailyStudyHours > 4) { score.hasOverStudied(); }
+
         score.updateScore();
 
         if (!dayStudied) {
@@ -535,6 +540,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
         currentHour = 8;
         dayNum++;
         timeElapsed = 0;
+        dailyStudyHours = 0;
         energyCounter += 4;
         hasExercised = false;
         hasEaten = false;
@@ -611,6 +617,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
                         showMenu = false;
                         lockMovement = fadeOut;
                         studyHours += duration;
+                        dailyStudyHours += duration;
                         score.incrementStudy(studyHours);
 
                         if (score.getMissedStudySessions() == 1) {
