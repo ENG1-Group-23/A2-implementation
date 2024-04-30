@@ -4,17 +4,37 @@ import bytemusketeers.heslingtonhustle.sound.GameMusic;
 import bytemusketeers.heslingtonhustle.sound.GameSound;
 
 /**
- * Stores game settings and data.
+ * The {@link GameData} class stores game settings and data and handles the manipulation and querying thereof.
+ *
+ * @author ENG1 Team 25
+ * @author ENG1 Team 23
  */
 public class GameData {
+    /**
+     * The current gender of the {@link bytemusketeers.heslingtonhustle.entity.Player}
+     *
+     * @apiNote The male state is encoded as {@code true}, and the female state as {@code false}.
+     */
     private boolean gender = true;
-    GameMusic music;
-    GameSound sound;
+
+    /**
+     * The {@link GameMusic} data reference
+     *
+     * @see GameMusic
+     */
+    private final GameMusic music;
+
+    /**
+     * The {@link GameSound} data reference
+     *
+     * @see GameSound
+     */
+    private final GameSound sound;
 
     /**
      * Constructor initializes the game music settings.
      */
-    public GameData(){
+    public GameData() {
         this.music = new GameMusic();
         this.sound = new GameSound();
     }
@@ -24,7 +44,7 @@ public class GameData {
      *
      * @return A boolean representing the gender, true for male, false for female.
      */
-    public boolean getGender(){
+    public boolean getGender() {
         return gender;
     }
 
@@ -33,7 +53,7 @@ public class GameData {
      *
      * @param gender A boolean, true for male and false for female.
      */
-    public void setGender(boolean gender){
+    public void setGender(boolean gender) {
         this.gender = gender;
     }
 
@@ -42,18 +62,19 @@ public class GameData {
      *
      * @return The sound level as an integer.
      */
-    public int getSoundLevel(){
+    public int getSoundLevel() {
         return sound.getSoundLevel();
     }
 
     /**
      * Gets the current music level setting.
      *
-     * @return The music level as an integer.
+     * @return The music volume level
      */
     public int getMusicLevel() {
         return music.getMusicLevel();
     }
+
     /**
      * Increments the music volume level if not at maximum.
      */
@@ -64,19 +85,57 @@ public class GameData {
     /**
      * Decrements the music volume level if not at minimum.
      */
-    public void decrementMusicLevel(){
+    public void decrementMusicLevel() {
         music.decrementVolume();
     }
 
-    public void incrementSoundLevel(){ sound.incrementVolume(); }
+    /**
+     * Increments the sound-effects volume level if not at maximum.
+     */
+    public void incrementSoundLevel() {
+        sound.incrementVolume();
+    }
 
-    public void decrementSoundLevel(){ sound.decrementVolume(); }
+    /**
+     * Decrements the sound-effects volume level if not at minimum.
+     */
+    public void decrementSoundLevel() {
+        sound.decrementVolume();
+    }
 
-    public void upSoundActivate(){ sound.upSoundActivate(); }
+    /**
+     * Activates the sound of the volume being raised
+     *
+     * @see GameSound#incrementVolume()
+     */
+    public void upSoundActivate() {
+        sound.upSoundActivate();
+    }
 
-    public void downSoundActivate(){ sound.downSoundActivate(); }
+    /**
+     * Activates the sound of the volume being lowered
+     *
+     * @see GameSound#decrementVolume()
+     */
+    public void downSoundActivate() {
+        sound.downSoundActivate();
+    }
 
-    public void eatingSoundActivate(){ sound.eatingSoundActivate(); }
+    /**
+     * Activates the sound of the {@link bytemusketeers.heslingtonhustle.entity.Player} consuming food
+     *
+     * @see GameSound#eatingSoundActivate()
+     */
+    public void eatingSoundActivate() {
+        sound.eatingSoundActivate();
+    }
 
-    public void buttonClickedSoundActivate(){ sound.buttonClickedSoundActivate(); }
+    /**
+     * Activates the sound of a UI button being pressed
+     *
+     * @see GameSound#buttonClickedSoundActivate()
+     */
+    public void buttonClickedSoundActivate() {
+        sound.buttonClickedSoundActivate();
+    }
 }

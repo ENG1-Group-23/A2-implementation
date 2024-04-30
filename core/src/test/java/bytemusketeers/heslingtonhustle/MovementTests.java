@@ -1,22 +1,20 @@
 package bytemusketeers.heslingtonhustle;
 
+import bytemusketeers.heslingtonhustle.utils.CollisionHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
-import bytemusketeers.heslingtonhustle.utils.CollisionHandler;
-import bytemusketeers.heslingtonhustle.Main;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.junit.Assert.assertEquals;
 
 @RunWith(GdxTestRunner.class)
 public class MovementTests {
     @Test
     public void testMoveLeft() {
         // Simulating Player initialisation
-        Main game = new Main();
+        HeslingtonHustle game = new HeslingtonHustle();
         float worldX = (float) game.screenWidth /2 - (float) game.screenHeight /2;
         float worldY = 500;
         double normalizedSpeed = 200;
@@ -38,7 +36,7 @@ public class MovementTests {
     @Test
     public void testMoveRight() {
         // Simulating Player initialisation
-        Main game = new Main();
+        HeslingtonHustle game = new HeslingtonHustle();
         float worldX = (float) game.screenWidth /2 - (float) game.screenHeight /2;
         float worldY = 500;
         double normalizedSpeed = 200;
@@ -60,7 +58,7 @@ public class MovementTests {
     @Test
     public void testMoveUp() {
         // Simulating Player initialisation
-        Main game = new Main();
+        HeslingtonHustle game = new HeslingtonHustle();
         float worldX = (float) game.screenWidth /2 - (float) game.screenHeight /2;
         float worldY = 500;
         double normalizedSpeed = 200;
@@ -82,7 +80,7 @@ public class MovementTests {
     @Test
     public void testMoveDown() {
         // Simulating Player initialisation
-        Main game = new Main();
+        HeslingtonHustle game = new HeslingtonHustle();
         float worldX = (float) game.screenWidth /2 - (float) game.screenHeight /2;
         float worldY = 500;
         double normalizedSpeed = 200;

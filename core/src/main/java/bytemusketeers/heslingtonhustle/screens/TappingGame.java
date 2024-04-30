@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -20,10 +21,10 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author ENG1 Team 25
  * @author ENG1 Team 23
  */
-public class TypingGame extends ScreenAdapter implements Screen, InputProcessor {
+public class TappingGame extends ScreenAdapter implements Screen, InputProcessor {
     private final HeslingtonHustle game;
     private final int studyDuration;
-    private int attempts = 0;
+    private int attempts = 1;
     private int currentNumber = 0;
     private int correct = 0;
     private final Texture guessButton;
@@ -43,7 +44,7 @@ public class TypingGame extends ScreenAdapter implements Screen, InputProcessor 
      * @param game The main game instance.
      * @param studyDuration The duration of the study session in attempts.
      */
-    public TypingGame(HeslingtonHustle game, int studyDuration) {
+    public TappingGame(HeslingtonHustle game, int studyDuration) {
         this.game = game;
         displayText = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
         guessButton = new Texture("mini_games/guess_button.png");
@@ -55,7 +56,7 @@ public class TypingGame extends ScreenAdapter implements Screen, InputProcessor 
         Gdx.input.setInputProcessor(this);
         this.studyDuration = studyDuration;
 
-        gameObjective = "Remember the number given and try to input the number from memory";
+        gameObjective = "Tap the space-bar as many times as you can in the given time";
 
         playGame();
     }
@@ -90,7 +91,7 @@ public class TypingGame extends ScreenAdapter implements Screen, InputProcessor 
         userGuess = "";
         displayWrong = false;
         displayCorrect = false;
-        if (attempts < studyDuration) {
+        if (attempts - 1 < studyDuration) {
             currentNumber = generateNumber();
             delay(5, this::makeUserGuess);
         } else
@@ -157,10 +158,7 @@ public class TypingGame extends ScreenAdapter implements Screen, InputProcessor 
      * @return The generated number.
      */
     public int generateNumber() {
-        int startingNumLength = 5;
-        int startingNum = (int) (10 * Math.pow(10, startingNumLength - 1));
-        int lowerLimit = (int) (startingNum * Math.pow(10, attempts - 1));
-        int num = ThreadLocalRandom.current().nextInt(lowerLimit, lowerLimit * 10 - 1);
+        int num = 15 * attempts;
         attempts++;
 
         return num;
@@ -192,7 +190,7 @@ public class TypingGame extends ScreenAdapter implements Screen, InputProcessor 
     @Override
     public boolean keyTyped(char character) {
         if (acceptInput) {
-            if (character == '\b' && !userGuess.isEmpty()) { // Handles backspace
+            if (character == ' ' && !userGuess.isEmpty()) { // Handles backspace
                 userGuess = userGuess.substring(0, userGuess.length() - 1);
             } else if (Character.isDigit(character) && userGuess.length() < String.valueOf(currentNumber).length()) {
                 userGuess += character;

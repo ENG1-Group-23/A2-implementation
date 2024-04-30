@@ -1,30 +1,48 @@
 package bytemusketeers.heslingtonhustle.screens;
 
+import bytemusketeers.heslingtonhustle.HeslingtonHustle;
+import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
-import bytemusketeers.heslingtonhustle.Main;
-import bytemusketeers.heslingtonhustle.utils.ScreenType;
 
 /**
  * The MainMenuScreen class represents the main menu screen for the game.
  * It handles the display and interaction with the main menu, including navigating to different parts of the game
  * such as starting the gameplay, viewing controls, adjusting settings, or exiting the game.
+ *
+ * @author ENG1 Team 25
+ * @author ENG1 Team 23
  */
-public class MainMenuScreen implements Screen, InputProcessor {
+public class MainMenuScreen extends ScreenAdapter implements Screen, InputProcessor {
+    HeslingtonHustle game;
+    Texture heslingtonHustleLabel;
+    Texture playButton;
+    Texture controlsButton;
+    Texture settingsButton;
+    Texture exitButton;
 
-    Main game;
+    int heslingtonHustleLabelHeight;
+    int playButtonHeight;
+    int controlsButtonHeight;
+    int settingsButtonHeight;
+    int exitButtonHeight;
+    int heslingtonHustleLabelWidth;
+    int playButtonWidth;
+    int controlsButtonWidth;
+    int settingsButtonWidth;
+    int exitButtonWidth;
 
-    Texture heslingtonHustleLabel, playButton, controlsButton, settingsButton, exitButton;
-
-    int heslingtonHustleLabelHeight, playButtonHeight, controlsButtonHeight, settingsButtonHeight, exitButtonHeight;
-    int heslingtonHustleLabelWidth, playButtonWidth, controlsButtonWidth, settingsButtonWidth, exitButtonWidth;
-
-    int x;
+    int xPosition;
     float heslingtonHustleLabelX;
-    float heslingtonHustleLabelY, playButtonY, controlsButtonY, settingsButtonY, exitButtonY;
+    float heslingtonHustleLabelY;
+    float playButtonY;
+    float controlsButtonY;
+    float settingsButtonY;
+    float exitButtonY;
 
     boolean exitFlag;
 
@@ -34,7 +52,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
      *
      * @param game the game instance this screen belongs to.
      */
-    public MainMenuScreen(Main game) {
+    public MainMenuScreen(HeslingtonHustle game) {
         this.game = game;
 
         loadTextures();
@@ -74,7 +92,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
      */
     private void calculatePositions() {
         heslingtonHustleLabelX = (game.screenWidth - heslingtonHustleLabelWidth) / 2f;
-        x = (int) ((game.screenWidth - playButtonWidth) / 2f); // this is to make sure the buttons are centered
+        xPosition = (int) ((game.screenWidth - playButtonWidth) / 2f); // this is to make sure the buttons are centered
         heslingtonHustleLabelY = game.screenHeight - heslingtonHustleLabelHeight * 1.25f;
         playButtonY = game.screenHeight - playButtonHeight * 2.5f;
         controlsButtonY = game.screenHeight - controlsButtonHeight * 3.75f;
@@ -95,11 +113,12 @@ public class MainMenuScreen implements Screen, InputProcessor {
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
         game.batch.begin();
-        game.batch.draw(heslingtonHustleLabel, heslingtonHustleLabelX, heslingtonHustleLabelY, heslingtonHustleLabelWidth, heslingtonHustleLabelHeight);
-        game.batch.draw(playButton, x, playButtonY, playButtonWidth, playButtonHeight);
-        game.batch.draw(controlsButton, x, controlsButtonY, controlsButtonWidth, controlsButtonHeight);
-        game.batch.draw(settingsButton, x, settingsButtonY, settingsButtonWidth, settingsButtonHeight);
-        game.batch.draw(exitButton, x, exitButtonY, exitButtonWidth, exitButtonHeight);
+        game.batch.draw(heslingtonHustleLabel, heslingtonHustleLabelX, heslingtonHustleLabelY,
+                heslingtonHustleLabelWidth, heslingtonHustleLabelHeight);
+        game.batch.draw(playButton, xPosition, playButtonY, playButtonWidth, playButtonHeight);
+        game.batch.draw(controlsButton, xPosition, controlsButtonY, controlsButtonWidth, controlsButtonHeight);
+        game.batch.draw(settingsButton, xPosition, settingsButtonY, settingsButtonWidth, settingsButtonHeight);
+        game.batch.draw(exitButton, xPosition, exitButtonY, exitButtonWidth, exitButtonHeight);
         game.batch.end();
     }
 
@@ -121,29 +140,27 @@ public class MainMenuScreen implements Screen, InputProcessor {
     public boolean touchDown(int touchX, int touchY, int pointer, int button) {
         touchY = game.screenHeight - touchY;
 
-        if (touchX >= x && touchX <= x + playButtonWidth &&
-                touchY >= playButtonY && touchY <= playButtonY + playButtonHeight) {
+        if (touchX >= xPosition && touchX <= xPosition + playButtonWidth
+                && touchY >= playButtonY && touchY <= playButtonY + playButtonHeight) {
             game.gameData.buttonClickedSoundActivate();
             game.screenManager.setScreen(ScreenType.GAME_SCREEN);
-        }
-        else if (touchX >= x && touchX <= x + controlsButtonWidth &&
-                touchY >= controlsButtonY && touchY <= controlsButtonY + controlsButtonHeight) {
+        } else if (touchX >= xPosition && touchX <= xPosition + controlsButtonWidth
+                && touchY >= controlsButtonY && touchY <= controlsButtonY + controlsButtonHeight) {
             game.gameData.buttonClickedSoundActivate();
             game.screenManager.setScreen(ScreenType.CONTROLS);
-        }
-        else if (touchX >= x && touchX <= x + settingsButtonWidth &&
-                touchY >= settingsButtonY && touchY <= settingsButtonY + settingsButtonHeight) {
+        } else if (touchX >= xPosition && touchX <= xPosition + settingsButtonWidth
+                && touchY >= settingsButtonY && touchY <= settingsButtonY + settingsButtonHeight) {
             game.gameData.buttonClickedSoundActivate();
             game.screenManager.setScreen(ScreenType.SETTINGS);
-        }
-        else if (touchX >= x && touchX <= x + exitButtonWidth &&
-                touchY >= exitButtonY && touchY <= exitButtonY + exitButtonHeight) {
+        } else if (touchX >= xPosition && touchX <= xPosition + exitButtonWidth
+                && touchY >= exitButtonY && touchY <= exitButtonY + exitButtonHeight) {
             game.gameData.buttonClickedSoundActivate();
             game.screenManager.clearMemory();
             exitFlag = true;
             dispose();
             Gdx.app.exit();
         }
+
         return true;
     }
 
@@ -176,20 +193,6 @@ public class MainMenuScreen implements Screen, InputProcessor {
     public void resize(int width, int height) {
         calculateDimensions();
         calculatePositions();
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
     }
 
     @Override
