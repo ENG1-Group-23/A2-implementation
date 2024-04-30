@@ -186,6 +186,7 @@ public class MainGameScreen implements Screen, InputProcessor {
         if (collisionHandler.isTouching("Piazza_door", player.getHitBox())) return "Piazza_door";
         if (collisionHandler.isTouching("Gym_door", player.getHitBox())) return "Gym_door";
         if (collisionHandler.isTouching("Goodricke_door", player.getHitBox())) return "Goodricke_door";
+        if (collisionHandler.isTouching("pier", player.getHitBox())) return "pier";
         return "";
     }
 
@@ -294,7 +295,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     private void drawPopUpMenu(){
         popupMenuType = getDoorTouching();
         switch (popupMenuType) {
-            case "Pier":
+            case "pier":
                 drawMenuOption(player.worldX + 30, player.worldY + 20, "Feed", 0);
                 popupVisible = true;
                 break;
