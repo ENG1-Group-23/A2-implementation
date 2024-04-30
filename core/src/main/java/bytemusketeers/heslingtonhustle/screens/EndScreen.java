@@ -42,11 +42,16 @@ public class EndScreen extends ScreenAdapter implements Screen {
     private final Texture exitButton = new Texture("end_gui/exit_button.png");
 
     /**
-     * The {@link BitmapFont} used for rendering the {@link EndScreen} {@link String} objects.
-     * TODO: The {@link EndScreen} currently uses the default LibGDX {@link BitmapFont} due to excessive vertical
-     * TODO: padding on the 'White Peaberry'. This should be an easy fix and won't delay integration.
+     * The {@link BitmapFont} used for rendering the large {@link EndScreen} {@link String} objects.
      */
-    private final BitmapFont font = new BitmapFont();
+    private final BitmapFont largeFont = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
+
+    /**
+     * The {@link BitmapFont} used for rendering the small {@link EndScreen} {@link String} objects.
+     *
+     * @see Leaderboard
+     */
+    private final BitmapFont smallFont = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
 
     /**
      * The {@link Label.LabelStyle} used to inform all constructed LibGDX {@link Label}
@@ -118,26 +123,6 @@ public class EndScreen extends ScreenAdapter implements Screen {
         return buttonsTable;
     }
 
-    private Table constructAchievementTable(Achievement[] achievements) {
-        final Table achievementTable = new Table();
-        final AtomicInteger mentioned = new AtomicInteger();
-
-        Arrays.stream(achievements).forEach(
-            achievement -> {
-                if (achievement.hasMetThreshold()) {
-                    achievementTable.add(new Label(achievement.getAnnotatedName(), labelStyle));
-                    achievementTable.row();
-                    mentioned.getAndIncrement();
-                }
-            }
-        );
-
-        if (mentioned.get() == 0)
-            achievementTable.add(new Label("No achievements earned in this session", labelStyle));
-
-        return achievementTable;
-    }
-
     /**
      * Construct the main body {@link Table} consisting of the {@link Leaderboard}, and, if applicable, the index of
      * attained {@link Achievement} awards.
@@ -147,15 +132,33 @@ public class EndScreen extends ScreenAdapter implements Screen {
      * @return The constructed {@link Table}
      */
     private Table constructBodyTable(Score score, Achievement[] achievements) {
-        final Table bodyTable = new Table();
-        final Leaderboard leaderboard = new Leaderboard(labelStyle);
-        final Table achievementsTable = constructAchievementTable(achievements);
+        AtomicInteger mentioned = new AtomicInteger();
+        StringBuilder string = new StringBuilder("Achievements: ");
+        Leaderboard leaderboard = new Leaderboard(new Label.LabelStyle(smallFont, Color.WHITE));
+
         leaderboard.registerScore(score);
         leaderboard.populateBoard();
 
-        bodyTable.add(leaderboard.getTable()).padBottom(VERTICAL_PADDING);
+        Arrays.stream(achievements).forEach(
+            achievement -> {
+                if (achievement.hasMetThreshold()) {
+                    string.append(achievement.getAnnotatedName());
+                    string.append("; ");
+                    mentioned.getAndIncrement();
+                }
+            }
+        );
+
+        Table bodyTable = new Table();
+        bodyTable.row().height(16);
+
+        if (mentioned.get() > 0)
+            bodyTable.add(new Label(string.toString(), labelStyle));
+        else
+            bodyTable.add(new Label("No achievements earned in this session", labelStyle));
+
         bodyTable.row();
-        bodyTable.add(achievementsTable);
+        bodyTable.add(leaderboard.getTable()).padTop(60).padBottom(VERTICAL_PADDING);
 
         return bodyTable;
     }
@@ -172,13 +175,14 @@ public class EndScreen extends ScreenAdapter implements Screen {
      * @see Leaderboard
      */
     public EndScreen(HeslingtonHustle game, Score score, Achievement[] achievements) {
-        final Table table = new Table();
+        Table table = new Table();
         table.setFillParent(true);
 
-        font.getData().setScale(game.scaleFactorX * 3, game.scaleFactorY * 3);
-        labelStyle = new Label.LabelStyle(font, Color.WHITE);
+        largeFont.getData().setScale(3);
+        smallFont.getData().setScale(2);
+        labelStyle = new Label.LabelStyle(largeFont, Color.WHITE);
 
-        table.add(new Label("The End! Your Score is " + score + ".", labelStyle)).padBottom(VERTICAL_PADDING);
+        table.add(new Label("The End! Your Score is " + score + ".", labelStyle));
         table.row();
 
         table.add(constructBodyTable(score, achievements));
@@ -214,7 +218,8 @@ public class EndScreen extends ScreenAdapter implements Screen {
     public void dispose() {
         playAgainButton.dispose();
         exitButton.dispose();
-        font.dispose();
+        largeFont.dispose();
+        smallFont.dispose();
         stage.dispose();
     }
 

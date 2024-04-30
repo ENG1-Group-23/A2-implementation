@@ -77,7 +77,7 @@ public class Leaderboard {
 
         scores.stream().sorted(Collections.reverseOrder(Map.Entry.comparingByValue())).limit(MAX_ENTRY_COUNT)
             .forEach(record -> {
-                table.row();
+                table.row().height(16 * labelStyle.font.getScaleY() + EndScreen.VERTICAL_PADDING);
                 table.add(new Label(record.getKey(), labelStyle)).padRight(EndScreen.HORIZONTAL_PADDING);
                 table.add(new Label(Score.formatLoadedScore(record.getValue()), labelStyle));
             });
@@ -94,14 +94,8 @@ public class Leaderboard {
 
     /**
      * Instantiates a new {@link Leaderboard} to contain high-score entries.
-     *
-     * @param labelStyle The {@link Label.LabelStyle} required for entry text
      */
     public Leaderboard(Label.LabelStyle labelStyle) {
         this.labelStyle = labelStyle;
-
-        table.add(new Label("User", labelStyle)).padRight(EndScreen.HORIZONTAL_PADDING)
-            .padBottom(EndScreen.VERTICAL_PADDING);
-        table.add(new Label("Score", labelStyle)).padBottom(EndScreen.VERTICAL_PADDING);
     }
 }
