@@ -4,6 +4,10 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -26,6 +30,9 @@ public class Main extends Game {
 	public OrthographicCamera defaultCamera;
 	public float scaleFactorX;
 	public float scaleFactorY;
+	public TiledMap tiledMap;
+	public OrthogonalTiledMapRenderer renderer;
+	public ShapeRenderer shapeRenderer;
 
     /**
 	 * Called when the game is first created.
@@ -46,6 +53,11 @@ public class Main extends Game {
 		defaultCamera.setToOrtho(false, defWidth, defHeight);
 		scaleFactorX = 1;
 		scaleFactorY = 1;
+
+		// Initialize the map renderer, shape renderer, and tiled map
+		tiledMap = new TmxMapLoader().load("map/MainMap.tmx");
+		renderer = new OrthogonalTiledMapRenderer(tiledMap);
+		shapeRenderer = new ShapeRenderer();
 
 		// Fonts for writing in game
 		skin = new Skin();

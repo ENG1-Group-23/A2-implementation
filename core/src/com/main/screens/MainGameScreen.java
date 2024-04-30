@@ -97,14 +97,12 @@ public class MainGameScreen implements Screen, InputProcessor {
 
         // Setting up the game
         this.camera = new OrthographicCamera();
-        TiledMap tiledMap = new TmxMapLoader().load("map/MainMap.tmx");
-        OrthogonalTiledMapRenderer renderer = new OrthogonalTiledMapRenderer(tiledMap);
-        this.gameMap = new GameMap(this.camera, renderer, tiledMap);
+        this.gameMap = new GameMap(this.camera, game.renderer, game.tiledMap);
         this.player = new Player(this.game, this.gameMap, this.camera);
         this.font = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
         this.popupFont = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
         this.durationFont = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
-        this.shapeRenderer = new ShapeRenderer();
+        this.shapeRenderer = game.shapeRenderer;
         this.energyBar = setEnergyBar();
 
         this.calculateDimensions();
