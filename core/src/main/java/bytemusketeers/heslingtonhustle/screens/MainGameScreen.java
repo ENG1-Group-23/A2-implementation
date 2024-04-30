@@ -579,6 +579,14 @@ public class MainGameScreen implements Screen, InputProcessor {
             Vector3 studyOpt = camera.project(new Vector3(player.worldX + 30, player.worldY + 20, 0));
             Vector3 eatOpt = camera.project(new Vector3(player.worldX + 30, player.worldY + 35, 0));
             switch (popupMenuType) {
+                case "pier":
+                    if (touchX >= feedDuckButtonX && touchX <= feedDuckButtonX + popupMenuWidth * zoom && touchY >= feedDuckButtonY && touchY <= feedDuckButtonY + popupMenuHeight * zoom) {
+                        game.gameData.buttonClickedSoundActivate();
+                        showMenu = true;
+                        lockMovement = true;
+                        activity = "feed-ducks";
+                        duration = 1;
+                    }
                 case "Comp_sci_door":
                     if (touchX >= studyOpt.x && touchX <= studyOpt.x + popupMenuWidth * zoom && touchY >= studyOpt.y && touchY <= studyOpt.y + popupMenuHeight * zoom) {
                         game.gameData.buttonClickedSoundActivate();
