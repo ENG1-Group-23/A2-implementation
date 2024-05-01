@@ -25,10 +25,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static com.badlogic.gdx.graphics.g2d.TextureRegion.split;
 
-/**
- * The TypingGame class implements a mini-game for the player to increase their study hours.
- * Players are shown a number that they need to memorize and then type it correctly to succeed.
- */
 public class FeedDucks implements Screen, InputProcessor {
     private final int duckScale = 7;
     private final Main game;
@@ -44,11 +40,6 @@ public class FeedDucks implements Screen, InputProcessor {
     private int ducksFed = 0;
     String gameObjective;
 
-    /**
-     * Constructs a TypingGame screen with the game instance and study duration.
-     *
-     * @param game The main game instance.
-     */
     public FeedDucks(Main game, OrthographicCamera camera, GameMap gameMap) {
         this.game = game;
         this.camera = camera;
@@ -65,10 +56,6 @@ public class FeedDucks implements Screen, InputProcessor {
         playGame();
     }
 
-    /**
-     * Begins a new challenge by generating a number for the player to memorize.
-     * Handles the logic for correct and incorrect guesses and progresses the game.
-     */
     private void calculateDimensions(){
         displayText.getData().setScale(3f * game.scaleFactorX, 3f * game.scaleFactorY);
         displayTextHeight = 100 * game.scaleFactorY;
@@ -81,10 +68,6 @@ public class FeedDucks implements Screen, InputProcessor {
         titleY = (game.screenHeight - titleHeight)/2f + 400 * game.scaleFactorY;
     }
 
-    /**
-     * Begins a new challenge by generating a number for the player to memorize.
-     * Handles the logic for correct and incorrect guesses and progresses the game.
-     */
     public void playGame(){
         initialiseDucks();
         addLilyPads(3);
