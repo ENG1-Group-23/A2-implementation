@@ -2,6 +2,7 @@ package bytemusketeers.heslingtonhustle.screens;
 
 import bytemusketeers.heslingtonhustle.Main;
 import bytemusketeers.heslingtonhustle.entity.Duck;
+import bytemusketeers.heslingtonhustle.entity.Player;
 import bytemusketeers.heslingtonhustle.map.GameMap;
 import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.Gdx;
@@ -24,11 +25,11 @@ import java.util.concurrent.ThreadLocalRandom;
  * Players are shown a number that they need to memorize and then type it correctly to succeed.
  */
 public class FeedDucks implements Screen, InputProcessor {
+    private final int duckScale = 7;
     private final Main game;
     private final OrthographicCamera camera;
     private final GameMap gameMap;
     private final int initialDuckCount = 3;
-    private int ducksFed, ducksToFeed;
     private List<Duck> ducks = new ArrayList<>();
     BitmapFont displayText;
     private float displayTextY, displayTextHeight;
@@ -78,8 +79,6 @@ public class FeedDucks implements Screen, InputProcessor {
      * Handles the logic for correct and incorrect guesses and progresses the game.
      */
     public void playGame(){
-        ducksFed = 0;
-        ducksToFeed = 0;
         initialiseDucks();
     }
 
@@ -87,7 +86,7 @@ public class FeedDucks implements Screen, InputProcessor {
         for(int i = 0; i < initialDuckCount; i++) {
             Random random = new Random();
             Duck tmp = new Duck(game, gameMap, camera);
-            tmp.setPosition(random.nextFloat(), random.nextFloat());
+            tmp.setPosition(random.nextInt(gameMap.getWidth() / 2), random.nextInt(gameMap.getHeight() / 2));
             ducks.add(tmp);
         }
     }
@@ -103,7 +102,8 @@ public class FeedDucks implements Screen, InputProcessor {
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
         game.batch.begin();
         for(Duck duck : ducks) {
-            game.batch.draw(duck.getTexture(), duck.getX(), duck.getY());
+            duck.update(delta);
+            game.batch.draw(duck.currentAnimation.getKeyFrame(duck.stateTime, true), duck.getX(), duck.getY(), duck.getSpriteX() * duckScale, duck.getSpriteY() * duckScale);
         }
         displayText.draw(game.batch, gameObjective, 0, gameObjectiveY, game.screenWidth, Align.center, false);
         game.batch.end();
@@ -152,8 +152,20 @@ public class FeedDucks implements Screen, InputProcessor {
     public boolean keyTyped(char character) { return true; }
 
     @Override
-    public boolean touchDown(int worldX, int worldY, int pointer, int button) {
-        worldY = game.screenHeight - worldY;
+    public boolean touchDown(int touchX, int touchY, int pointer, int button) {
+        touchY = game.screenHeight - touchY;
+
+        for(Duck duck : ducks) {
+            float duckX = duck.getX();
+            float duckY = duck.getY();
+            int width = 16 * 7, height = 16 * 7;
+            if(touchX >= duckX && touchX <= duckX + width && touchY >= duckY && touchY <= duckY + height) {
+                duck.dispose();
+                ducks.remove(duck);
+                break;
+            }
+        }
+
         return false;
     }
 
