@@ -192,7 +192,7 @@ public class FeedDucks implements Screen, InputProcessor {
             float duckY = duck.getY();
             int width = 16 * 7, height = 16 * 7;
             if(touchX >= duckX && touchX <= duckX + width && touchY >= duckY && touchY <= duckY + height) {
-                // TODO: Add duck feeding sound
+                game.gameData.duckSoundActivate();
                 ducksFed++;
                 duck.dispose();
                 ducks.remove(duck);

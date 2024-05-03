@@ -79,4 +79,5 @@ public class GameData {
     public void eatingSoundActivate(){ sound.eatingSoundActivate(); }
 
     public void buttonClickedSoundActivate(){ sound.buttonClickedSoundActivate(); }
+    public void duckSoundActivate() { sound.duckSoundActivate(); }
 }
