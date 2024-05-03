@@ -72,7 +72,7 @@ public class EndScreen extends ScreenAdapter implements Screen {
     /**
      * The standard vertical padding around leader rows, in pixels
      */
-    public static final int VERTICAL_PADDING = 20;
+    public static final int VERTICAL_PADDING = 30;
 
     /**
      * Construct a single {@link ImageButton} with the given {@link Texture} and {@link EventListener}-defined action.
@@ -182,7 +182,13 @@ public class EndScreen extends ScreenAdapter implements Screen {
         smallFont.getData().setScale(2);
         labelStyle = new Label.LabelStyle(largeFont, Color.WHITE);
 
-        table.add(new Label("The End! Your Score is " + score + ".", labelStyle));
+        if (score.getScore() >= 400) {
+            table.add(new Label("The End! That's a PASS: " + score + ".", labelStyle));
+        }
+        else {
+            table.add(new Label("The End! That's a FAIL: " + score + ".", labelStyle));
+        }
+
         table.row();
 
         table.add(constructBodyTable(score, achievements));

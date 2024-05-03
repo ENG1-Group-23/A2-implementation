@@ -47,6 +47,7 @@ public enum ScreenType {
      *           {@link bytemusketeers.heslingtonhustle.screens.TypingGame}, but could be easily expanded.
      */
     MINI_GAME,
+    EXERCISE_GAME,
 
     /**
      * The game-ending screen, displaying the final result and a limited set of options

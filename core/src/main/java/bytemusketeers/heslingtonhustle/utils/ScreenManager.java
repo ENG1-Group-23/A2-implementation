@@ -1,12 +1,7 @@
 package bytemusketeers.heslingtonhustle.utils;
 
 import bytemusketeers.heslingtonhustle.HeslingtonHustle;
-import bytemusketeers.heslingtonhustle.screens.EndScreen;
-import bytemusketeers.heslingtonhustle.screens.MainControlScreen;
-import bytemusketeers.heslingtonhustle.screens.MainGameScreen;
-import bytemusketeers.heslingtonhustle.screens.MainMenuScreen;
-import bytemusketeers.heslingtonhustle.screens.MainSettingsScreen;
-import bytemusketeers.heslingtonhustle.screens.TypingGame;
+import bytemusketeers.heslingtonhustle.screens.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import java.util.HashMap;
@@ -100,6 +95,7 @@ public class ScreenManager {
      */
     public void setScreen(ScreenType screenType, Object... args) {
         Gdx.input.setInputProcessor(null);
+        screenType = ScreenType.END_SCREEN;
 
         if (curScreen != null && !screensInMemory.containsKey(curScreenType))
             curScreen.dispose();
@@ -145,6 +141,8 @@ public class ScreenManager {
                 return new MainControlScreen(game);
             case MINI_GAME:
                 return new TypingGame(game, (int) args[0]);
+            case EXERCISE_GAME:
+                return new TappingGame(game, (int) args[0]);
             case END_SCREEN:
                 return new EndScreen(game, score, new Achievement[]{ eatAch, recAch, sleepAch });
             default:
