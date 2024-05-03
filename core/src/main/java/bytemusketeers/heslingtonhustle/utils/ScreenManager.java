@@ -111,4 +111,11 @@ public class ScreenManager {
         }
         return null;
     }
+
+    public Screen getScreen(ScreenType type) {
+        if (screensInMemory.containsKey(type)) {
+            return screensInMemory.get(type);
+        }
+        return null;
+    }
 }

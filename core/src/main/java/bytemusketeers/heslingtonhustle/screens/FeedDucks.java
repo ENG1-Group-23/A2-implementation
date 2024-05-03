@@ -38,6 +38,8 @@ public class FeedDucks implements Screen, InputProcessor {
     private float gameObjectiveY;
     private float titleX, titleY, titleWidth, titleHeight;
     private int ducksFed = 0;
+    private float timeSeconds = 0.0f;
+    private float period = 15.0f;
     String gameObjective;
 
     public FeedDucks(Main game, OrthographicCamera camera, GameMap gameMap) {
@@ -73,11 +75,15 @@ public class FeedDucks implements Screen, InputProcessor {
         addLilyPads(3);
     }
 
+    public void endGame() {
+        game.screenManager.setScreen(ScreenType.GAME_SCREEN);
+    }
+
     private void initialiseDucks() {
         for(int i = 0; i < initialDuckCount; i++) {
             Random random = new Random();
             Duck tmp = new Duck(game, gameMap, camera);
-            tmp.setPosition(random.nextInt(gameMap.getWidth() / 2), random.nextInt(gameMap.getHeight() / 2));
+            tmp.setPosition(random.nextInt(game.screenWidth), random.nextInt(game.screenHeight / 2));
             ducks.add(tmp);
         }
     }
@@ -109,6 +115,11 @@ public class FeedDucks implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
+        timeSeconds += Gdx.graphics.getDeltaTime();
+        if(timeSeconds > period){
+            timeSeconds -= period;
+            endGame();
+        }
         ScreenUtils.clear(0.3f, 0.55f, 0.7f, 1);
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
         game.batch.begin();
