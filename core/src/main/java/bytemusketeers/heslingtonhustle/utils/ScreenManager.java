@@ -95,7 +95,7 @@ public class ScreenManager {
      */
     public void setScreen(ScreenType screenType, Object... args) {
         Gdx.input.setInputProcessor(null);
-        screenType = ScreenType.END_SCREEN;
+        //screenType = ScreenType.END_SCREEN;
 
         if (curScreen != null && !screensInMemory.containsKey(curScreenType))
             curScreen.dispose();

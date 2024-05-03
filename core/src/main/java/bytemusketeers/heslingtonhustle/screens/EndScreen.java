@@ -82,7 +82,6 @@ public class EndScreen extends ScreenAdapter implements Screen {
      * @return The constructed {@link ImageButton}
      */
     private static ImageButton createButton(Texture texture, EventListener listener) {
-        Gdx.app.log("Step 2", "Create Button");
         ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
         style.up = new TextureRegionDrawable(new TextureRegion(texture));
         ImageButton button = new ImageButton(style);
@@ -98,13 +97,8 @@ public class EndScreen extends ScreenAdapter implements Screen {
      * @return A {@link Table} of the constructed buttons
      */
     private Table constructButtons(HeslingtonHustle game) {
-        Gdx.app.log("Step 1", "Start Button Table");
-        Gdx.app.log("game.scaleFactorX", String.valueOf((int) game.scaleFactorX));
-        Gdx.app.log("game.scaleFactorY", String.valueOf((int) game.scaleFactorY));
         final int BUTTON_WIDTH = playAgainButton.getWidth() * 10 * (int) game.scaleFactorX;
         final int BUTTON_HEIGHT = playAgainButton.getHeight() * 10 * (int) game.scaleFactorY;
-        Gdx.app.log("BUTTON_WIDTH", String.valueOf(BUTTON_WIDTH));
-        Gdx.app.log("BUTTON_HEIGHT", String.valueOf(BUTTON_HEIGHT));
 
         final Table buttonsTable = new Table();
 
@@ -127,7 +121,6 @@ public class EndScreen extends ScreenAdapter implements Screen {
             }
         })).size(BUTTON_WIDTH, BUTTON_HEIGHT);
 
-        Gdx.app.log("Step 3", "Return Button Table");
         return buttonsTable;
     }
 
@@ -183,7 +176,6 @@ public class EndScreen extends ScreenAdapter implements Screen {
      * @see Leaderboard
      */
     public EndScreen(HeslingtonHustle game, Score score, Achievement[] achievements) {
-        Gdx.app.log("Start","Creating Endscreen");
         Table table = new Table();
         table.setFillParent(true);
 
@@ -205,7 +197,6 @@ public class EndScreen extends ScreenAdapter implements Screen {
         table.add(constructButtons(game)).padTop(VERTICAL_PADDING);
 
         stage.addActor(table);
-        Gdx.app.log("End","Finished Endscreen");
     }
 
     /**
