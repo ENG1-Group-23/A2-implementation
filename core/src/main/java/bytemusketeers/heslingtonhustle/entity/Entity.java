@@ -3,8 +3,9 @@ package bytemusketeers.heslingtonhustle.entity;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Disposable;
 
-public class Entity extends Sprite {
+public class Entity extends Sprite implements Disposable {
     public float worldX, worldY;
     public float speed; // walking speed per frame
     public Animation<TextureRegion> currentAnimation;
@@ -18,6 +19,6 @@ public class Entity extends Sprite {
     public void setTr(TextureRegion tr) {
         this.tr = tr;
     }
-
-
+    @Override
+    public void dispose() {}
 }

@@ -31,22 +31,25 @@ public class FeedDucks implements Screen, InputProcessor {
     private final OrthographicCamera camera;
     private final GameMap gameMap;
     private final int initialDuckCount = 3;
-    private List<Duck> ducks = new ArrayList<>();
-    private List<Entity> lilyPads = new ArrayList<>();
     BitmapFont displayText;
     private float displayTextY, displayTextHeight;
     private float gameObjectiveY;
     private float titleX, titleY, titleWidth, titleHeight;
+    private float backButtonX, backButtonY, backButtonWidth, backButtonHeight;
+    private Texture backButton;
     private int ducksFed = 0;
     private float timeSeconds = 0.0f;
     private float period = 15.0f;
+    private List<Entity> entities = new ArrayList<>(); // ducks and lilypads
     String gameObjective;
+    private boolean gameOver = false;
 
     public FeedDucks(Main game, OrthographicCamera camera, GameMap gameMap) {
         this.game = game;
         this.camera = camera;
         this.gameMap = gameMap;
         displayText = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
+        backButton = new Texture("menu_gui/exit_button.png");
 
         calculateDimensions();
         calculatePositions();
@@ -62,40 +65,63 @@ public class FeedDucks implements Screen, InputProcessor {
         displayText.getData().setScale(3f * game.scaleFactorX, 3f * game.scaleFactorY);
         displayTextHeight = 100 * game.scaleFactorY;
         gameObjectiveY = game.screenHeight - 80 * game.scaleFactorY;
+        backButtonHeight = 100 * game.scaleFactorY;
+        backButtonWidth = 250 * game.scaleFactorX;
     }
 
     private void calculatePositions(){
         displayTextY = game.screenHeight/2f - displayTextHeight;
+        backButtonY = game.screenHeight / 5f;
+        backButtonX = game.screenWidth / 2f - (backButtonWidth / 2);
         titleX = (game.screenWidth - titleWidth)/2f;
         titleY = (game.screenHeight - titleHeight)/2f + 400 * game.scaleFactorY;
     }
 
     public void playGame(){
         initialiseDucks();
-        addLilyPads(3);
+        addLilyPads(6);
     }
 
     public void endGame() {
-        MainGameScreen MGS = (MainGameScreen) game.screenManager.getScreen(ScreenType.GAME_SCREEN);
-        MGS.lowerEnergyCounter();
-        MGS.incrementRecActivity();
-        game.screenManager.setScreen(ScreenType.GAME_SCREEN);
+        gameOver = true;
     }
 
     private void initialiseDucks() {
         for(int i = 0; i < initialDuckCount; i++) {
-            Random random = new Random();
             Duck tmp = new Duck(game, gameMap, camera);
-            tmp.setPosition(random.nextInt(game.screenWidth), random.nextInt(game.screenHeight / 2));
-            ducks.add(tmp);
+            setNonOverlappingPosition(tmp);
+            entities.add(tmp);
+        }
+    }
+
+    private void setNonOverlappingPosition(Duck duck) {
+        Random random = new Random();
+        duck.setPosition(random.nextInt(game.screenWidth), random.nextInt(game.screenHeight / 2));
+        for(Entity entity : entities) {
+            while (duck.getBoundingRectangle().overlaps(entity.getBoundingRectangle())) {
+                duck.setPosition(random.nextInt(game.screenWidth - 50), random.nextInt(game.screenHeight / 2));
+            }
+            return;
+        }
+    }
+
+    private void setNonOverlappingPosition(Entity lilyPad) {
+        Random random = new Random();
+        lilyPad.worldX = random.nextInt(game.screenWidth);
+        lilyPad.worldY = random.nextInt(game.screenHeight / 2);
+        for(Entity entity : entities) {
+            while (lilyPad.getBoundingRectangle().overlaps(entity.getBoundingRectangle())) {
+                lilyPad.worldX = random.nextInt(game.screenWidth - 50);
+                lilyPad.worldY = random.nextInt(game.screenHeight / 2);
+            }
+            return;
         }
     }
 
     private void addDuck() {
-        Random random = new Random();
         Duck tmp = new Duck(game, gameMap, camera);
-        tmp.setPosition(random.nextInt(game.screenWidth), random.nextInt(game.screenHeight / 2));
-        ducks.add(tmp);
+        setNonOverlappingPosition(tmp);
+        entities.add(tmp);
     }
 
     private void addLilyPads() {
@@ -104,14 +130,12 @@ public class FeedDucks implements Screen, InputProcessor {
 
     private void addLilyPads(int quantity) {
         for(int i = 0; i < quantity; i++) {
-            Random random = new Random();
             Texture texture = new Texture("map/Basic_Grass_Biom_things.png");
             TextureRegion[][] textureRegion = split(texture, 16, 16);
             Entity lilyPad = new Entity();
-            lilyPad.worldX = random.nextInt(gameMap.getWidth() / 2);
-            lilyPad.worldY = random.nextInt(gameMap.getHeight() / 2);
-            lilyPad.setTr(textureRegion[4][7]);
-            lilyPads.add(lilyPad);
+            setNonOverlappingPosition(lilyPad);
+            lilyPad.setTr(textureRegion[4][7]); // texture position in sprite sheet
+            entities.add(lilyPad);
         }
     }
 
@@ -122,24 +146,32 @@ public class FeedDucks implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
-        timeSeconds += Gdx.graphics.getDeltaTime();
-        if(timeSeconds > period){
-            timeSeconds -= period;
-            endGame();
-        }
         ScreenUtils.clear(0.3f, 0.55f, 0.7f, 1);
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
         game.batch.begin();
-        for(Duck duck : ducks) {
-            duck.update(delta);
-            game.batch.draw(duck.currentAnimation.getKeyFrame(duck.stateTime, true), duck.getX(), duck.getY(), duck.getSpriteX() * duckScale, duck.getSpriteY() * duckScale);
+        if (!gameOver) {
+            timeSeconds += Gdx.graphics.getDeltaTime();
+            if(timeSeconds > period){
+                timeSeconds -= period;
+                endGame();
+            }
+            for (Entity entity : entities) {
+                if (entity instanceof Duck) {
+                    ((Duck) entity).update(delta);
+                    game.batch.draw(entity.currentAnimation.getKeyFrame(entity.stateTime, true), entity.getX(), entity.getY(), ((Duck) entity).getSpriteX() * duckScale, ((Duck) entity).getSpriteY() * duckScale);
+                } else {
+                    game.batch.draw(entity.getTr(), entity.worldX, entity.worldY, 16 * 7, 16 * 7);
+                }
+            }
+            displayText.draw(game.batch, gameObjective, 0, gameObjectiveY, game.screenWidth, Align.center, false);
+            displayText.draw(game.batch, ducksFed + "", 0, gameObjectiveY - 50, game.screenWidth, Align.center, false);
+            displayText.draw(game.batch, "Time left " + (int)(period - timeSeconds) + 1, 0, 150, game.screenWidth, Align.center, false);
+            game.batch.end();
+            return;
         }
-        for(Entity lilyPad : lilyPads) {
-            game.batch.draw(lilyPad.getTr(), lilyPad.worldX, lilyPad.worldY, 16 * 7, 16 * 7);
-        }
-        displayText.draw(game.batch, gameObjective, 0, gameObjectiveY, game.screenWidth, Align.center, false);
-        displayText.draw(game.batch, ducksFed + "", 0, gameObjectiveY - 50, game.screenWidth, Align.center, false);
-        displayText.draw(game.batch, "Timer: " + (int)(period - timeSeconds + 1), 0, gameObjectiveY, game.screenWidth - 50, Align.topRight, false);
+        displayText.draw(game.batch, "You fed " + ducksFed + " ducks!", 0, game.screenHeight, game.screenWidth, Align.center, false);
+        displayText.draw(game.batch, "Back to studying", 0, backButtonY + 200 + backButtonHeight, game.screenWidth, Align.center, false);
+        game.batch.draw(backButton, backButtonX, backButtonY, backButtonWidth, backButtonHeight);
         game.batch.end();
     }
 
@@ -166,8 +198,8 @@ public class FeedDucks implements Screen, InputProcessor {
 
     @Override
     public void dispose() {
-        for(Duck duck : ducks) {
-            duck.dispose();
+        for (Entity entity : entities) {
+            entity.dispose();
         }
         displayText.dispose();
     }
@@ -186,18 +218,31 @@ public class FeedDucks implements Screen, InputProcessor {
     @Override
     public boolean touchDown(int touchX, int touchY, int pointer, int button) {
         touchY = game.screenHeight - touchY;
+        if(gameOver) {
+            if (touchX >= backButtonX && touchX <= backButtonX + backButtonWidth && touchY >= backButtonY && touchY <= backButtonY + backButtonHeight) {
+                game.gameData.buttonClickedSoundActivate();
+                MainGameScreen MGS = (MainGameScreen) game.screenManager.getScreen(ScreenType.GAME_SCREEN);
+                MGS.lowerEnergyCounter();
+                MGS.incrementRecActivity();
+                game.screenManager.setScreen(ScreenType.GAME_SCREEN);
+            }
+            return false;
+        }
 
-        for(Duck duck : ducks) {
-            float duckX = duck.getX();
-            float duckY = duck.getY();
-            int width = 16 * 7, height = 16 * 7;
-            if(touchX >= duckX && touchX <= duckX + width && touchY >= duckY && touchY <= duckY + height) {
-                game.gameData.duckSoundActivate();
-                ducksFed++;
-                duck.dispose();
-                ducks.remove(duck);
-                addDuck();
-                break;
+        for(Entity entity : entities) {
+            if(entity instanceof Duck) {
+                Duck duck = (Duck) entity;
+                float duckX = duck.getX();
+                float duckY = duck.getY();
+                int width = 16 * 7, height = 16 * 7;
+                if (touchX >= duckX && touchX <= duckX + width && touchY >= duckY && touchY <= duckY + height) {
+                    game.gameData.duckSoundActivate();
+                    ducksFed++;
+                    duck.dispose();
+                    entities.remove(entity);
+                    addDuck();
+                    break;
+                }
             }
         }
 

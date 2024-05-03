@@ -55,4 +55,12 @@ public class Duck extends Entity implements Disposable {
     public int getSpriteY() {
         return spriteY;
     }
+
+    public float getX() {
+        return super.getX();
+    }
+
+    public float getY() {
+        return super.getY();
+    }
 }
