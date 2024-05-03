@@ -99,6 +99,8 @@ public class EndScreen extends ScreenAdapter implements Screen {
      */
     private Table constructButtons(HeslingtonHustle game) {
         Gdx.app.log("Step 1", "Start Button Table");
+        Gdx.app.log("game.scaleFactorX", String.valueOf((int) game.scaleFactorX));
+        Gdx.app.log("game.scaleFactorY", String.valueOf((int) game.scaleFactorY));
         final int BUTTON_WIDTH = playAgainButton.getWidth() * 10 * (int) game.scaleFactorX;
         final int BUTTON_HEIGHT = playAgainButton.getHeight() * 10 * (int) game.scaleFactorY;
         Gdx.app.log("BUTTON_WIDTH", String.valueOf(BUTTON_WIDTH));
@@ -120,6 +122,7 @@ public class EndScreen extends ScreenAdapter implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.gameData.buttonClickedSoundActivate();
+                game.create();
                 game.setup();
             }
         })).size(BUTTON_WIDTH, BUTTON_HEIGHT);
