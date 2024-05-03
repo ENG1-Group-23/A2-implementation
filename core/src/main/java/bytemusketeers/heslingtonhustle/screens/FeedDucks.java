@@ -76,6 +76,9 @@ public class FeedDucks implements Screen, InputProcessor {
     }
 
     public void endGame() {
+        MainGameScreen MGS = (MainGameScreen) game.screenManager.getScreen(ScreenType.GAME_SCREEN);
+        MGS.lowerEnergyCounter();
+        MGS.incrementRecActivity();
         game.screenManager.setScreen(ScreenType.GAME_SCREEN);
     }
 
@@ -91,8 +94,12 @@ public class FeedDucks implements Screen, InputProcessor {
     private void addDuck() {
         Random random = new Random();
         Duck tmp = new Duck(game, gameMap, camera);
-        tmp.setPosition(random.nextInt(gameMap.getWidth() / 2), random.nextInt(gameMap.getHeight() / 2));
+        tmp.setPosition(random.nextInt(game.screenWidth), random.nextInt(game.screenHeight / 2));
         ducks.add(tmp);
+    }
+
+    private void addLilyPads() {
+        addLilyPads(1);
     }
 
     private void addLilyPads(int quantity) {
@@ -132,6 +139,7 @@ public class FeedDucks implements Screen, InputProcessor {
         }
         displayText.draw(game.batch, gameObjective, 0, gameObjectiveY, game.screenWidth, Align.center, false);
         displayText.draw(game.batch, ducksFed + "", 0, gameObjectiveY - 50, game.screenWidth, Align.center, false);
+        displayText.draw(game.batch, "Timer: " + (int)(period - timeSeconds + 1), 0, gameObjectiveY, game.screenWidth - 50, Align.topRight, false);
         game.batch.end();
     }
 

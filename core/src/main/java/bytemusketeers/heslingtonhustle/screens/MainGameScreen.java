@@ -52,6 +52,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     private float durationTextY, menuTitleY, hoursLabelY;
     private float energyBarY, energyBarX, energyBarWidth, energyBarHeight;
     private String activity, popupMenuType;
+
     private int energyCounter, duration, dayNum, recActivity, studyHours, mealCount, currentHour;
     private float timeElapsed, fadeTime, minShade;
     private boolean fadeOut, lockTime, lockMovement, lockPopup, resetPos, popupVisible, showMenu;
@@ -710,5 +711,15 @@ public class MainGameScreen implements Screen, InputProcessor {
     @Override
     public boolean scrolled(float v, float v1) {
         return false;
+    }
+
+    public void lowerEnergyCounter() {
+        if(this.energyCounter == 0) return;
+        this.energyCounter--;
+        energyBar = setEnergyBar();
+    }
+
+    public void incrementRecActivity() {
+        this.recActivity++;
     }
 }
