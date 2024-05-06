@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -24,6 +25,7 @@ public class MainMenuScreen extends ScreenAdapter implements Screen, InputProces
     Texture controlsButton;
     Texture settingsButton;
     Texture exitButton;
+    Texture backgroundImage;
 
     int heslingtonHustleLabelHeight;
     int playButtonHeight;
@@ -69,6 +71,7 @@ public class MainMenuScreen extends ScreenAdapter implements Screen, InputProces
         controlsButton = new Texture("menu_gui/controls_button.png");
         settingsButton = new Texture("menu_gui/settings_button.png");
         exitButton = new Texture("menu_gui/exit_button.png");
+        backgroundImage = new Texture("menu_gui/new_background.png");
     }
 
     /**
@@ -109,10 +112,11 @@ public class MainMenuScreen extends ScreenAdapter implements Screen, InputProces
     @Override
     public void render(float delta) {
         if (exitFlag) return;
-        ScreenUtils.clear(0.3f, 0.55f, 0.7f, 1);
+        ScreenUtils.clear(0f, 0f, 0f, 1);
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
         game.batch.begin();
+        game.batch.draw(backgroundImage, 0, 0, game.screenWidth, game.screenHeight);
         game.batch.draw(heslingtonHustleLabel, heslingtonHustleLabelX, heslingtonHustleLabelY,
                 heslingtonHustleLabelWidth, heslingtonHustleLabelHeight);
         game.batch.draw(playButton, xPosition, playButtonY, playButtonWidth, playButtonHeight);

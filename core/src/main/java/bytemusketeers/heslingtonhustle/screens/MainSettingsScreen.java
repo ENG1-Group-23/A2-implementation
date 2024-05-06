@@ -31,6 +31,7 @@ public class MainSettingsScreen extends ScreenAdapter implements Screen, InputPr
     private Texture soundBar;
     private Texture boyButton;
     private Texture girlButton;
+    private final Texture backgroundImage;
 
     // X and Y coordinates for each button and label
     private float backButtonX;
@@ -104,6 +105,7 @@ public class MainSettingsScreen extends ScreenAdapter implements Screen, InputPr
         soundLabel = new Texture("settings_gui/sound_label.png");
         soundDownButton = new Texture("settings_gui/arrow_left_button.png");
         soundBar = new Texture("settings_gui/bar_" + 25 * game.gameData.getSoundLevel() + ".png");
+        backgroundImage = new Texture("menu_gui/new_background_dark.png");
         if (gender) {
             boyButton = new Texture("settings_gui/boy_button_indented.png");
             girlButton = new Texture("settings_gui/girl_button.png");
@@ -180,9 +182,10 @@ public class MainSettingsScreen extends ScreenAdapter implements Screen, InputPr
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0.3f, 0.55f, 0.7f, 1);
+        ScreenUtils.clear(0f, 0f, 0f, 1);
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
         game.batch.begin();
+        game.batch.draw(backgroundImage, 0, 0, game.screenWidth, game.screenHeight);
         game.batch.draw(backButton, backButtonX, backButtonY, backButtonWidth, backButtonHeight);
         game.batch.draw(settingsLabel, settingsLabelX, settingsLabelY, settingsLabelWidth, settingsLabelHeight);
         game.batch.draw(musicUpButton, musicUpButtonX, musicUpButtonY, musicUpButtonWidth, musicUpButtonHeight);

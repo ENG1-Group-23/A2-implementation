@@ -52,6 +52,7 @@ public class MainControlScreen extends ScreenAdapter implements Screen, InputPro
      * The LibGDX-managed {@link Texture} of the 'controls' button
      */
     private final Texture controls;
+    private final Texture backgroundImage;
 
     /**
      * The X co-ordinate of the 'back' button
@@ -146,6 +147,7 @@ public class MainControlScreen extends ScreenAdapter implements Screen, InputPro
         backButton = new Texture("settings_gui/back_button.png");
         controlLabel = new Texture("controls_gui/controls_label.png");
         controls = new Texture("controls_gui/controls.png");
+        backgroundImage = new Texture("menu_gui/new_background_dark.png");
 
         calculateDimensions();
         calculatePositions();
@@ -195,9 +197,10 @@ public class MainControlScreen extends ScreenAdapter implements Screen, InputPro
      */
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0.3f, 0.55f, 0.7f, 1);
+        ScreenUtils.clear(0f, 0f, 0f, 1);
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
         game.batch.begin();
+        game.batch.draw(backgroundImage, 0, 0, game.screenWidth, game.screenHeight);
         font.draw(game.batch, OBJECTIVE, 0, objectiveY, game.screenWidth, Align.center, false);
         float instructionY = this.instructionY;
         String[] instructions = {
