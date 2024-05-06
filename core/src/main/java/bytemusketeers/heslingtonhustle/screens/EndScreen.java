@@ -31,6 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author ENG1 Team 23
  */
 public class EndScreen extends ScreenAdapter implements Screen {
+    HeslingtonHustle game;
     /**
      * The LibGDX {@link Texture} of the "Play Again" button.
      */
@@ -40,6 +41,7 @@ public class EndScreen extends ScreenAdapter implements Screen {
      * The LibGDX {@link Texture} of the "Exit" button.
      */
     private final Texture exitButton = new Texture("end_gui/exit_button.png");
+    private final Texture backgroundImage = new Texture("menu_gui/new_background_dark.png");
 
     /**
      * The {@link BitmapFont} used for rendering the large {@link EndScreen} {@link String} objects.
@@ -176,6 +178,7 @@ public class EndScreen extends ScreenAdapter implements Screen {
      * @see Leaderboard
      */
     public EndScreen(HeslingtonHustle game, Score score, Achievement[] achievements) {
+        this.game = game;
         Table table = new Table();
         table.setFillParent(true);
 
@@ -206,7 +209,10 @@ public class EndScreen extends ScreenAdapter implements Screen {
      */
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0.3f, 0.55f, 0.7f, 1);
+        ScreenUtils.clear(0f, 0f, 0f, 1);
+        game.batch.begin();
+        game.batch.draw(backgroundImage, 0, 0, game.screenWidth, game.screenHeight);
+        game.batch.end();
         stage.draw();
     }
 

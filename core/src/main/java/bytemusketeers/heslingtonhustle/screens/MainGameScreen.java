@@ -515,6 +515,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
         if (currentHour >= 24) { // If it reaches 12 AM, reset to 8 AM the next day
             if (dayNum == 7) {
                 score.computeFinalScore(eatAch.getStreak(), sleepAch.getStreak(), recAch.getStreak());
+                game.create();
                 game.screenManager.setScreen(ScreenType.END_SCREEN);
             }
             resetDay();
@@ -701,6 +702,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
 
                         if (dayNum == 7) {
                             score.computeFinalScore(eatAch.getStreak(), sleepAch.getStreak(), recAch.getStreak());
+                            game.create();
                             game.screenManager.setScreen(ScreenType.END_SCREEN);
                         }
 

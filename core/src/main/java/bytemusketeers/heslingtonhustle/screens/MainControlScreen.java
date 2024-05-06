@@ -146,7 +146,7 @@ public class MainControlScreen extends ScreenAdapter implements Screen, InputPro
 
         backButton = new Texture("settings_gui/back_button.png");
         controlLabel = new Texture("controls_gui/controls_label.png");
-        controls = new Texture("controls_gui/controls.png");
+        controls = new Texture("controls_gui/controls_new.png");
         backgroundImage = new Texture("menu_gui/new_background_dark.png");
 
         calculateDimensions();
@@ -166,9 +166,9 @@ public class MainControlScreen extends ScreenAdapter implements Screen, InputPro
         backButtonHeight = 100 * game.scaleFactorY;
         controlLabelWidth = 500 * game.scaleFactorX;
         controlLabelHeight = 130 * game.scaleFactorY;
-        controlsWidth = 500 / 3f * game.scaleFactorX;
+        controlsWidth = 500 / 3.5151f * game.scaleFactorX;
         controlsHeight = 500 * game.scaleFactorY;
-        instructionGap = 87 * game.scaleFactorY;
+        instructionGap = 74f * game.scaleFactorY;
     }
 
     /**
@@ -186,7 +186,7 @@ public class MainControlScreen extends ScreenAdapter implements Screen, InputPro
         controlsX = game.screenWidth / 3.2f;
         controlsY = (game.screenHeight / 3.5f) - (controlsHeight / 5f);
         objectiveY = game.screenHeight - 160 * game.scaleFactorY;
-        instructionY = game.screenHeight / 1.45f;
+        instructionY = game.screenHeight / 1.435f;
         instructionX = game.screenWidth / 2f - 90 * game.scaleFactorX;
     }
 
@@ -209,7 +209,8 @@ public class MainControlScreen extends ScreenAdapter implements Screen, InputPro
             "Right - Turn right",
             "Down - Move backward",
             "Shift - Sprint",
-            "Esc - Pause"
+            "Esc - Pause",
+            "Click - Interact"
         };
 
         for (String instruction : instructions) {
