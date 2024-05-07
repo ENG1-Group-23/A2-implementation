@@ -3,6 +3,7 @@ package bytemusketeers.heslingtonhustle.entity;
 import bytemusketeers.heslingtonhustle.HeslingtonHustle;
 import bytemusketeers.heslingtonhustle.map.GameMap;
 import bytemusketeers.heslingtonhustle.utils.CollisionHandler;
+import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -193,7 +194,7 @@ public class Player extends Entity implements Disposable {
 
         // shift key doubles player speed
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT))
-            normalizedSpeed *= 2; // Increase speed if shift is pressed
+            normalizedSpeed *= 2; // Increase speed if shift is presses
 
         float targX = worldX;
         float targY = worldY;

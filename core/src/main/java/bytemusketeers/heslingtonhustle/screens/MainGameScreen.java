@@ -7,10 +7,7 @@ import bytemusketeers.heslingtonhustle.utils.Achievement;
 import bytemusketeers.heslingtonhustle.utils.CollisionHandler;
 import bytemusketeers.heslingtonhustle.utils.Score;
 import bytemusketeers.heslingtonhustle.utils.ScreenType;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -814,7 +811,10 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
 
     @Override
     public boolean keyDown(int i) {
-        return false;
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
+            game.screenManager.setScreen(ScreenType.MAIN_MENU);
+
+        return true;
     }
 
     @Override
