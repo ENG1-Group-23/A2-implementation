@@ -23,22 +23,21 @@ public class InteractionTests {
     private int tileSize;
     private boolean collisionFlag = true;
     private final String[] layers = {"Comp_sci_door", "Piazza_door", "Gym_door", "Goodricke_door"};
-    private HeslingtonHustle game;
     private MainGameScreen screen;
 
     @Before
     public void setUp() {
         OrthographicCamera camera = new OrthographicCamera();
-        this.game = new HeslingtonHustle();
+        HeslingtonHustle game = new HeslingtonHustle();
         game.scaleFactorX = 1;
         game.scaleFactorY = 1;
         game.gameData = new GameData();
         game.tiledMap = new TmxMapLoader().load("map/MainMap.tmx");
         this.gameMap = new GameMap(camera, null, game.tiledMap);
         this.tileSize = this.gameMap.getTileSize();
-        this.player = new Player(this.game, gameMap, camera);
+        this.player = new Player(game, gameMap, camera);
         this.collisionHandler = player.getCollisionHandler();
-        screen = new MainGameScreen(this.game);
+        screen = new MainGameScreen(game);
     }
 
     @Test
