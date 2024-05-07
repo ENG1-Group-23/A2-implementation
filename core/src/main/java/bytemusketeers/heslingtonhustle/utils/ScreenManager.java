@@ -145,7 +145,7 @@ public class ScreenManager {
             case MINI_GAME:
                 return new TypingGame(game, (int) args[0]);
             case FEED_DUCKS:
-                return new FeedDucks(game, (OrthographicCamera) args[0], (GameMap) args[1]);
+                return new FeedDucks(game, (OrthographicCamera) args[0], (GameMap) args[1], (Score) args[2]);
             case EXERCISE_GAME:
                 return new TappingGame(game, (int) args[0]);
             case END_SCREEN:

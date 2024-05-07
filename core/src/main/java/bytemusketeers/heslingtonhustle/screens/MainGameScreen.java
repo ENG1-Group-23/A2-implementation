@@ -641,7 +641,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
                         energyBar.dispose();
                         energyBar = setEnergyBar();
                         timeElapsed += duration * secondsPerGameHour;
-                        game.screenManager.setScreen(ScreenType.MEMORY_GAME, duration);
+                        game.screenManager.setScreen(ScreenType.MINI_GAME, duration);
                     }
 
                     break;
@@ -732,7 +732,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
                         activity = "feed-ducks";
                         showMenu = false;
                         game.gameData.buttonClickedSoundActivate();
-                        game.screenManager.setScreen(ScreenType.FEED_DUCKS, camera, gameMap);
+                        game.screenManager.setScreen(ScreenType.FEED_DUCKS, camera, gameMap, score);
                     }
                     break;
                 case "Comp_sci_door":

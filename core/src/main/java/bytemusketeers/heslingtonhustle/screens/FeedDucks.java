@@ -1,9 +1,10 @@
 package bytemusketeers.heslingtonhustle.screens;
 
-import bytemusketeers.heslingtonhustle.Main;
+import bytemusketeers.heslingtonhustle.HeslingtonHustle;
 import bytemusketeers.heslingtonhustle.entity.Duck;
 import bytemusketeers.heslingtonhustle.entity.Entity;
 import bytemusketeers.heslingtonhustle.map.GameMap;
+import bytemusketeers.heslingtonhustle.utils.Score;
 import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -29,7 +30,7 @@ import static com.badlogic.gdx.graphics.g2d.TextureRegion.split;
 
 public class FeedDucks implements Screen, InputProcessor {
     private final int duckScale = 7;
-    private final Main game;
+    private final HeslingtonHustle game;
     private final OrthographicCamera camera;
     private final GameMap gameMap;
     private final int initialDuckCount = 3;
@@ -45,6 +46,7 @@ public class FeedDucks implements Screen, InputProcessor {
     private List<Entity> entities = new ArrayList<>(); // ducks and lilypads
     String gameObjective;
     private boolean gameOver = false;
+    private Score score;
 
     /**
      * Initialises the mini-game and starts it by running playGame()
@@ -52,10 +54,11 @@ public class FeedDucks implements Screen, InputProcessor {
      * @param camera
      * @param gameMap
      */
-    public FeedDucks(Main game, OrthographicCamera camera, GameMap gameMap) {
+    public FeedDucks(HeslingtonHustle game, OrthographicCamera camera, GameMap gameMap, Score score) {
         this.game = game;
         this.camera = camera;
         this.gameMap = gameMap;
+        this.score = score;
         displayText = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
         backButton = new Texture("menu_gui/exit_button.png");
 
@@ -292,6 +295,7 @@ public class FeedDucks implements Screen, InputProcessor {
                 MainGameScreen MGS = (MainGameScreen) game.screenManager.getScreen(ScreenType.GAME_SCREEN);
                 MGS.lowerEnergyCounter();
                 MGS.incrementRecActivity();
+                score.incrementRec(ducksFed / 10);
                 game.screenManager.setScreen(ScreenType.GAME_SCREEN);
             }
             return false;

@@ -47,6 +47,7 @@ public enum ScreenType {
      *           {@link bytemusketeers.heslingtonhustle.screens.TypingGame}, but could be easily expanded.
      */
     MINI_GAME,
+    FEED_DUCKS,
     EXERCISE_GAME,
 
     /**

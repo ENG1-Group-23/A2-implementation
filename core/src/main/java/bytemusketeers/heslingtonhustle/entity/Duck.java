@@ -1,6 +1,6 @@
 package bytemusketeers.heslingtonhustle.entity;
 
-import bytemusketeers.heslingtonhustle.Main;
+import bytemusketeers.heslingtonhustle.HeslingtonHustle;
 import bytemusketeers.heslingtonhustle.map.GameMap;
 import bytemusketeers.heslingtonhustle.utils.CollisionHandler;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.Disposable;
  */
 public class Duck extends Entity implements Disposable {
 
-    Main game;
+    HeslingtonHustle game;
     GameMap gameMap;
     OrthographicCamera camera;
     CollisionHandler collisionHandler;
@@ -28,7 +28,7 @@ public class Duck extends Entity implements Disposable {
 
     Texture texture;
 
-    public Duck(Main game, GameMap gameMap, OrthographicCamera camera) {
+    public Duck(HeslingtonHustle game, GameMap gameMap, OrthographicCamera camera) {
         this.game = game;
         this.gameMap = gameMap;
         this.camera = camera;
