@@ -405,5 +405,6 @@ public class MainSettingsScreen extends ScreenAdapter implements Screen, InputPr
         soundBar.dispose();
         boyButton.dispose();
         girlButton.dispose();
+        backgroundImage.dispose();
     }
 }

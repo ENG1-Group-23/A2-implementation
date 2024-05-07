@@ -234,6 +234,7 @@ public class EndScreen extends ScreenAdapter implements Screen {
         largeFont.dispose();
         smallFont.dispose();
         stage.dispose();
+        backgroundImage.dispose();
     }
 
     @Override

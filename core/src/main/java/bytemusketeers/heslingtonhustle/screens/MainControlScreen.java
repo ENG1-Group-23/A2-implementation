@@ -304,5 +304,6 @@ public class MainControlScreen extends ScreenAdapter implements Screen, InputPro
         controlLabel.dispose();
         controls.dispose();
         font.dispose();
+        backgroundImage.dispose();
     }
 }

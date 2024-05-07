@@ -206,5 +206,6 @@ public class MainMenuScreen extends ScreenAdapter implements Screen, InputProces
         settingsButton.dispose();
         exitButton.dispose();
         heslingtonHustleLabel.dispose();
+        backgroundImage.dispose();
     }
 }
