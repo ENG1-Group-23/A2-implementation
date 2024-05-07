@@ -1,9 +1,12 @@
 package bytemusketeers.heslingtonhustle.utils;
 
 import bytemusketeers.heslingtonhustle.HeslingtonHustle;
+import bytemusketeers.heslingtonhustle.map.GameMap;
 import bytemusketeers.heslingtonhustle.screens.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -141,6 +144,8 @@ public class ScreenManager {
                 return new MainControlScreen(game);
             case MINI_GAME:
                 return new TypingGame(game, (int) args[0]);
+            case FEED_DUCKS:
+                return new FeedDucks(game, (OrthographicCamera) args[0], (GameMap) args[1]);
             case EXERCISE_GAME:
                 return new TappingGame(game, (int) args[0]);
             case END_SCREEN:
@@ -148,5 +153,12 @@ public class ScreenManager {
             default:
                 return null;
         }
+    }
+
+    public Screen getScreen(ScreenType type) {
+        if (screensInMemory.containsKey(type)) {
+            return screensInMemory.get(type);
+        }
+        return null;
     }
 }
