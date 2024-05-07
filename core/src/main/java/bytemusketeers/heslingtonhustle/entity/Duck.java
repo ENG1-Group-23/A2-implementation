@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Disposable;
 
+/**
+ * Represents a duck which is shown in the feed ducks mini-game
+ */
 public class Duck extends Entity implements Disposable {
 
     Main game;
