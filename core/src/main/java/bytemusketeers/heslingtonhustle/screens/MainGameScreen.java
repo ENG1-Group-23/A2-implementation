@@ -733,6 +733,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
                         showMenu = false;
                         game.gameData.buttonClickedSoundActivate();
                         game.screenManager.setScreen(ScreenType.FEED_DUCKS, camera, gameMap, score);
+                        updateGameTime(10);
                     }
                     break;
                 case "Comp_sci_door":

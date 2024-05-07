@@ -121,7 +121,7 @@ public class FeedDucks implements Screen, InputProcessor {
      */
     private void setNonOverlappingPosition(Duck duck) {
         Random random = new Random();
-        duck.setPosition(random.nextInt(game.screenWidth), random.nextInt(game.screenHeight / 2));
+        duck.setPosition(random.nextInt(game.screenWidth - 100), random.nextInt(game.screenHeight / 2));
         Rectangle[] boundingRectangles = new Rectangle[entities.size()];
         int counter = 0;
         for(Entity entity : entities) {
@@ -129,7 +129,7 @@ public class FeedDucks implements Screen, InputProcessor {
             counter++;
         }
         while (overlapsAny(boundingRectangles, duck.getBoundingRectangle())) {
-            duck.setPosition(random.nextInt(game.screenWidth - 50), random.nextInt(game.screenHeight / 2));
+            duck.setPosition(random.nextInt(game.screenWidth - 100), random.nextInt(game.screenHeight / 2));
         }
     }
 
@@ -154,7 +154,7 @@ public class FeedDucks implements Screen, InputProcessor {
      */
     private void setNonOverlappingPosition(Entity lilyPad) {
         Random random = new Random();
-        lilyPad.worldX = random.nextInt(game.screenWidth);
+        lilyPad.worldX = random.nextInt(game.screenWidth - 64);
         lilyPad.worldY = random.nextInt(game.screenHeight / 2);
         Rectangle[] boundingRectangles = new Rectangle[entities.size()];
         int counter = 0;
@@ -164,7 +164,7 @@ public class FeedDucks implements Screen, InputProcessor {
             counter++;
         }
         while (overlapsAny(boundingRectangles, lilyPad.getBoundingRectangle())) {
-            lilyPad.worldX = random.nextInt(game.screenWidth);
+            lilyPad.worldX = random.nextInt(game.screenWidth - 64);
             lilyPad.worldY = random.nextInt(game.screenHeight / 2);
         }
     }
@@ -293,6 +293,9 @@ public class FeedDucks implements Screen, InputProcessor {
             if (touchX >= backButtonX && touchX <= backButtonX + backButtonWidth && touchY >= backButtonY && touchY <= backButtonY + backButtonHeight) {
                 game.gameData.buttonClickedSoundActivate();
                 MainGameScreen MGS = (MainGameScreen) game.screenManager.getScreen(ScreenType.GAME_SCREEN);
+                MGS.lowerEnergyCounter();
+                MGS.lowerEnergyCounter();
+                MGS.lowerEnergyCounter();
                 MGS.lowerEnergyCounter();
                 MGS.incrementRecActivity();
                 score.incrementRec(ducksFed / 10);
