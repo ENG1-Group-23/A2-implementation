@@ -7,7 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.main.Main;
+import com.main.HeslingtonHustle;
 import com.main.utils.ScreenType;
 
 /**
@@ -17,7 +17,7 @@ import com.main.utils.ScreenType;
  * handling rendering and input events within the control screen context.
  */
 public class MainControlScreen implements Screen, InputProcessor {
-    Main game;
+    HeslingtonHustle game;
     BitmapFont font;
     String objective;
     private final Texture backButton, controlLabel, controls;
@@ -33,7 +33,7 @@ public class MainControlScreen implements Screen, InputProcessor {
      *
      * @param game The main game object that this screen is a part of.
      */
-    public MainControlScreen(Main game) {
+    public MainControlScreen(HeslingtonHustle game) {
         this.game = game;
         font = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
 

@@ -5,7 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.main.Main;
+import com.main.HeslingtonHustle;
 import com.main.utils.ScreenType;
 
 /**
@@ -15,7 +15,7 @@ import com.main.utils.ScreenType;
  */
 public class MainMenuScreen implements Screen, InputProcessor {
 
-    Main game;
+    HeslingtonHustle game;
 
     Texture heslingtonHustleLabel, playButton, controlsButton, settingsButton, exitButton;
 
@@ -34,7 +34,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
      *
      * @param game the game instance this screen belongs to.
      */
-    public MainMenuScreen(Main game) {
+    public MainMenuScreen(HeslingtonHustle game) {
         this.game = game;
 
         loadTextures();

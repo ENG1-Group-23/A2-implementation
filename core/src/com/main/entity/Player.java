@@ -9,8 +9,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
+import com.main.HeslingtonHustle;
 import com.main.map.GameMap;
-import com.main.Main;
 import com.main.utils.CollisionHandler;
 
 /**
@@ -18,7 +18,7 @@ import com.main.utils.CollisionHandler;
  * and animations.
  */
 public class Player extends Entity implements Disposable {
-    Main game;
+    HeslingtonHustle game;
     GameMap gameMap;
     OrthographicCamera camera;
     CollisionHandler collisionHandler;
@@ -44,7 +44,7 @@ public class Player extends Entity implements Disposable {
      * @param gameMap The game map for collision detection and boundaries.
      * @param camera The camera to follow the player.
      */
-    public Player(Main game, GameMap gameMap, OrthographicCamera camera) {
+    public Player(HeslingtonHustle game, GameMap gameMap, OrthographicCamera camera) {
         this.game = game;
         this.gameMap = gameMap;
         this.camera = camera;

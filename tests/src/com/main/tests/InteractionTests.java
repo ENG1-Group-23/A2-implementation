@@ -1,12 +1,12 @@
 package com.main.tests;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.main.Main;
+import com.main.HeslingtonHustle;
 import com.main.entity.Player;
 import com.main.map.GameMap;
+import com.main.screens.MainGameScreen;
 import com.main.utils.CollisionHandler;
 import com.main.utils.GameData;
 import org.junit.Before;
@@ -20,26 +20,30 @@ public class InteractionTests {
     private Player player;
     private CollisionHandler collisionHandler;
     private GameMap gameMap;
-    private TiledMap tiledMap;
     private int tileSize;
     private boolean collisionFlag = true;
+    private final String[] layers = {"Comp_sci_door", "Piazza_door", "Gym_door", "Goodricke_door"};
+    private HeslingtonHustle game;
+    private MainGameScreen screen;
 
     @Before
     public void setUp() {
         OrthographicCamera camera = new OrthographicCamera();
-        Main game = new Main();
+        this.game = new HeslingtonHustle();
+        game.scaleFactorX = 1;
+        game.scaleFactorY = 1;
         game.gameData = new GameData();
-        this.tiledMap = new TmxMapLoader().load("map/MainMap.tmx");
-        this.gameMap = new GameMap(camera, null, tiledMap);
+        game.tiledMap = new TmxMapLoader().load("map/MainMap.tmx");
+        this.gameMap = new GameMap(camera, null, game.tiledMap);
         this.tileSize = this.gameMap.getTileSize();
-        this.player = new Player(game, gameMap, camera);
+        this.player = new Player(this.game, gameMap, camera);
         this.collisionHandler = player.getCollisionHandler();
+        screen = new MainGameScreen(this.game);
     }
 
     @Test
-    public void testDoorInteraction() {
+    public void testDoorCollision() {
         String failedLayer = "";
-        String[] layers = {"Comp_sci_door", "Piazza_door", "Gym_door", "Goodricke_door"};
         for (String layerName : layers) {
             TiledMapTileLayer layer = (TiledMapTileLayer) this.gameMap.getMap().getLayers().get(layerName);
             int layerX = 0;
@@ -72,5 +76,47 @@ public class InteractionTests {
             }
         }
         assertTrue("Failed interaction with layer: " + failedLayer, collisionFlag);
+    }
+
+    @Test
+    public void testEatButton() {
+        int energy = screen.getEnergyCounter();
+        int meal = screen.getMealCount();
+        int energyToCompare;
+        if (energy == 10) {
+            energyToCompare = 10;
+        } else {
+            energyToCompare = energy + 3;
+        }
+        screen.eatClickHandler();
+        assertEquals(energyToCompare, screen.getEnergyCounter(), 0.0001);
+        assertEquals(meal + 1, screen.getMealCount(), 0.0001);
+    }
+
+    @Test
+    public void testStudyButton() {
+        screen.studyClickHandler();
+        assertTrue(screen.isShowMenu());
+        assertTrue(screen.isLockMovement());
+        assertEquals("study", screen.getActivity());
+        assertEquals(1, screen.getDuration(), 0.0001);
+    }
+
+    @Test
+    public void testExerciseButton() {
+        screen.exerciseClickHandler();
+        assertTrue(screen.isShowMenu());
+        assertTrue(screen.isLockMovement());
+        assertEquals("exercise", screen.getActivity());
+        assertEquals(1, screen.getDuration(), 0.0001);
+    }
+
+    @Test
+    public void testSleepButton() {
+        screen.sleepClickHandler();
+        assertTrue(screen.isShowMenu());
+        assertTrue(screen.isLockMovement());
+        assertEquals("sleep", screen.getActivity());
+        assertEquals(1, screen.getDuration(), 0.0001);
     }
 }

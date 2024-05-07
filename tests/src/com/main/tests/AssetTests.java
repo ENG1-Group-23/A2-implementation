@@ -56,7 +56,7 @@ public class AssetTests {
     assertTrue("Controls asset exists",
             Gdx.files.internal("controls_gui/controls.png").exists());
     //Menu screen
-    assertTrue("Main label asset exists",
+    assertTrue("HeslingtonHustle label asset exists",
             Gdx.files.internal("menu_gui/heslington_hustle_label.png").exists());
     assertTrue("Play button asset exists",
             Gdx.files.internal("menu_gui/play_button.png").exists());

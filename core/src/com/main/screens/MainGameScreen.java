@@ -9,13 +9,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.main.Main;
+import com.main.HeslingtonHustle;
 import com.main.entity.Player;
 import com.main.map.GameMap;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -36,7 +33,7 @@ public class MainGameScreen implements Screen, InputProcessor {
     private final GameMap gameMap;
     private final OrthographicCamera camera;
     private final ShapeRenderer shapeRenderer;
-    private final Main game;
+    private final HeslingtonHustle game;
     private final Texture menuButton, popupMenu, durationUpButton, durationDownButton,
             menuBackButton, menuStudyButton, menuSleepButton, menuGoButton,
             durationMenuBackground, counterBackground;
@@ -65,7 +62,7 @@ public class MainGameScreen implements Screen, InputProcessor {
      *
      * @param game The main game application instance.
      */
-    public MainGameScreen(Main game) {
+    public MainGameScreen(HeslingtonHustle game) {
         this.game = game;
         this.shader = new Color(0.5f, 0.5f, 0.5f, 1);
         this.gameDayLengthInSeconds = 60f;
@@ -464,6 +461,14 @@ public class MainGameScreen implements Screen, InputProcessor {
         }
     }
 
+    public int getEnergyCounter() {
+        return energyCounter;
+    }
+
+    public int getMealCount() {
+        return mealCount;
+    }
+
     /**
      * Handles touch input from the user, managing interactions with UI elements and game objects.
      *
@@ -561,59 +566,88 @@ public class MainGameScreen implements Screen, InputProcessor {
         else if (popupVisible){
             Vector3 studyOpt = camera.project(new Vector3(player.worldX + 30, player.worldY + 20, 0));
             Vector3 eatOpt = camera.project(new Vector3(player.worldX + 30, player.worldY + 35, 0));
+            System.out.println(eatOpt + ", " + touchX + ", " + touchY + "; " + (eatOpt.x + popupMenuWidth * zoom));
             switch (popupMenuType) {
                 case "Comp_sci_door":
                     if (touchX >= studyOpt.x && touchX <= studyOpt.x + popupMenuWidth * zoom && touchY >= studyOpt.y && touchY <= studyOpt.y + popupMenuHeight * zoom) {
-                        game.gameData.buttonClickedSoundActivate();
-                        showMenu = true;
-                        lockMovement = true;
-                        activity = "study";
-                        duration = 1;
+                        studyClickHandler();
                     }
                     break;
 
                 case "Piazza_door":
                     if (touchX >= studyOpt.x && touchX <= studyOpt.x + popupMenuWidth * zoom && touchY >= studyOpt.y && touchY <= studyOpt.y + popupMenuHeight * zoom) {
-                        game.gameData.buttonClickedSoundActivate();
-                        showMenu = true;
-                        lockMovement = true;
-                        activity = "study";
-                        duration = 1;
+                        studyClickHandler();
                     }
                     else if (touchX >= eatOpt.x && touchX <= eatOpt.x + popupMenuWidth * zoom && touchY >= eatOpt.y && touchY <= eatOpt.y + popupMenuHeight * zoom) {
-                        game.gameData.buttonClickedSoundActivate();
-                        game.gameData.eatingSoundActivate();
-                        energyCounter += 3;
-                        mealCount++;
-                        if (energyCounter > 10) energyCounter = 10;
-                        energyBar.dispose();
-                        energyBar = setEnergyBar();
+                        eatClickHandler();
                     }
                     break;
 
                 case "Gym_door":
                     if (touchX >= studyOpt.x && touchX <= studyOpt.x + popupMenuWidth * zoom && touchY >= studyOpt.y && touchY <= studyOpt.y + popupMenuHeight * zoom) {
-                        game.gameData.buttonClickedSoundActivate();
-                        showMenu = true;
-                        lockMovement = true;
-                        activity = "exercise";
-                        duration = 1;
+                        exerciseClickHandler();
                     }
                     break;
 
                 case "Goodricke_door":
                     if (touchX >= studyOpt.x && touchX <= studyOpt.x + popupMenuWidth * zoom && touchY >= studyOpt.y && touchY <= studyOpt.y + popupMenuHeight * zoom) {
-                        game.gameData.buttonClickedSoundActivate();
-                        showMenu = true;
-                        lockMovement = true;
-                        activity = "sleep";
-                        duration = 1;
+                        sleepClickHandler();
                     }
                     break;
             }
         }
 
         return true;
+    }
+
+    public boolean isShowMenu() {
+        return showMenu;
+    }
+
+    public boolean isLockMovement() {
+        return lockMovement;
+    }
+
+    public String getActivity() {
+        return activity;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void studyClickHandler() {
+        game.gameData.buttonClickedSoundActivate();
+        showMenu = true;
+        lockMovement = true;
+        activity = "study";
+        duration = 1;
+    }
+
+    public void exerciseClickHandler() {
+        game.gameData.buttonClickedSoundActivate();
+        showMenu = true;
+        lockMovement = true;
+        activity = "exercise";
+        duration = 1;
+    }
+
+    public void sleepClickHandler () {
+        game.gameData.buttonClickedSoundActivate();
+        showMenu = true;
+        lockMovement = true;
+        activity = "sleep";
+        duration = 1;
+    }
+
+    public void eatClickHandler() {
+        game.gameData.buttonClickedSoundActivate();
+        game.gameData.eatingSoundActivate();
+        energyCounter += 3;
+        mealCount++;
+        if (energyCounter > 10) energyCounter = 10;
+        energyBar.dispose();
+        energyBar = setEnergyBar();
     }
 
     @Override

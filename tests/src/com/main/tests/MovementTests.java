@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
-import com.main.Main;
+import com.main.HeslingtonHustle;
 import com.main.entity.Player;
 import com.main.map.GameMap;
 import com.main.utils.CollisionHandler;
@@ -23,7 +23,7 @@ public class MovementTests {
     @Before
     public void setUp() {
         OrthographicCamera camera = new OrthographicCamera();
-        Main game = new Main();
+        HeslingtonHustle game = new HeslingtonHustle();
         game.gameData = new GameData();
         TiledMap tiledMap = new TmxMapLoader().load("map/MainMap.tmx");
         GameMap gameMap = new GameMap(camera, null, tiledMap);

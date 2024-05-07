@@ -5,7 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.main.Main;
+import com.main.HeslingtonHustle;
 import com.main.utils.ScreenType;
 
 /**
@@ -13,7 +13,7 @@ import com.main.utils.ScreenType;
  * and the character's gender.
  */
 public class MainSettingsScreen implements Screen, InputProcessor {
-    Main game;
+    HeslingtonHustle game;
     boolean gender;
     private final Texture backButton, settingsLabel, musicUpButton, musicDownButton, musicLabel, soundUpButton, soundLabel, soundDownButton;
     private Texture musicBar, soundBar, boyButton, girlButton;
@@ -33,7 +33,7 @@ public class MainSettingsScreen implements Screen, InputProcessor {
      * Constructs the settings screen with references to main game object and initializes UI components.
      * @param game The main game object for accessing global properties and methods.
      */
-    public MainSettingsScreen(Main game) {
+    public MainSettingsScreen(HeslingtonHustle game) {
         this.game = game;
         gender = game.gameData.getGender();
 

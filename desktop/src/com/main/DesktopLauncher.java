@@ -33,6 +33,6 @@ public class DesktopLauncher {
 		config.setWindowIcon(Files.FileType.Internal, "icon/icon_128.png"); // icon for macOS
 
 		config.setTitle("Heslington_Hustle");
-		new Lwjgl3Application(new Main(), config);
+		new Lwjgl3Application(new HeslingtonHustle(), config);
 	}
 }

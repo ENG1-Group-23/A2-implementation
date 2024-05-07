@@ -20,7 +20,7 @@ import com.main.utils.ScreenType;
  * The main class for the game, extending the LibGDX Game class.
  * It initializes and manages the game's resources, screens, and settings.
  */
-public class Main extends Game {
+public class HeslingtonHustle extends Game {
 	public SpriteBatch batch; // Used for drawing textures and sprites in batches
 	public GameData gameData; // Manages the game's data, such as settings and player information
 	public ScreenManager screenManager; // Manages the game's screens, allowing for easy transitions

@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.main.Main;
+import com.main.HeslingtonHustle;
 
 public class EndScreen implements Screen, InputProcessor {
-    Main game;
+    HeslingtonHustle game;
     Texture playAgainButton, exitButton;
     BitmapFont font;
     String titleText;
@@ -18,7 +18,7 @@ public class EndScreen implements Screen, InputProcessor {
     float buttonX, buttonWidth, buttonHeight;
     float titleY;
     boolean exitFlag;
-    public EndScreen(Main game){
+    public EndScreen(HeslingtonHustle game){
         this.game = game;
         titleText = "The End";
         loadAssets();

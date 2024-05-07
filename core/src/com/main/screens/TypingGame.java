@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
-import com.main.Main;
+import com.main.HeslingtonHustle;
 import com.main.utils.ScreenType;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -18,7 +18,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Players are shown a number that they need to memorize and then type it correctly to succeed.
  */
 public class TypingGame implements Screen, InputProcessor {
-    private final Main game;
+    private final HeslingtonHustle game;
     private final int studyDuration;
     private int attempts = 0;
     private int currentNumber = 0;
@@ -40,7 +40,7 @@ public class TypingGame implements Screen, InputProcessor {
      * @param game The main game instance.
      * @param studyDuration The duration of the study session in attempts.
      */
-    public TypingGame(Main game, int studyDuration){
+    public TypingGame(HeslingtonHustle game, int studyDuration){
         this.game = game;
         displayText = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
         guessButton = new Texture("mini_games/guess_button.png");

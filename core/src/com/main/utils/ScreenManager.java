@@ -2,7 +2,7 @@ package com.main.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.main.Main;
+import com.main.HeslingtonHustle;
 import com.main.screens.*;
 
 import java.util.Map;
@@ -13,7 +13,7 @@ import java.util.HashMap;
  * and memory management of screens.
  */
 public class ScreenManager {
-    private final Main game;
+    private final HeslingtonHustle game;
     private final Map<ScreenType, Screen> screensInMemory;
     private Screen curScreen;
     private ScreenType curScreenType;
@@ -23,7 +23,7 @@ public class ScreenManager {
      *
      * @param game The main game class instance.
      */
-    public ScreenManager(Main game){
+    public ScreenManager(HeslingtonHustle game){
         this.game = game;
         this.screensInMemory = new HashMap<>();
     }
