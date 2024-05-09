@@ -61,15 +61,15 @@ public class GameMap extends TiledMap {
      *
      * @param camera The camera used to view the map.
      */
-    public GameMap(OrthographicCamera camera) {
+    public GameMap(OrthographicCamera camera, OrthogonalTiledMapRenderer tiledMapRenderer, TiledMap map) {
         // Load the .tmx with the MainMap for game
-        gameMap = new TmxMapLoader().load("map/MainMap.tmx");
+        gameMap = map;
         MapProperties properties = gameMap.getProperties();
         height = properties.get("tileheight", Integer.class) * properties.get("height", Integer.class);
         width = properties.get("tilewidth", Integer.class) * properties.get("width", Integer.class);
 
         // Render the MainMap
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(gameMap);
+        this.tiledMapRenderer = tiledMapRenderer;
 
         this.camera = camera;
     }

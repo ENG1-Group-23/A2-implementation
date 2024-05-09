@@ -44,16 +44,9 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
     private final OrthographicCamera camera;
     private final ShapeRenderer shapeRenderer;
     private final HeslingtonHustle game;
-    private final Texture menuButton;
-    private final Texture popupMenu;
-    private final Texture durationUpButton;
-    private final Texture durationDownButton;
-    private final Texture menuBackButton;
-    private final Texture menuStudyButton;
-    private final Texture menuSleepButton;
-    private final Texture menuGoButton;
-    private final Texture durationMenuBackground;
-    private final Texture counterBackground;
+    private final Texture menuButton, popupMenu, durationUpButton, durationDownButton,
+            menuBackButton, menuStudyButton, menuSleepButton, menuGoButton,
+            durationMenuBackground, counterBackground;
     private final float gameDayLengthInSeconds;
     private final float secondsPerGameHour;
 
@@ -161,7 +154,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
 
         // Setting up the game
         this.camera = new OrthographicCamera();
-        this.gameMap = new GameMap(this.camera);
+        this.gameMap = new GameMap(this.camera, game.renderer, game.tiledMap);
         this.player = new Player(this.game, this.gameMap, this.camera);
         this.score = score;
         this.eatAch = eatAch;
@@ -170,7 +163,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
         this.font = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
         this.popupFont = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
         this.durationFont = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
-        this.shapeRenderer = new ShapeRenderer();
+        this.shapeRenderer = game.shapeRenderer;
         this.energyBar = setEnergyBar();
 
         this.calculateDimensions();
@@ -527,7 +520,8 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
     private void resetDay() {
         executeFadeOut(true);
 
-        if (dailyStudyHours > 4) { score.hasOverStudied(); }
+        if (dailyStudyHours > 4)
+            score.markAsOverstudied();
 
         score.updateScore();
 
@@ -573,6 +567,14 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
             return new Texture("energy/energy_" + energyCounter + ".png");
         else
             return new Texture("energy/energy_0.png");
+    }
+
+    public int getEnergyCounter() {
+        return energyCounter;
+    }
+
+    public int getMealCount() {
+        return mealCount;
     }
 
     /**
@@ -781,7 +783,57 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
             }
         }
 
-        return true;
+        return false;
+    }
+
+    public boolean isShowMenu() {
+        return showMenu;
+    }
+
+    public boolean isLockMovement() {
+        return lockMovement;
+    }
+
+    public String getActivity() {
+        return activity;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void studyClickHandler() {
+        game.gameData.buttonClickedSoundActivate();
+        showMenu = true;
+        lockMovement = true;
+        activity = "study";
+        duration = 1;
+    }
+
+    public void exerciseClickHandler() {
+        game.gameData.buttonClickedSoundActivate();
+        showMenu = true;
+        lockMovement = true;
+        activity = "exercise";
+        duration = 1;
+    }
+
+    public void sleepClickHandler () {
+        game.gameData.buttonClickedSoundActivate();
+        showMenu = true;
+        lockMovement = true;
+        activity = "sleep";
+        duration = 1;
+    }
+
+    public void eatClickHandler() {
+        game.gameData.buttonClickedSoundActivate();
+        game.gameData.eatingSoundActivate();
+        energyCounter += 3;
+        mealCount++;
+        if (energyCounter > 10) energyCounter = 10;
+        energyBar.dispose();
+        energyBar = setEnergyBar();
     }
 
     @Override

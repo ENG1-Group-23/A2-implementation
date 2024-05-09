@@ -2,15 +2,35 @@ package bytemusketeers.heslingtonhustle;
 
 import bytemusketeers.heslingtonhustle.utils.CollisionHandler;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
-import org.junit.Assert;
+import bytemusketeers.heslingtonhustle.entity.Player;
+import bytemusketeers.heslingtonhustle.map.GameMap;
+import bytemusketeers.heslingtonhustle.utils.GameData;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.junit.Assert.assertEquals;
+
 @RunWith(GdxTestRunner.class)
 public class MovementTests {
+    private Player player;
+    private CollisionHandler collisionHandler;
+
+    @Before
+    public void setUp() {
+        OrthographicCamera camera = new OrthographicCamera();
+        HeslingtonHustle game = new HeslingtonHustle();
+        game.gameData = new GameData();
+        TiledMap tiledMap = new TmxMapLoader().load("map/MainMap.tmx");
+        GameMap gameMap = new GameMap(camera, null, tiledMap);
+        this.player = new Player(game, gameMap, camera);
+        this.collisionHandler = player.getCollisionHandler();
+    }
+
     @Test
     public void testMoveLeft() {
         // Simulating Player initialisation
@@ -25,12 +45,12 @@ public class MovementTests {
         CollisionHandler collisionHandler = new CollisionHandler(gameMap, tileSize, tileSize, spriteX, spriteY * 0.5f, 0.7f, 0.7f);
 
         // Calculating target coordinates when simulating movement
-        float targX = worldX - (float) (normalizedSpeed * Gdx.graphics.getDeltaTime());
-        float targY = worldY;
+        float targX = player.worldX - (float) (player.speed * Gdx.graphics.getDeltaTime());
+        float targY = player.worldY;
 
         // Using a player's collision handler to derive the new position of a player after moving left
-        Vector2 newPos = collisionHandler.adjustPos(worldX, worldY, targX, targY);
-        Assert.assertEquals(targX, newPos.x, 0.0001);
+        Vector2 newPos = collisionHandler.adjustPos(player.worldX, player.worldY, targX, targY);
+        assertEquals(targX, newPos.x, 0.0001);
     }
 
     @Test
@@ -47,12 +67,12 @@ public class MovementTests {
         CollisionHandler collisionHandler = new CollisionHandler(gameMap, tileSize, tileSize, spriteX, spriteY * 0.5f, 0.7f, 0.7f);
 
         // Calculating target coordinates when simulating movement
-        float targX = worldX + (float) (normalizedSpeed * Gdx.graphics.getDeltaTime());
-        float targY = worldY;
+        float targX = player.worldX + (float) (player.speed * Gdx.graphics.getDeltaTime());
+        float targY = player.worldY;
 
         // Using a player's collision handler to derive the new position of a player after moving left
-        Vector2 newPos = collisionHandler.adjustPos(worldX, worldY, targX, targY);
-        Assert.assertEquals(targX, newPos.x, 0.0001);
+        Vector2 newPos = collisionHandler.adjustPos(player.worldX, player.worldY, targX, targY);
+        assertEquals(targX, newPos.x, 0.0001);
     }
 
     @Test
@@ -69,12 +89,12 @@ public class MovementTests {
         CollisionHandler collisionHandler = new CollisionHandler(gameMap, tileSize, tileSize, spriteX, spriteY * 0.5f, 0.7f, 0.7f);
 
         // Calculating target coordinates when simulating movement
-        float targX = worldX;
-        float targY = worldY + (float) (normalizedSpeed * Gdx.graphics.getDeltaTime());
+        float targX = player.worldX;
+        float targY = player.worldY + (float) (player.speed * Gdx.graphics.getDeltaTime());
 
         // Using a player's collision handler to derive the new position of a player after moving left
-        Vector2 newPos = collisionHandler.adjustPos(worldX, worldY, targX, targY);
-        Assert.assertEquals(targX, newPos.x, 0.0001);
+        Vector2 newPos = collisionHandler.adjustPos(player.worldX, player.worldY, targX, targY);
+        assertEquals(targX, newPos.x, 0.0001);
     }
 
     @Test
@@ -91,11 +111,11 @@ public class MovementTests {
         CollisionHandler collisionHandler = new CollisionHandler(gameMap, tileSize, tileSize, spriteX, spriteY * 0.5f, 0.7f, 0.7f);
 
         // Calculating target coordinates when simulating movement
-        float targX = worldX;
-        float targY = worldY - (float) (normalizedSpeed * Gdx.graphics.getDeltaTime());
+        float targX = player.worldX;
+        float targY = player.worldY - (float) (player.speed * Gdx.graphics.getDeltaTime());
 
         // Using a player's collision handler to derive the new position of a player after moving left
-        Vector2 newPos = collisionHandler.adjustPos(worldX, worldY, targX, targY);
-        Assert.assertEquals(targX, newPos.x, 0.0001);
+        Vector2 newPos = collisionHandler.adjustPos(player.worldX, player.worldY, targX, targY);
+        assertEquals(targX, newPos.x, 0.0001);
     }
 }

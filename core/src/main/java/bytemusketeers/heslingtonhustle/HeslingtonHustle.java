@@ -1,7 +1,5 @@
 package bytemusketeers.heslingtonhustle;
 
-import static com.badlogic.gdx.Gdx.graphics;
-
 import bytemusketeers.heslingtonhustle.utils.GameData;
 import bytemusketeers.heslingtonhustle.utils.ScreenManager;
 import bytemusketeers.heslingtonhustle.utils.ScreenType;
@@ -10,8 +8,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+
+import static com.badlogic.gdx.Gdx.graphics;
 
 /**
  * The main class for the game, extending the LibGDX Game class. It initializes and manages the game's resources,
@@ -21,78 +25,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
  * @author ENG1 Team 23
  */
 public class HeslingtonHustle extends Game {
-    /**
-     * The LibGDX-controlled {@link SpriteBatch}, used for batching numerous
-     * {@link com.badlogic.gdx.graphics.g2d.Sprite} objects to be drawn to a {@link com.badlogic.gdx.Screen} on a single
-     * transaction.
-     */
-    public SpriteBatch batch;
-
-    /**
-     * Stores the settings and transient data for the current {@link Game} instantiation
-     */
-    public GameData gameData;
-
-    /**
-     * Manages the allocation and despatching of {@link com.badlogic.gdx.Screen} implementations
-     *
-     * @see bytemusketeers.heslingtonhustle.screens.EndScreen
-     * @see bytemusketeers.heslingtonhustle.screens.MainControlScreen
-     * @see bytemusketeers.heslingtonhustle.screens.MainGameScreen
-     * @see bytemusketeers.heslingtonhustle.screens.MainMenuScreen
-     * @see bytemusketeers.heslingtonhustle.screens.MainSettingsScreen
-     * @see bytemusketeers.heslingtonhustle.screens.TypingGame
-     */
-    public ScreenManager screenManager;
-
-    /**
-     * The current width of the window, in pixels.
-     *
-     * @see Gdx#graphics
-     * @see #defWidth
-     */
-    public int screenWidth;
-
-    /**
-     * The current height of the window, in pixels
-     *
-     * @see Gdx#graphics
-     * @see #defHeight
-     */
-    public int screenHeight;
-
-    /**
-     * The default width of the window, in pixels
-     *
-     * @see #screenWidth
-     */
-    public int defWidth;
-
-    /**
-     * The default height of the window, in pixels
-     */
-    public int defHeight;
-
-    /**
-     * The LibGDX {@link Skin} to supply the {@link BitmapFont} bitmaps with the corresponding {@link Label.LabelStyle}
-     */
-    public Skin skin;
-
-    /**
-     * The basal LibGDX {@link com.badlogic.gdx.graphics.Camera} shared across {@link com.badlogic.gdx.Screen}
-     * implementations
-     */
+    public SpriteBatch batch; // Used for drawing textures and sprites in batches
+    public GameData gameData; // Manages the game's data, such as settings and player information
+    public ScreenManager screenManager; // Manages the game's screens, allowing for easy transitions
+    public int screenWidth, screenHeight; // The current width and height of the screen
+    public int defWidth, defHeight; // Default screen width and height, used for UI scaling
+    public Skin skin; // Used for storing UI elements' styles and skins
     public OrthographicCamera defaultCamera;
-
-    /**
-     * The horizontal scale factor by which pixel units should be multiplied
-     */
     public float scaleFactorX;
-
-    /**
-     * The vertical scale factor by which pixel units should be multiplied
-     */
     public float scaleFactorY;
+    public TiledMap tiledMap;
+    public OrthogonalTiledMapRenderer renderer;
+    public ShapeRenderer shapeRenderer;
 
     /**
      * Called when the game is first created.
@@ -113,6 +57,11 @@ public class HeslingtonHustle extends Game {
         defaultCamera.setToOrtho(false, defWidth, defHeight);
         scaleFactorX = 1;
         scaleFactorY = 1;
+
+        // Initialize the map renderer, shape renderer, and tiled map
+        tiledMap = new TmxMapLoader().load("map/MainMap.tmx");
+        renderer = new OrthogonalTiledMapRenderer(tiledMap);
+        shapeRenderer = new ShapeRenderer();
 
         // Fonts for writing in game
         skin = new Skin();
@@ -140,9 +89,17 @@ public class HeslingtonHustle extends Game {
     }
 
     /**
+     * Called each frame, responsible for rendering the game.
+     */
+    @Override
+    public void render() {
+        super.render();
+    }
+
+    /**
      * Called when the application is resized.
      *
-     * @param width The new width of the application.
+     * @param width  The new width of the application.
      * @param height The new height of the application.
      */
     @Override
@@ -157,5 +114,13 @@ public class HeslingtonHustle extends Game {
             scaleFactorY = screenHeight / (float) defHeight;
             screenManager.resize(width, height);
         }
+    }
+
+    /**
+     * Called when the game is closing.
+     * Disposes of resources to avoid memory leaks.
+     */
+    @Override
+    public void dispose() {
     }
 }
