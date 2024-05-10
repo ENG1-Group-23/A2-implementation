@@ -20,16 +20,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
  */
 public class MainControlScreen extends ScreenAdapter implements Screen, InputProcessor {
     /**
-     * The parental {@link com.badlogic.gdx.Game}/{@link HeslingtonHustle} reference
-     */
-    HeslingtonHustle game;
-
-    /**
-     * The LibGDX-managed {@link BitmapFont} used to render on-screen text
-     */
-    BitmapFont font;
-
-    /**
      * The human-readable objective text of {@link HeslingtonHustle}, outlining the responsibility of the
      * {@link bytemusketeers.heslingtonhustle.entity.Player}
      */
@@ -37,23 +27,27 @@ public class MainControlScreen extends ScreenAdapter implements Screen, InputPro
             + "student with exams in only 7 days. Explore the map, \n and interact with buildings to eat, study, sleep "
             + "and have fun. To get a good grade, you need to balance hours of studying with \n self-care and "
             + "recreation. Good luck!";
-
     /**
      * The LibGDX-managed {@link Texture} of the 'back' button
      */
     private final Texture backButton;
-
     /**
      * The LibGDX-managed {@link Texture} of the 'control' label
      */
     private final Texture controlLabel;
-
     /**
      * The LibGDX-managed {@link Texture} of the 'controls' button
      */
     private final Texture controls;
     private final Texture backgroundImage;
-
+    /**
+     * The parental {@link com.badlogic.gdx.Game}/{@link HeslingtonHustle} reference
+     */
+    HeslingtonHustle game;
+    /**
+     * The LibGDX-managed {@link BitmapFont} used to render on-screen text
+     */
+    BitmapFont font;
     /**
      * The X co-ordinate of the 'back' button
      */
@@ -204,13 +198,13 @@ public class MainControlScreen extends ScreenAdapter implements Screen, InputPro
         font.draw(game.batch, OBJECTIVE, 0, objectiveY, game.screenWidth, Align.center, false);
         float instructionY = this.instructionY;
         String[] instructions = {
-            "Up - Move forward",
-            "Left - Turn left",
-            "Right - Turn right",
-            "Down - Move backward",
-            "Shift - Sprint",
-            "Esc - Pause",
-            "Click - Interact"
+                "Up - Move forward",
+                "Left - Turn left",
+                "Right - Turn right",
+                "Down - Move backward",
+                "Shift - Sprint",
+                "Esc - Pause",
+                "Click - Interact"
         };
 
         for (String instruction : instructions) {
@@ -228,10 +222,10 @@ public class MainControlScreen extends ScreenAdapter implements Screen, InputPro
      * Handles touch down input events. Specifically, checks if the back button is pressed
      * and navigates back to the main menu screen.
      *
-     * @param touchX The x-coordinate of the touch, in screen coordinates.
-     * @param touchY The y-coordinate of the touch, in screen coordinates.
+     * @param touchX  The x-coordinate of the touch, in screen coordinates.
+     * @param touchY  The y-coordinate of the touch, in screen coordinates.
      * @param pointer The pointer for the event.
-     * @param button The button pressed.
+     * @param button  The button pressed.
      * @return true if the event was handled, false otherwise.
      */
     public boolean touchDown(int touchX, int touchY, int pointer, int button) {

@@ -3,7 +3,6 @@ package bytemusketeers.heslingtonhustle.entity;
 import bytemusketeers.heslingtonhustle.HeslingtonHustle;
 import bytemusketeers.heslingtonhustle.map.GameMap;
 import bytemusketeers.heslingtonhustle.utils.CollisionHandler;
-import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -18,16 +17,38 @@ import com.badlogic.gdx.utils.Disposable;
  * The {@link Player} represents the in-{@link com.badlogic.gdx.Game} character; handling movement, collision,
  * and animations.
  *
- * @see Entity
  * @author ENG1 Team 25
  * @author ENG1 Team 23
+ * @see Entity
  */
 public class Player extends Entity implements Disposable {
+    /**
+     * The frame duration of each animation step
+     *
+     * @see Entity#currentAnimation
+     * @see Animation
+     */
+    public static final float ANIMATION_SPEED = 0.5f;
+    /**
+     * The starting X position of the {@link Player} sprite with respect to the sprite-sheet
+     */
+    public static final int spriteX = 24;
+    /**
+     * The starting Y position of the {@link Player} sprite with respect to the sprite-sheet
+     */
+    public static final int spriteY = 38;
+    /**
+     * The X component of the default starting position
+     */
+    public float startX;
+    /**
+     * The Y component of the default starting position
+     */
+    public float startY;
     /**
      * The parental {@link com.badlogic.gdx.Game} reference, in particular {@link HeslingtonHustle}
      */
     HeslingtonHustle game;
-
     /**
      * The on-screen {@link GameMap}
      *
@@ -36,18 +57,15 @@ public class Player extends Entity implements Disposable {
      * @see GameMap#getHeight()
      */
     GameMap gameMap;
-
     /**
      * The {@link com.badlogic.gdx.graphics.Camera} used for tracking the {@link Player} within the bounds of the
      * {@link GameMap}
      */
     OrthographicCamera camera;
-
     /**
      * The handler and manager for collisions between the user-controlled {@link Player} and various on-screen objects
      */
     CollisionHandler collisionHandler;
-
     /**
      * The current direction of the {@link Player}, encoded in the following schema:
      * <ul>
@@ -58,42 +76,12 @@ public class Player extends Entity implements Disposable {
      * </ul>
      */
     char dir;
-
-    /**
-     * The frame duration of each animation step
-     *
-     * @see Entity#currentAnimation
-     * @see Animation
-     */
-    public static final float ANIMATION_SPEED = 0.5f;
-
-    /**
-     * The starting X position of the {@link Player} sprite with respect to the sprite-sheet
-     */
-    public static final int spriteX = 24;
-
-    /**
-     * The starting Y position of the {@link Player} sprite with respect to the sprite-sheet
-     */
-    public static final int spriteY = 38;
-
     /**
      * The cached tile-size of the {@link GameMap}
      *
      * @see GameMap#getTileSize()
      */
     int tileSize;
-
-    /**
-     * The X component of the default starting position
-     */
-    public float startX;
-
-    /**
-     * The Y component of the default starting position
-     */
-    public float startY;
-
     /**
      * The sprite-sheet of the {@link Player} sprites in its idle state
      */
@@ -148,9 +136,9 @@ public class Player extends Entity implements Disposable {
     /**
      * Constructs a new Player instance.
      *
-     * @param game The main game object.
+     * @param game    The main game object.
      * @param gameMap The game map for collision detection and boundaries.
-     * @param camera The camera to follow the player.
+     * @param camera  The camera to follow the player.
      */
     public Player(HeslingtonHustle game, GameMap gameMap, OrthographicCamera camera) {
         this.game = game;
@@ -185,7 +173,7 @@ public class Player extends Entity implements Disposable {
         boolean isMovingDiagonally = ((Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W))
                 || (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)))
                 && ((Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
-                    || (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)));
+                || (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)));
 
         // Calculate the normalised speed for diagonal movement
         double normalizedSpeed = speed;
@@ -287,7 +275,7 @@ public class Player extends Entity implements Disposable {
      * settings menu. Then updates corresponding textures and animations.
      *
      * @apiNote This functionality should be segregated into its own class to reduce overheads and
-     *          processing delay.
+     * processing delay.
      */
     public void updateGender() {
         if (idleSheet != null)

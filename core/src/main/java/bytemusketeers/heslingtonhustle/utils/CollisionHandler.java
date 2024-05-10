@@ -4,6 +4,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,13 +60,13 @@ public class CollisionHandler {
     /**
      * Constructs a CollisionHandler with specified parameters.
      *
-     * @param tiledMap The TiledMap in which the collisions are checked.
-     * @param tileWidth The width of a single tile in the map.
+     * @param tiledMap   The TiledMap in which the collisions are checked.
+     * @param tileWidth  The width of a single tile in the map.
      * @param tileHeight The height of a single tile in the map.
-     * @param objWidth The width of the object checking for collisions.
-     * @param objHeight The height of the object checking for collisions.
-     * @param scaleX The scale factor along the X-axis for the object.
-     * @param scaleY The scale factor along the Y-axis for the object.
+     * @param objWidth   The width of the object checking for collisions.
+     * @param objHeight  The height of the object checking for collisions.
+     * @param scaleX     The scale factor along the X-axis for the object.
+     * @param scaleY     The scale factor along the Y-axis for the object.
      */
     public CollisionHandler(TiledMap tiledMap, int tileWidth, int tileHeight, float objWidth, float objHeight,
                             float scaleX, float scaleY) {
@@ -93,7 +94,7 @@ public class CollisionHandler {
      * Detects whether the object is touching a tile of a specific layer.
      *
      * @param layerName The name of the layer.
-     * @param obj The rectangle representing the object's position and size.
+     * @param obj       The rectangle representing the object's position and size.
      * @return A Boolean indicating whether the object is touching a tile of the layer
      */
     public boolean isTouching(String layerName, Rectangle obj) {
@@ -115,8 +116,8 @@ public class CollisionHandler {
     /**
      * Determines the first side hit during movement in a specified direction.
      *
-     * @param x The X-coordinate of the object's position.
-     * @param y The Y-coordinate of the object's position.
+     * @param x   The X-coordinate of the object's position.
+     * @param y   The Y-coordinate of the object's position.
      * @param obj The rectangle representing the object's position and size.
      * @param dir The direction of movement.
      * @return A Vector2 indicating the side hit and the depth of collision; null if no collision occurred.
@@ -158,8 +159,8 @@ public class CollisionHandler {
      *
      * @param startX The starting X-coordinate.
      * @param startY The starting Y-coordinate.
-     * @param targX The target X-coordinate.
-     * @param targY The target Y-coordinate.
+     * @param targX  The target X-coordinate.
+     * @param targY  The target Y-coordinate.
      * @return An integer representing the direction of movement.
      */
     public int getDirection(float startX, float startY, float targX, float targY) {
@@ -181,8 +182,8 @@ public class CollisionHandler {
      * Determines the colliding side between two rectangles during movement in a specified direction.
      *
      * @param movingObj The rectangle representing the moving object.
-     * @param other The rectangle representing the object being collided with.
-     * @param dir The direction of movement.
+     * @param other     The rectangle representing the object being collided with.
+     * @param dir       The direction of movement.
      * @return A Vector2 indicating the colliding side and the depth of collision; null if no collision occurred.
      */
     public Vector2 collidingSide(Rectangle movingObj, Rectangle other, int dir) {
@@ -230,8 +231,8 @@ public class CollisionHandler {
      *
      * @param startX The starting X-coordinate.
      * @param startY The starting Y-coordinate.
-     * @param targX The target X-coordinate.
-     * @param targY The target Y-coordinate.
+     * @param targX  The target X-coordinate.
+     * @param targY  The target Y-coordinate.
      * @return A Vector2 representing the adjusted position; null if no adjustment is necessary.
      */
     public Vector2 adjustPosStep(float startX, float startY, float targX, float targY) {
@@ -262,8 +263,8 @@ public class CollisionHandler {
      *
      * @param startX The starting X-coordinate.
      * @param startY The starting Y-coordinate.
-     * @param targX The target X-coordinate.
-     * @param targY The target Y-coordinate.
+     * @param targX  The target X-coordinate.
+     * @param targY  The target Y-coordinate.
      * @return A Vector2 representing the final adjusted position after resolving all collisions.
      */
     public Vector2 adjustPos(float startX, float startY, float targX, float targY) {

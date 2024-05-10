@@ -12,8 +12,6 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 /**
  * The TypingGame class implements a mini-game for the player to increase their study hours.
  * Players are shown a number that they need to memorize and then type it correctly to succeed.
@@ -24,24 +22,24 @@ import java.util.concurrent.ThreadLocalRandom;
 public class TappingGame extends ScreenAdapter implements Screen, InputProcessor {
     private final HeslingtonHustle game;
     private final int studyDuration;
+    private final Texture guessButton;
+    private final Texture title;
+    Boolean acceptInput = false, displayCorrect = false, displayWrong = false;
+    BitmapFont displayText;
+    String gameObjective;
     private int attempts = 1;
     private int currentNumber = 0;
     private int correct = 0;
-    private final Texture guessButton;
     private String userGuess = "";
-    Boolean acceptInput = false, displayCorrect = false, displayWrong = false;
-    BitmapFont displayText;
     private float displayTextY, displayTextHeight;
     private float gameObjectiveY;
     private float guessButtonX, guessButtonY, guessButtonWidth, guessButtonHeight;
-    private final Texture title;
     private float titleX, titleY, titleWidth, titleHeight;
-    String gameObjective;
 
     /**
      * Constructs a TypingGame screen with the game instance and study duration.
      *
-     * @param game The main game instance.
+     * @param game          The main game instance.
      * @param studyDuration The duration of the study session in attempts.
      */
     public TappingGame(HeslingtonHustle game, int studyDuration) {
@@ -108,7 +106,7 @@ public class TappingGame extends ScreenAdapter implements Screen, InputProcessor
     /**
      * Implements a delay before executing a given runnable task.
      *
-     * @param seconds The delay in seconds before running the task.
+     * @param seconds  The delay in seconds before running the task.
      * @param runnable The task to execute after the delay.
      */
     public void delay(int seconds, Runnable runnable) {
@@ -119,7 +117,7 @@ public class TappingGame extends ScreenAdapter implements Screen, InputProcessor
             }
         }, seconds);
     }
-  
+
 
     @Override
     public void show() {
@@ -141,13 +139,13 @@ public class TappingGame extends ScreenAdapter implements Screen, InputProcessor
             game.batch.draw(guessButton, guessButtonX, guessButtonY, guessButtonWidth, guessButtonHeight);
         } else if (displayCorrect)
             displayText.draw(game.batch, "Correct well done.", 0, displayTextY, game.screenWidth, Align.center,
-                false);
+                    false);
         else if (displayWrong)
             displayText.draw(game.batch, "Incorrect. Answer: " + currentNumber, 0, displayTextY,
-                game.screenWidth, Align.center, false);
+                    game.screenWidth, Align.center, false);
         else
             displayText.draw(game.batch, String.valueOf(currentNumber), 0, displayTextY, game.screenWidth,
-                Align.center, false);
+                    Align.center, false);
 
         game.batch.end();
     }
@@ -216,7 +214,7 @@ public class TappingGame extends ScreenAdapter implements Screen, InputProcessor
 
                 delay(2, this::playGame);
             }
-            
+
         }
         return false;
     }

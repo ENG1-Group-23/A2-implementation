@@ -17,8 +17,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
  * @author ENG1 Team 23
  */
 public class MainSettingsScreen extends ScreenAdapter implements Screen, InputProcessor {
-    HeslingtonHustle game;
-    boolean gender;
     private final Texture backButton;
     private final Texture settingsLabel;
     private final Texture musicUpButton;
@@ -27,12 +25,13 @@ public class MainSettingsScreen extends ScreenAdapter implements Screen, InputPr
     private final Texture soundUpButton;
     private final Texture soundLabel;
     private final Texture soundDownButton;
+    private final Texture backgroundImage;
+    HeslingtonHustle game;
+    boolean gender;
     private Texture musicBar;
     private Texture soundBar;
     private Texture boyButton;
     private Texture girlButton;
-    private final Texture backgroundImage;
-
     // X and Y coordinates for each button and label
     private float backButtonX;
     private float settingsLabelX;
@@ -151,7 +150,7 @@ public class MainSettingsScreen extends ScreenAdapter implements Screen, InputPr
         backButtonX = (game.screenWidth - backButtonWidth) / 2;
         backButtonY = (float) game.screenHeight / 6 - (100 * game.scaleFactorY);
         settingsLabelX = (game.screenWidth - settingsLabelWidth) / 2;
-        settingsLabelY =  game.screenHeight - (settingsLabelHeight * 2);
+        settingsLabelY = game.screenHeight - (settingsLabelHeight * 2);
         musicUpButtonX = (game.screenWidth - musicUpButtonWidth) / 2 + (200 * game.scaleFactorX);
         musicUpButtonY = game.screenHeight - musicUpButtonHeight - (350 * game.scaleFactorY);
         musicDownButtonX = (game.screenWidth - musicUpButtonWidth) / 2 - (200 * game.scaleFactorX);
@@ -239,10 +238,10 @@ public class MainSettingsScreen extends ScreenAdapter implements Screen, InputPr
     /**
      * Handles touch input for interactive elements on the screen.
      *
-     * @param worldX The x-coordinate of the touch.
-     * @param worldY The y-coordinate of the touch.
+     * @param worldX  The x-coordinate of the touch.
+     * @param worldY  The y-coordinate of the touch.
      * @param pointer The pointer for the event.
-     * @param button The button that was touched.
+     * @param button  The button that was touched.
      * @return true if the input was processed.
      */
     @Override

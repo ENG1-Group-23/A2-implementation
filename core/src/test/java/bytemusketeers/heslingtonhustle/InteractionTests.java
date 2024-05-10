@@ -1,15 +1,12 @@
 package bytemusketeers.heslingtonhustle;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import bytemusketeers.heslingtonhustle.utils.Achievement;
-import bytemusketeers.heslingtonhustle.utils.Score;
 import bytemusketeers.heslingtonhustle.entity.Player;
 import bytemusketeers.heslingtonhustle.map.GameMap;
 import bytemusketeers.heslingtonhustle.screens.MainGameScreen;
+import bytemusketeers.heslingtonhustle.utils.Achievement;
 import bytemusketeers.heslingtonhustle.utils.CollisionHandler;
 import bytemusketeers.heslingtonhustle.utils.GameData;
+import bytemusketeers.heslingtonhustle.utils.Score;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -17,14 +14,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 @RunWith(GdxTestRunner.class)
 public class InteractionTests {
+    private final String[] layers = {"Comp_sci_door", "Piazza_door", "Gym_door", "Goodricke_door"};
     private Player player;
     private CollisionHandler collisionHandler;
     private GameMap gameMap;
     private int tileSize;
     private boolean collisionFlag = true;
-    private final String[] layers = {"Comp_sci_door", "Piazza_door", "Gym_door", "Goodricke_door"};
     private MainGameScreen screen;
 
     @Before

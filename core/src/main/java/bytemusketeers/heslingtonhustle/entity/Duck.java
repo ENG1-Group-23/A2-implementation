@@ -14,18 +14,12 @@ import com.badlogic.gdx.utils.Disposable;
  */
 public class Duck extends Entity implements Disposable {
 
+    private final int spriteX = 16, spriteY = 16;
     HeslingtonHustle game;
     GameMap gameMap;
     OrthographicCamera camera;
     CollisionHandler collisionHandler;
     Animation<TextureRegion> flyAnimation;
-    private final int spriteX = 16, spriteY = 16;
-
-    @Override
-    public Texture getTexture() {
-        return texture;
-    }
-
     Texture texture;
 
     public Duck(HeslingtonHustle game, GameMap gameMap, OrthographicCamera camera) {
@@ -36,8 +30,15 @@ public class Duck extends Entity implements Disposable {
         TextureRegion[][] duckSpriteSheet = split(texture, spriteX, spriteY);
         flyAnimation = new Animation<>(0.5f, duckSpriteSheet[0]);
         currentAnimation = flyAnimation;
-        this.collisionHandler = new CollisionHandler(gameMap.getMap(),  gameMap.getTileSize(), gameMap.getTileSize(), spriteX, spriteY * 0.5f, 0.7f, 0.7f);
+        this.collisionHandler = new CollisionHandler(gameMap.getMap(), gameMap.getTileSize(), gameMap.getTileSize(),
+                spriteX, spriteY * 0.5f, 0.7f, 0.7f);
     }
+
+    @Override
+    public Texture getTexture() {
+        return texture;
+    }
+
     @Override
     public void dispose() {
         texture.dispose();

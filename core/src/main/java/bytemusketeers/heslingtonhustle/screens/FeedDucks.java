@@ -1,5 +1,7 @@
 package bytemusketeers.heslingtonhustle.screens;
 
+import static com.badlogic.gdx.graphics.g2d.TextureRegion.split;
+
 import bytemusketeers.heslingtonhustle.HeslingtonHustle;
 import bytemusketeers.heslingtonhustle.entity.Duck;
 import bytemusketeers.heslingtonhustle.entity.Entity;
@@ -9,6 +11,7 @@ import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -16,40 +19,38 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import static com.badlogic.gdx.graphics.g2d.TextureRegion.split;
 
 /**
  * Represents a duck feeding mini-game in which the player clicks
  * on the ducks and new ducks appear.
  */
 
-public class FeedDucks implements Screen, InputProcessor {
+public class FeedDucks extends ScreenAdapter implements Screen, InputProcessor {
     private final int duckScale = 7;
     private final HeslingtonHustle game;
     private final OrthographicCamera camera;
     private final GameMap gameMap;
     private final int initialDuckCount = 3;
     BitmapFont displayText;
+    String gameObjective;
     private float displayTextY, displayTextHeight;
     private float gameObjectiveY;
     private float titleX, titleY, titleWidth, titleHeight;
     private float backButtonX, backButtonY, backButtonWidth, backButtonHeight;
-    private Texture backButton;
+    private final Texture backButton;
     private int ducksFed = 0;
     private float timeSeconds = 0.0f;
-    private float period = 15.0f;
-    private List<Entity> entities = new ArrayList<>(); // ducks and lilypads
-    String gameObjective;
+    private final float period = 15.0f;
+    private final List<Entity> entities = new ArrayList<>(); // ducks and lilypads
     private boolean gameOver = false;
-    private Score score;
+    private final Score score;
 
     /**
      * Initialises the mini-game and starts it by running playGame()
+     *
      * @param game
      * @param camera
      * @param gameMap
@@ -75,7 +76,7 @@ public class FeedDucks implements Screen, InputProcessor {
     /**
      * Adjusts dimensions after rescaling of window
      */
-    private void calculateDimensions(){
+    private void calculateDimensions() {
         displayText.getData().setScale(3f * game.scaleFactorX, 3f * game.scaleFactorY);
         displayTextHeight = 100 * game.scaleFactorY;
         gameObjectiveY = game.screenHeight - 80 * game.scaleFactorY;
@@ -86,18 +87,18 @@ public class FeedDucks implements Screen, InputProcessor {
     /**
      * Adjusts positions after rescaling of window
      */
-    private void calculatePositions(){
-        displayTextY = game.screenHeight/2f - displayTextHeight;
+    private void calculatePositions() {
+        displayTextY = game.screenHeight / 2f - displayTextHeight;
         backButtonY = game.screenHeight / 5f;
         backButtonX = game.screenWidth / 2f - (backButtonWidth / 2);
-        titleX = (game.screenWidth - titleWidth)/2f;
-        titleY = (game.screenHeight - titleHeight)/2f + 400 * game.scaleFactorY;
+        titleX = (game.screenWidth - titleWidth) / 2f;
+        titleY = (game.screenHeight - titleHeight) / 2f + 400 * game.scaleFactorY;
     }
 
     /**
      * Spawns the first ducks and lily pads
      */
-    private void playGame(){
+    private void playGame() {
         initialiseDucks();
         addLilyPads(6);
     }
@@ -107,7 +108,7 @@ public class FeedDucks implements Screen, InputProcessor {
     }
 
     private void initialiseDucks() {
-        for(int i = 0; i < initialDuckCount; i++) {
+        for (int i = 0; i < initialDuckCount; i++) {
             Duck tmp = new Duck(game, gameMap, camera);
             setNonOverlappingPosition(tmp);
             entities.add(tmp);
@@ -117,6 +118,7 @@ public class FeedDucks implements Screen, InputProcessor {
     /**
      * Finds a position for the duck that does not overlap
      * with another entity on the screen
+     *
      * @param duck
      */
     private void setNonOverlappingPosition(Duck duck) {
@@ -124,7 +126,7 @@ public class FeedDucks implements Screen, InputProcessor {
         duck.setPosition(random.nextInt(game.screenWidth - 100), random.nextInt(game.screenHeight / 2));
         Rectangle[] boundingRectangles = new Rectangle[entities.size()];
         int counter = 0;
-        for(Entity entity : entities) {
+        for (Entity entity : entities) {
             boundingRectangles[counter] = entity.getBoundingRectangle();
             counter++;
         }
@@ -136,13 +138,14 @@ public class FeedDucks implements Screen, InputProcessor {
     /**
      * Checks whether one bounding rectangle overlaps with any other in
      * the list
+     *
      * @param list
      * @param item
      * @return true if any rectangle in the list overlaps with item
      */
     private boolean overlapsAny(Rectangle[] list, Rectangle item) {
         for (Rectangle listItem : list) {
-            if(listItem.overlaps(item)) return true;
+            if (listItem.overlaps(item)) return true;
         }
         return false;
     }
@@ -150,6 +153,7 @@ public class FeedDucks implements Screen, InputProcessor {
     /**
      * Finds and sets the position of the lily pad such that it does
      * not overlap with any entity on the screen
+     *
      * @param lilyPad
      */
     private void setNonOverlappingPosition(Entity lilyPad) {
@@ -158,8 +162,8 @@ public class FeedDucks implements Screen, InputProcessor {
         lilyPad.worldY = random.nextInt(game.screenHeight / 2);
         Rectangle[] boundingRectangles = new Rectangle[entities.size()];
         int counter = 0;
-        for(Entity entity : entities) {
-            if(entity.equals(lilyPad)) continue;
+        for (Entity entity : entities) {
+            if (entity.equals(lilyPad)) continue;
             boundingRectangles[counter] = entity.getBoundingRectangle();
             counter++;
         }
@@ -184,10 +188,11 @@ public class FeedDucks implements Screen, InputProcessor {
 
     /**
      * Adds amount of lily pads to the screen
+     *
      * @param amount
      */
     private void addLilyPads(int amount) {
-        for(int i = 0; i < amount; i++) {
+        for (int i = 0; i < amount; i++) {
             Texture texture = new Texture("map/Basic_Grass_Biom_things.png");
             TextureRegion[][] textureRegion = split(texture, 16, 16);
             Entity lilyPad = new Entity();
@@ -205,6 +210,7 @@ public class FeedDucks implements Screen, InputProcessor {
     /**
      * Handles all the visual elements of the mini-game including the
      * rendering of the ducks/lily pads etc
+     *
      * @param delta
      */
     @Override
@@ -214,7 +220,7 @@ public class FeedDucks implements Screen, InputProcessor {
         game.batch.begin();
         if (!gameOver) {
             timeSeconds += Gdx.graphics.getDeltaTime();
-            if(timeSeconds > period){
+            if (timeSeconds > period) {
                 timeSeconds -= period;
                 endGame();
             }
@@ -228,7 +234,7 @@ public class FeedDucks implements Screen, InputProcessor {
             }
             displayText.draw(game.batch, gameObjective, 0, gameObjectiveY, game.screenWidth, Align.center, false);
             displayText.draw(game.batch, ducksFed + "", 0, gameObjectiveY - 50, game.screenWidth, Align.center, false);
-            displayText.draw(game.batch, "Time left " + (int)(period - timeSeconds + 1), 0, 150, game.screenWidth, Align.center, false);
+            displayText.draw(game.batch, "Time left " + (int) (period - timeSeconds + 1), 0, 150, game.screenWidth, Align.center, false);
             game.batch.end();
             return;
         }
@@ -245,21 +251,6 @@ public class FeedDucks implements Screen, InputProcessor {
     }
 
     @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
     public void dispose() {
         for (Entity entity : entities) {
             entity.dispose();
@@ -268,19 +259,24 @@ public class FeedDucks implements Screen, InputProcessor {
     }
 
     @Override
-    public boolean keyDown(int keycode){
+    public boolean keyDown(int keycode) {
         return false;
     }
 
     @Override
-    public boolean keyUp(int keycode) { return false; }
+    public boolean keyUp(int keycode) {
+        return false;
+    }
 
     @Override
-    public boolean keyTyped(char character) { return true; }
+    public boolean keyTyped(char character) {
+        return true;
+    }
 
     /**
      * Handles mouse button presses including the interaction with clicking
      * on a duck or the return button at the end of the game
+     *
      * @param touchX
      * @param touchY
      * @param pointer
@@ -289,7 +285,7 @@ public class FeedDucks implements Screen, InputProcessor {
     @Override
     public boolean touchDown(int touchX, int touchY, int pointer, int button) {
         touchY = game.screenHeight - touchY;
-        if(gameOver) {
+        if (gameOver) {
             if (touchX >= backButtonX && touchX <= backButtonX + backButtonWidth && touchY >= backButtonY && touchY <= backButtonY + backButtonHeight) {
                 game.gameData.buttonClickedSoundActivate();
                 MainGameScreen MGS = (MainGameScreen) game.screenManager.getScreen(ScreenType.GAME_SCREEN);
@@ -304,8 +300,8 @@ public class FeedDucks implements Screen, InputProcessor {
             return false;
         }
 
-        for(Entity entity : entities) {
-            if(entity instanceof Duck) {
+        for (Entity entity : entities) {
+            if (entity instanceof Duck) {
                 Duck duck = (Duck) entity;
                 float duckX = duck.getX();
                 float duckY = duck.getY();

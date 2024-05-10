@@ -11,25 +11,23 @@ import bytemusketeers.heslingtonhustle.sound.GameSound;
  */
 public class GameData {
     /**
-     * The current gender of the {@link bytemusketeers.heslingtonhustle.entity.Player}
-     *
-     * @apiNote The male state is encoded as {@code true}, and the female state as {@code false}.
-     */
-    private boolean gender = true;
-
-    /**
      * The {@link GameMusic} data reference
      *
      * @see GameMusic
      */
     private final GameMusic music;
-
     /**
      * The {@link GameSound} data reference
      *
      * @see GameSound
      */
     private final GameSound sound;
+    /**
+     * The current gender of the {@link bytemusketeers.heslingtonhustle.entity.Player}
+     *
+     * @apiNote The male state is encoded as {@code true}, and the female state as {@code false}.
+     */
+    private boolean gender = true;
 
     /**
      * Constructor initializes the game music settings.
@@ -139,5 +137,7 @@ public class GameData {
         sound.buttonClickedSoundActivate();
     }
 
-    public void duckSoundActivate() { sound.duckSoundActivate(); }
+    public void duckSoundActivate() {
+        sound.duckSoundActivate();
+    }
 }

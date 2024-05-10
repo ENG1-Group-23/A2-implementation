@@ -9,6 +9,7 @@ import bytemusketeers.heslingtonhustle.utils.Score;
 import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -334,9 +335,9 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
     /**
      * Draws a menu option at the specified position with a specified text and shade option.
      *
-     * @param posX The X position of the menu option.
-     * @param posY The Y position of the menu option.
-     * @param text The text to display on the menu option.
+     * @param posX        The X position of the menu option.
+     * @param posY        The Y position of the menu option.
+     * @param text        The text to display on the menu option.
      * @param shadeOption Determines the shade of the menu option.
      */
     private void drawMenuOption(float posX, float posY, String text, int shadeOption) {
@@ -611,10 +612,10 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
     /**
      * Handles touch input from the user, managing interactions with UI elements and game objects.
      *
-     * @param touchX The x-coordinate of the touch.
-     * @param touchY The y-coordinate of the touch.
+     * @param touchX  The x-coordinate of the touch.
+     * @param touchY  The y-coordinate of the touch.
      * @param pointer The pointer for the event.
-     * @param button The button that was pressed.
+     * @param button  The button that was pressed.
      * @return true if the input was processed, false otherwise.
      */
     @Override

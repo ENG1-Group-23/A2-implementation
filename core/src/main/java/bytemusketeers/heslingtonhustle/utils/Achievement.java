@@ -13,16 +13,14 @@ public class Achievement {
      * @see #getAnnotatedName()
      */
     private static final int MENTION_THRESHOLD = 2;
-
-    /**
-     * The current streak quantifier
-     */
-    private int streak = 0;
-
     /**
      * The human-readable name of the streak unifier
      */
     private final String name;
+    /**
+     * The current streak quantifier
+     */
+    private int streak = 0;
 
     /**
      * Creates a new {@link Achievement} with the given name and an initial streak of zero

@@ -20,18 +20,15 @@ public class GameSound {
      * The {@link Music} sound associated with decreasing the volume
      */
     private final Music downSound;
-
-    Music duckSound;
     /**
      * The {@link Music} sound associated with clicking of a button
      */
     private final Music buttonClickedSound;
-
     /**
      * The {@link Music} sound associated with the {@link bytemusketeers.heslingtonhustle.entity.Player} consuming food
      */
     private final Music eatingSound;
-
+    Music duckSound;
     /**
      * The transient volume, in quarters
      */

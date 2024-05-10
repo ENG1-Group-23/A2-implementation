@@ -48,6 +48,15 @@ public class Score {
     private float overstudyPenalty = 1;
 
     /**
+     * Formats a number of points as a 1-point decimal {@link String}
+     *
+     * @return The requested human-readable score {@link String}
+     */
+    public static String formatLoadedScore(float score) {
+        return String.format("%.1f", score);
+    }
+
+    /**
      * Updates the {@link #score} according to the current multipliers
      *
      * @see #studyMultiplier
@@ -60,8 +69,8 @@ public class Score {
     /**
      * Computes the final score, according to the given state of achievements earned throughout the game.
      *
-     * @param achOne 'Category 1' achievement count
-     * @param achTwo 'Category 2' achievement count
+     * @param achOne   'Category 1' achievement count
+     * @param achTwo   'Category 2' achievement count
      * @param achThree 'Category 3' achievement count
      */
     public void computeFinalScore(int achOne, int achTwo, int achThree) {
@@ -139,15 +148,6 @@ public class Score {
     @Override
     public String toString() {
         return formatLoadedScore(score);
-    }
-
-    /**
-     * Formats a number of points as a 1-point decimal {@link String}
-     *
-     * @return The requested human-readable score {@link String}
-     */
-    public static String formatLoadedScore(float score) {
-        return String.format("%.1f", score);
     }
 
     /**

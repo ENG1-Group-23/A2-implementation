@@ -12,10 +12,13 @@ import com.badlogic.gdx.audio.Music;
  */
 public class GameMusic {
     /**
+     * The maximal volume of the {@link #audio}
+     */
+    private static final float MUSIC_CAP = 0.1f;
+    /**
      * The generic audio track played during game-time
      */
     private final Music audio;
-
     /**
      * The transient volume of the {@link #audio}
      *
@@ -23,11 +26,6 @@ public class GameMusic {
      * @see #decrementVolume()
      */
     private int musicLevel = 4;
-
-    /**
-     * The maximal volume of the {@link #audio}
-     */
-    private static final float MUSIC_CAP = 0.1f;
 
     /**
      * Constructor for GameMusic. Initializes and starts playing the game's background music at the maximum volume

@@ -2,8 +2,11 @@ package bytemusketeers.heslingtonhustle.screens;
 
 import bytemusketeers.heslingtonhustle.HeslingtonHustle;
 import bytemusketeers.heslingtonhustle.utils.ScreenType;
-import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 

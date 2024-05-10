@@ -2,10 +2,18 @@ package bytemusketeers.heslingtonhustle.utils;
 
 import bytemusketeers.heslingtonhustle.HeslingtonHustle;
 import bytemusketeers.heslingtonhustle.map.GameMap;
-import bytemusketeers.heslingtonhustle.screens.*;
+import bytemusketeers.heslingtonhustle.screens.EndScreen;
+import bytemusketeers.heslingtonhustle.screens.FeedDucks;
+import bytemusketeers.heslingtonhustle.screens.MainControlScreen;
+import bytemusketeers.heslingtonhustle.screens.MainGameScreen;
+import bytemusketeers.heslingtonhustle.screens.MainMenuScreen;
+import bytemusketeers.heslingtonhustle.screens.MainSettingsScreen;
+import bytemusketeers.heslingtonhustle.screens.TappingGame;
+import bytemusketeers.heslingtonhustle.screens.TypingGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -118,7 +126,7 @@ public class ScreenManager {
      * This method is called whenever the window size changes and ensures that
      * the screen elements and layouts are adjusted accordingly across all screens.
      *
-     * @param width The new width of the window.
+     * @param width  The new width of the window.
      * @param height The new height of the window.
      */
     public void resize(int width, int height) {
@@ -150,7 +158,7 @@ public class ScreenManager {
             case EXERCISE_GAME:
                 return new TappingGame(game, (int) args[0]);
             case END_SCREEN:
-                return new EndScreen(game, score, new Achievement[]{ eatAch, recAch, sleepAch });
+                return new EndScreen(game, score, new Achievement[]{eatAch, recAch, sleepAch});
             default:
                 return null;
         }

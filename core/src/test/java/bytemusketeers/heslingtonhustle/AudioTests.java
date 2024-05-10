@@ -6,8 +6,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.*;
-
 @RunWith(GdxTestRunner.class)
 public class AudioTests {
     @Test
@@ -23,7 +21,7 @@ public class AudioTests {
     public void testDecrementGameMusicVolumeStopsAtMinimum() {
         GameMusic music = new GameMusic();
         int initialVolume = music.getMusicLevel();
-        for(int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             music.decrementVolume();
         }
         int finalVolume = music.getMusicLevel();
@@ -35,7 +33,7 @@ public class AudioTests {
     public void testIncrementGameSoundVolumeStopsAtMaximum() {
         GameSound sound = new GameSound();
         int initialSoundLevel = sound.getSoundLevel();
-        for(int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             sound.incrementVolume();
         }
         int finalSoundLevel = sound.getSoundLevel();
@@ -46,7 +44,7 @@ public class AudioTests {
     public void testDecrementGameSoundVolumeStopsAtMinimum() {
         GameSound sound = new GameSound();
         int initialSoundLevel = sound.getSoundLevel();
-        for(int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             sound.decrementVolume();
         }
         int finalSoundLevel = sound.getSoundLevel();

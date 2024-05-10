@@ -42,9 +42,9 @@ public enum ScreenType {
     /**
      * A mini-game, distinct from the master playing area
      *
-     * @see bytemusketeers.heslingtonhustle.screens.TypingGame
      * @implNote The set of available mini-games is currently represented by the singleton containing the
-     *           {@link bytemusketeers.heslingtonhustle.screens.TypingGame}, but could be easily expanded.
+     * {@link bytemusketeers.heslingtonhustle.screens.TypingGame}, but could be easily expanded.
+     * @see bytemusketeers.heslingtonhustle.screens.TypingGame
      */
     MINI_GAME,
     FEED_DUCKS,

@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 /**
@@ -15,40 +14,34 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
  */
 public class GameMap extends TiledMap {
     /**
+     * The required tile size of each TMX tile
+     */
+    private static final int TILE_SIZE = 16;
+    /**
      * The width of the total map
      */
     private final int width;
-
     /**
      * The height of the total map
      */
     private final int height;
-
     /**
      * The LibGDX-managed {@link TiledMap} resource corresponding to the tiled {@link com.badlogic.gdx.graphics.Texture}
      * areas
      */
     private final TiledMap gameMap;
-
     /**
      * The LibGDX-provided provision for rendering the map
      *
      * @see #gameMap
      */
     private final OrthogonalTiledMapRenderer tiledMapRenderer;
-
     /**
      * The LibGDX-provided {@link com.badlogic.gdx.graphics.Camera} reference for viewport-tracking
      *
      * @see bytemusketeers.heslingtonhustle.entity.Player
      */
     private final OrthographicCamera camera;
-
-    /**
-     * The required tile size of each TMX tile
-     */
-    private static final int TILE_SIZE = 16;
-
     /**
      * Render-time threshold for displaying secondary assets on the {@link #gameMap}
      *

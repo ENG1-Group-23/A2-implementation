@@ -32,12 +32,11 @@ public class Entity extends Sprite implements Disposable {
      * The relevant LibGDX {@link Animation}
      */
     public Animation<TextureRegion> currentAnimation;
-    private TextureRegion tr;
-
     /**
      * The {@link #currentAnimation} state time
      */
     public float stateTime;
+    private TextureRegion tr;
 
     public TextureRegion getTr() {
         return tr;
@@ -46,6 +45,8 @@ public class Entity extends Sprite implements Disposable {
     public void setTr(TextureRegion tr) {
         this.tr = tr;
     }
+
     @Override
-    public void dispose() {}
+    public void dispose() {
+    }
 }

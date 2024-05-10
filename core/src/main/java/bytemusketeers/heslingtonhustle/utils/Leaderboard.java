@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,31 +20,35 @@ import java.util.Map;
  */
 public class Leaderboard {
     /**
+     * The maximum number of entries to be displayed
+     */
+    private static final int MAX_ENTRY_COUNT = 10;
+    /**
+     * The LibGDX {@link Preferences} reference to be used for persistent high-score storage.
+     */
+    private static final Preferences preferences =
+            Gdx.app.getPreferences("bytemusketeers.heslingtonhustle.highscores");
+    /**
      * The two-column name-score {@link Table} used to hold high-score entries.
      */
     private final Table table = new Table();
-
     /**
      * The given {@link Label.LabelStyle} style to use for typesetting entries
      */
     private final Label.LabelStyle labelStyle;
 
     /**
-     * The maximum number of entries to be displayed
+     * Instantiates a new {@link Leaderboard} to contain high-score entries.
      */
-    private static final int MAX_ENTRY_COUNT = 10;
-
-    /**
-     * The LibGDX {@link Preferences} reference to be used for persistent high-score storage.
-     */
-    private static final Preferences preferences =
-        Gdx.app.getPreferences("bytemusketeers.heslingtonhustle.highscores");
+    public Leaderboard(Label.LabelStyle labelStyle) {
+        this.labelStyle = labelStyle;
+    }
 
     /**
      * Register a new score for the user of the current {@link com.badlogic.gdx.Game}. The {@link #preferences} is
      * updated only if this is a new high score for the user identified by the given name.
      *
-     * @param name The name of the user
+     * @param name  The name of the user
      * @param score The new score
      */
     public void registerScore(String name, Score score) {
@@ -73,14 +78,14 @@ public class Leaderboard {
     public void populateBoard() {
         List<Map.Entry<String, Float>> scores = new ArrayList<>();
         preferences.get().forEach((key, value) -> scores.add(new AbstractMap.SimpleEntry<>(key, Float.parseFloat(value
-            .toString()))));
+                .toString()))));
 
         scores.stream().sorted(Collections.reverseOrder(Map.Entry.comparingByValue())).limit(MAX_ENTRY_COUNT)
-            .forEach(record -> {
-                table.row().height(16 * labelStyle.font.getScaleY() + EndScreen.VERTICAL_PADDING);
-                table.add(new Label(record.getKey(), labelStyle)).padRight(EndScreen.HORIZONTAL_PADDING);
-                table.add(new Label(Score.formatLoadedScore(record.getValue()), labelStyle));
-            });
+                .forEach(record -> {
+                    table.row().height(16 * labelStyle.font.getScaleY() + EndScreen.VERTICAL_PADDING);
+                    table.add(new Label(record.getKey(), labelStyle)).padRight(EndScreen.HORIZONTAL_PADDING);
+                    table.add(new Label(Score.formatLoadedScore(record.getValue()), labelStyle));
+                });
     }
 
     /**
@@ -90,12 +95,5 @@ public class Leaderboard {
      */
     public Table getTable() {
         return table;
-    }
-
-    /**
-     * Instantiates a new {@link Leaderboard} to contain high-score entries.
-     */
-    public Leaderboard(Label.LabelStyle labelStyle) {
-        this.labelStyle = labelStyle;
     }
 }
