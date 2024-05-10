@@ -151,8 +151,6 @@ public class ScreenManager {
                 return new TappingGame(game, (int) args[0]);
             case END_SCREEN:
                 return new EndScreen(game, score, new Achievement[]{ eatAch, recAch, sleepAch });
-            case PAUSE_SCREEN:
-                return new PauseScreen(game);
             default:
                 return null;
         }
