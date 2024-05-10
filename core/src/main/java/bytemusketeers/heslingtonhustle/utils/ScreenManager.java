@@ -1,14 +1,11 @@
 package bytemusketeers.heslingtonhustle.utils;
 
 import bytemusketeers.heslingtonhustle.HeslingtonHustle;
-import bytemusketeers.heslingtonhustle.screens.EndScreen;
-import bytemusketeers.heslingtonhustle.screens.MainControlScreen;
-import bytemusketeers.heslingtonhustle.screens.MainGameScreen;
-import bytemusketeers.heslingtonhustle.screens.MainMenuScreen;
-import bytemusketeers.heslingtonhustle.screens.MainSettingsScreen;
-import bytemusketeers.heslingtonhustle.screens.TypingGame;
+import bytemusketeers.heslingtonhustle.map.GameMap;
+import bytemusketeers.heslingtonhustle.screens.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,6 +49,8 @@ public class ScreenManager {
      * @see #screensInMemory
      */
     private ScreenType curScreenType;
+    private Screen lastScreen;
+    private ScreenType lastScreenType;
 
     /**
      * Initializes the ScreenManager with a reference to the main game class.
@@ -100,6 +99,7 @@ public class ScreenManager {
      */
     public void setScreen(ScreenType screenType, Object... args) {
         Gdx.input.setInputProcessor(null);
+        //screenType = ScreenType.EXERCISE_GAME;
 
         if (curScreen != null && !screensInMemory.containsKey(curScreenType))
             curScreen.dispose();
@@ -145,10 +145,26 @@ public class ScreenManager {
                 return new MainControlScreen(game);
             case MINI_GAME:
                 return new TypingGame(game, (int) args[0]);
+            case FEED_DUCKS:
+                return new FeedDucks(game, (OrthographicCamera) args[0], (GameMap) args[1], (Score) args[2]);
+            case EXERCISE_GAME:
+                return new TappingGame(game, (int) args[0]);
             case END_SCREEN:
                 return new EndScreen(game, score, new Achievement[]{ eatAch, recAch, sleepAch });
             default:
                 return null;
         }
+    }
+
+    public Screen getLastScreen() {
+        return this.lastScreen;
+    }
+
+    public ScreenType getLastScreenType() {
+        return this.lastScreenType;
+    }
+
+    public Screen getScreen(ScreenType type) {
+        return this.screensInMemory.get(type);
     }
 }

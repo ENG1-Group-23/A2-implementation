@@ -52,6 +52,7 @@ public class MainControlScreen extends ScreenAdapter implements Screen, InputPro
      * The LibGDX-managed {@link Texture} of the 'controls' button
      */
     private final Texture controls;
+    private final Texture backgroundImage;
 
     /**
      * The X co-ordinate of the 'back' button
@@ -145,7 +146,8 @@ public class MainControlScreen extends ScreenAdapter implements Screen, InputPro
 
         backButton = new Texture("settings_gui/back_button.png");
         controlLabel = new Texture("controls_gui/controls_label.png");
-        controls = new Texture("controls_gui/controls.png");
+        controls = new Texture("controls_gui/controls_new.png");
+        backgroundImage = new Texture("menu_gui/new_background_dark.png");
 
         calculateDimensions();
         calculatePositions();
@@ -164,9 +166,9 @@ public class MainControlScreen extends ScreenAdapter implements Screen, InputPro
         backButtonHeight = 100 * game.scaleFactorY;
         controlLabelWidth = 500 * game.scaleFactorX;
         controlLabelHeight = 130 * game.scaleFactorY;
-        controlsWidth = 500 / 3f * game.scaleFactorX;
+        controlsWidth = 500 / 3.5151f * game.scaleFactorX;
         controlsHeight = 500 * game.scaleFactorY;
-        instructionGap = 87 * game.scaleFactorY;
+        instructionGap = 74f * game.scaleFactorY;
     }
 
     /**
@@ -184,7 +186,7 @@ public class MainControlScreen extends ScreenAdapter implements Screen, InputPro
         controlsX = game.screenWidth / 3.2f;
         controlsY = (game.screenHeight / 3.5f) - (controlsHeight / 5f);
         objectiveY = game.screenHeight - 160 * game.scaleFactorY;
-        instructionY = game.screenHeight / 1.45f;
+        instructionY = game.screenHeight / 1.435f;
         instructionX = game.screenWidth / 2f - 90 * game.scaleFactorX;
     }
 
@@ -195,9 +197,10 @@ public class MainControlScreen extends ScreenAdapter implements Screen, InputPro
      */
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0.3f, 0.55f, 0.7f, 1);
+        ScreenUtils.clear(0f, 0f, 0f, 1);
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
         game.batch.begin();
+        game.batch.draw(backgroundImage, 0, 0, game.screenWidth, game.screenHeight);
         font.draw(game.batch, OBJECTIVE, 0, objectiveY, game.screenWidth, Align.center, false);
         float instructionY = this.instructionY;
         String[] instructions = {
@@ -206,7 +209,8 @@ public class MainControlScreen extends ScreenAdapter implements Screen, InputPro
             "Right - Turn right",
             "Down - Move backward",
             "Shift - Sprint",
-            "Esc - Pause"
+            "Esc - Pause",
+            "Click - Interact"
         };
 
         for (String instruction : instructions) {
@@ -300,5 +304,6 @@ public class MainControlScreen extends ScreenAdapter implements Screen, InputPro
         controlLabel.dispose();
         controls.dispose();
         font.dispose();
+        backgroundImage.dispose();
     }
 }

@@ -8,7 +8,7 @@ import bytemusketeers.heslingtonhustle.utils.CollisionHandler;
 import bytemusketeers.heslingtonhustle.utils.Score;
 import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -44,9 +44,17 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
     private final OrthographicCamera camera;
     private final ShapeRenderer shapeRenderer;
     private final HeslingtonHustle game;
-    private final Texture menuButton, popupMenu, durationUpButton, durationDownButton,
-            menuBackButton, menuStudyButton, menuSleepButton, menuGoButton,
-            durationMenuBackground, counterBackground;
+    private final Texture menuButton;
+    private final Texture popupMenu;
+    private final Texture durationUpButton;
+    private final Texture durationDownButton;
+    private final Texture menuBackButton;
+    private final Texture menuStudyButton;
+    private final Texture menuSleepButton;
+    private final Texture menuGoButton;
+    private final Texture durationMenuBackground;
+    private final Texture feedDuckButton;
+    private final Texture counterBackground;
     private final float gameDayLengthInSeconds;
     private final float secondsPerGameHour;
 
@@ -134,6 +142,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
         this.menuStudyButton = new Texture("study_button.png");
         this.menuSleepButton = new Texture("sleep_button.png");
         this.menuGoButton = new Texture("go_button.png");
+        this.feedDuckButton = new Texture("feed_button.png");
 
         // Initialize non-final attributes
         this.activity = "";
@@ -224,10 +233,22 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
         if (!lockMovement) player.update(delta);
         if (!lockTime) updateGameTime(delta); // Update the game clock
 
+        handleInput();
+
         ScreenUtils.clear(0, 0, 1, 1);
         drawWorldElements(delta);
         drawUIElements();
         drawGameTime(); // Draw current time
+    }
+
+    /**
+     * Handles user input,
+     * Ran every render loop of the main game
+     */
+    private void handleInput() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            game.pause();
+        }
     }
 
 
@@ -249,6 +270,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
         if (collisionHandler.isTouching("Piazza_door", player.getHitBox())) return "Piazza_door";
         if (collisionHandler.isTouching("Gym_door", player.getHitBox())) return "Gym_door";
         if (collisionHandler.isTouching("Goodricke_door", player.getHitBox())) return "Goodricke_door";
+        if (collisionHandler.isTouching("pier", player.getHitBox())) return "pier";
         return "";
     }
 
@@ -259,6 +281,8 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
      */
     private String getMenuTitle() {
         switch (activity) {
+            case "feed-ducks":
+                return "Feed the ducks";
             case "study":
                 return "Study Schedule";
             case "sleep":
@@ -283,6 +307,8 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
                 return menuSleepButton;
             case "exercise":
                 return menuGoButton;
+            case "feed-ducks":
+                return feedDuckButton;
             default:
                 return null;
         }
@@ -364,6 +390,10 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
     private void drawPopUpMenu() {
         popupMenuType = getDoorTouching();
         switch (popupMenuType) {
+            case "pier":
+                drawMenuOption(player.worldX + 30, player.worldY + 20, "Feed", 0);
+                popupVisible = true;
+                break;
             case "Comp_sci_door":
                 drawMenuOption(player.worldX + 30, player.worldY + 20, "Study", 0);
                 popupVisible = true;
@@ -481,7 +511,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
         final String counterString = String.format("Recreation Activities done: " + recActivity + "\nStudy hours: "
                 + studyHours + "\nMeals Eaten: " + mealCount, dayNum, timeElapsed);
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
-        if (showMenu) drawDurationMenu();
+        if (showMenu && !activity.equals("feed-ducks")) drawDurationMenu();
         game.batch.begin();
         game.batch.draw(menuButton, menuButtonX, menuButtonY, menuButtonWidth, menuButtonHeight);
         game.batch.draw(energyBar, energyBarX, energyBarY, energyBarWidth, energyBarHeight);
@@ -508,6 +538,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
         if (currentHour >= 24) { // If it reaches 12 AM, reset to 8 AM the next day
             if (dayNum == 7) {
                 score.computeFinalScore(eatAch.getStreak(), sleepAch.getStreak(), recAch.getStreak());
+                game.create();
                 game.screenManager.setScreen(ScreenType.END_SCREEN);
             }
             resetDay();
@@ -703,6 +734,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
 
                         if (dayNum == 7) {
                             score.computeFinalScore(eatAch.getStreak(), sleepAch.getStreak(), recAch.getStreak());
+                            game.create();
                             game.screenManager.setScreen(ScreenType.END_SCREEN);
                         }
 
@@ -719,6 +751,15 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
             Vector3 studyOpt = camera.project(new Vector3(player.worldX + 30, player.worldY + 20, 0));
             Vector3 eatOpt = camera.project(new Vector3(player.worldX + 30, player.worldY + 35, 0));
             switch (popupMenuType) {
+                case "pier":
+                    if (touchX >= studyOpt.x && touchX <= studyOpt.x + popupMenuWidth * zoom && touchY >= studyOpt.y && touchY <= studyOpt.y + popupMenuHeight * zoom) {
+                        activity = "feed-ducks";
+                        showMenu = false;
+                        game.gameData.buttonClickedSoundActivate();
+                        game.screenManager.setScreen(ScreenType.FEED_DUCKS, camera, gameMap, score);
+                        updateGameTime(10);
+                    }
+                    break;
                 case "Comp_sci_door":
                     if (touchX >= studyOpt.x && touchX <= studyOpt.x + popupMenuWidth * zoom && touchY >= studyOpt.y
                             && touchY <= studyOpt.y + popupMenuHeight * zoom) {
@@ -818,7 +859,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
         duration = 1;
     }
 
-    public void sleepClickHandler () {
+    public void sleepClickHandler() {
         game.gameData.buttonClickedSoundActivate();
         showMenu = true;
         lockMovement = true;
@@ -864,7 +905,10 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
 
     @Override
     public boolean keyDown(int i) {
-        return false;
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
+            game.screenManager.setScreen(ScreenType.MAIN_MENU);
+
+        return true;
     }
 
     @Override
@@ -900,5 +944,16 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
     @Override
     public boolean scrolled(float v, float v1) {
         return false;
+    }
+
+    public void lowerEnergyCounter() {
+        if (this.energyCounter == 0)
+            return;
+        this.energyCounter--;
+        energyBar = setEnergyBar();
+    }
+
+    public void incrementRecActivity() {
+        this.recActivity++;
     }
 }

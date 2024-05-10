@@ -31,6 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author ENG1 Team 23
  */
 public class EndScreen extends ScreenAdapter implements Screen {
+    HeslingtonHustle game;
     /**
      * The LibGDX {@link Texture} of the "Play Again" button.
      */
@@ -40,6 +41,7 @@ public class EndScreen extends ScreenAdapter implements Screen {
      * The LibGDX {@link Texture} of the "Exit" button.
      */
     private final Texture exitButton = new Texture("end_gui/exit_button.png");
+    private final Texture backgroundImage = new Texture("menu_gui/new_background_dark.png");
 
     /**
      * The {@link BitmapFont} used for rendering the large {@link EndScreen} {@link String} objects.
@@ -72,7 +74,7 @@ public class EndScreen extends ScreenAdapter implements Screen {
     /**
      * The standard vertical padding around leader rows, in pixels
      */
-    public static final int VERTICAL_PADDING = 20;
+    public static final int VERTICAL_PADDING = 30;
 
     /**
      * Construct a single {@link ImageButton} with the given {@link Texture} and {@link EventListener}-defined action.
@@ -116,6 +118,7 @@ public class EndScreen extends ScreenAdapter implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.gameData.buttonClickedSoundActivate();
+                game.create();
                 game.setup();
             }
         })).size(BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -175,6 +178,7 @@ public class EndScreen extends ScreenAdapter implements Screen {
      * @see Leaderboard
      */
     public EndScreen(HeslingtonHustle game, Score score, Achievement[] achievements) {
+        this.game = game;
         Table table = new Table();
         table.setFillParent(true);
 
@@ -182,7 +186,13 @@ public class EndScreen extends ScreenAdapter implements Screen {
         smallFont.getData().setScale(2);
         labelStyle = new Label.LabelStyle(largeFont, Color.WHITE);
 
-        table.add(new Label("The End! Your Score is " + score + ".", labelStyle));
+        if (score.getScore() >= 400) {
+            table.add(new Label("The End! That's a PASS: " + score + ".", labelStyle));
+        }
+        else {
+            table.add(new Label("The End! That's a FAIL: " + score + ".", labelStyle));
+        }
+
         table.row();
 
         table.add(constructBodyTable(score, achievements));
@@ -199,7 +209,10 @@ public class EndScreen extends ScreenAdapter implements Screen {
      */
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0.3f, 0.55f, 0.7f, 1);
+        ScreenUtils.clear(0f, 0f, 0f, 1);
+        game.batch.begin();
+        game.batch.draw(backgroundImage, 0, 0, game.screenWidth, game.screenHeight);
+        game.batch.end();
         stage.draw();
     }
 
@@ -221,6 +234,7 @@ public class EndScreen extends ScreenAdapter implements Screen {
         largeFont.dispose();
         smallFont.dispose();
         stage.dispose();
+        backgroundImage.dispose();
     }
 
     @Override

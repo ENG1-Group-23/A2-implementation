@@ -21,6 +21,7 @@ public class GameSound {
      */
     private final Music downSound;
 
+    Music duckSound;
     /**
      * The {@link Music} sound associated with clicking of a button
      */
@@ -44,6 +45,7 @@ public class GameSound {
         downSound = Gdx.audio.newMusic(Gdx.files.internal("sfx/low_note.mp3"));
         buttonClickedSound = Gdx.audio.newMusic(Gdx.files.internal("sfx/button_press.mp3"));
         eatingSound = Gdx.audio.newMusic(Gdx.files.internal("sfx/eating_sound.wav"));
+        duckSound = Gdx.audio.newMusic(Gdx.files.internal("sfx/duck_quack.mp3"));
     }
 
     /**
@@ -63,6 +65,17 @@ public class GameSound {
             upSound.stop();
 
         upSound.play();
+    }
+
+    /**
+     * Plays the soudn effect for feeding a duck. Stops the sound if it is already playing before restarting it.
+     */
+    public void duckSoundActivate() {
+        if (duckSound.isPlaying()) {
+            duckSound.stop();
+            duckSound.play();
+        }
+        duckSound.play();
     }
 
     /**
@@ -162,6 +175,10 @@ public class GameSound {
      */
     public Music getEatingSound() {
         return eatingSound;
+    }
+
+    public Music getDuckSound() {
+        return duckSound;
     }
 }
 
