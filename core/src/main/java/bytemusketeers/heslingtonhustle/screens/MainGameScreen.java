@@ -8,6 +8,10 @@ import bytemusketeers.heslingtonhustle.utils.CollisionHandler;
 import bytemusketeers.heslingtonhustle.utils.Score;
 import bytemusketeers.heslingtonhustle.utils.ScreenType;
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -230,10 +234,22 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
         if (!lockMovement) player.update(delta);
         if (!lockTime) updateGameTime(delta); // Update the game clock
 
+        handleInput();
+
         ScreenUtils.clear(0, 0, 1, 1);
         drawWorldElements(delta);
         drawUIElements();
         drawGameTime(); // Draw current time
+    }
+
+    /**
+     * Handles user input,
+     * Ran every render loop of the main game
+     */
+    private void handleInput() {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            game.pause();
+        }
     }
 
 
@@ -807,6 +823,20 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
     public void resize(int i, int i1) {
         calculateDimensions();
         calculatePositions();
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
     }
 
     @Override

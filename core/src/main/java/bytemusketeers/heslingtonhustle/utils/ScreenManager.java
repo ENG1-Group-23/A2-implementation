@@ -50,6 +50,8 @@ public class ScreenManager {
      * @see #screensInMemory
      */
     private ScreenType curScreenType;
+    private Screen lastScreen;
+    private ScreenType lastScreenType;
 
     /**
      * Initializes the ScreenManager with a reference to the main game class.
@@ -150,6 +152,8 @@ public class ScreenManager {
                 return new TappingGame(game, (int) args[0]);
             case END_SCREEN:
                 return new EndScreen(game, score, new Achievement[]{ eatAch, recAch, sleepAch });
+            case PAUSE_SCREEN:
+                return new PauseScreen(game);
             default:
                 return null;
         }
@@ -158,7 +162,20 @@ public class ScreenManager {
     public Screen getScreen(ScreenType type) {
         if (screensInMemory.containsKey(type)) {
             return screensInMemory.get(type);
+                return new EndScreen(game);
         }
         return null;
+    }
+
+    public Screen getLastScreen() {
+        return this.lastScreen;
+    }
+
+    public ScreenType getLastScreenType() {
+        return this.lastScreenType;
+    }
+
+    public Screen getScreen(ScreenType type) {
+        return this.screensInMemory.get(type);
     }
 }
