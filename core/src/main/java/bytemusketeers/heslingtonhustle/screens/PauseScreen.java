@@ -1,5 +1,6 @@
-package com.main.screens;
+package bytemusketeers.heslingtonhustle.screens;
 
+import bytemusketeers.heslingtonhustle.HeslingtonHustle;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -7,11 +8,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.main.Main;
-import com.main.utils.ScreenType;
+
+import static bytemusketeers.heslingtonhustle.utils.ScreenType.SETTINGS;
 
 public class PauseScreen implements Screen, InputProcessor {
-    private final Main game;
+    private final HeslingtonHustle game;
     private final BitmapFont font;
     private Texture backButton, settingsButton, exitButton;
     private int backButtonHeight, settingsButtonHeight, exitButtonHeight;
@@ -21,7 +22,7 @@ public class PauseScreen implements Screen, InputProcessor {
     private float exitButtonX, exitButtonY;
     private boolean exitFlag;
 
-    public PauseScreen(Main game) {
+    public PauseScreen(HeslingtonHustle game) {
         this.game = game;
         font = new BitmapFont(Gdx.files.internal("font/WhitePeaberry.fnt"));
 
@@ -117,7 +118,7 @@ public class PauseScreen implements Screen, InputProcessor {
         else if (touchX >= settingsButtonX && touchX <= settingsButtonX + settingsButtonWidth &&
                 touchY >= settingsButtonY && touchY <= settingsButtonY + settingsButtonHeight) {
             game.gameData.buttonClickedSoundActivate();
-            game.screenManager.setScreen(ScreenType.SETTINGS);
+            game.screenManager.setScreen(SETTINGS);
         }
         else if (touchX >= exitButtonX && touchX <= exitButtonX + exitButtonWidth &&
                 touchY >= exitButtonY && touchY <= exitButtonY + exitButtonHeight) {

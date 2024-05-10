@@ -6,7 +6,6 @@ import bytemusketeers.heslingtonhustle.screens.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -157,14 +156,6 @@ public class ScreenManager {
             default:
                 return null;
         }
-    }
-
-    public Screen getScreen(ScreenType type) {
-        if (screensInMemory.containsKey(type)) {
-            return screensInMemory.get(type);
-                return new EndScreen(game);
-        }
-        return null;
     }
 
     public Screen getLastScreen() {

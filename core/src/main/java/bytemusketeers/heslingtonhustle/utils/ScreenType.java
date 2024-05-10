@@ -55,5 +55,6 @@ public enum ScreenType {
      *
      * @see bytemusketeers.heslingtonhustle.screens.EndScreen
      */
-    END_SCREEN
+    END_SCREEN,
+    PAUSE_SCREEN
 }
