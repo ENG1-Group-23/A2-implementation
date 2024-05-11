@@ -9,8 +9,8 @@ import org.junit.runner.RunWith;
 @RunWith(GdxTestRunner.class)
 public class AudioTests {
     @Test
-    public void testIncrementGameMusicVolumeStopsAtMaximum() {
-        GameMusic music = new GameMusic();
+    public void musicIncrEndsAtMax() {
+        GameMusic music = new GameMusic(); //when initialised, the music val is max already
         int initialVolume = music.getMusicLevel();
         music.incrementVolume();
         int finalVolume = music.getMusicLevel();
@@ -18,7 +18,7 @@ public class AudioTests {
     }
 
     @Test
-    public void testDecrementGameMusicVolumeStopsAtMinimum() {
+    public void musicDecrEndsAtMin() {
         GameMusic music = new GameMusic();
         int initialVolume = music.getMusicLevel();
         for (int i = 0; i < 10; i++) {
@@ -30,7 +30,7 @@ public class AudioTests {
     }
 
     @Test
-    public void testIncrementGameSoundVolumeStopsAtMaximum() {
+    public void soundIncrEndsAtMax() {
         GameSound sound = new GameSound();
         int initialSoundLevel = sound.getSoundLevel();
         for (int i = 0; i < 10; i++) {
@@ -41,7 +41,7 @@ public class AudioTests {
     }
 
     @Test
-    public void testDecrementGameSoundVolumeStopsAtMinimum() {
+    public void soundDecrEndsAtMin() {
         GameSound sound = new GameSound();
         int initialSoundLevel = sound.getSoundLevel();
         for (int i = 0; i < 10; i++) {
@@ -53,7 +53,7 @@ public class AudioTests {
     }
 
     @Test
-    public void testUpSoundStopsWhenActivatedIfAlreadyPlaying() {
+    public void upSoundToggle() {
         GameSound sound = new GameSound();
         sound.upSoundActivate();
         sound.upSoundActivate();
@@ -61,7 +61,7 @@ public class AudioTests {
     }
 
     @Test
-    public void testDownSoundStopsWhenActivatedIfAlreadyPlaying() {
+    public void downSoundToggle() {
         GameSound sound = new GameSound();
         sound.downSoundActivate();
         sound.downSoundActivate();
@@ -69,7 +69,7 @@ public class AudioTests {
     }
 
     @Test
-    public void testButtonClickedSoundStopsWhenActivatedIfAlreadyPlaying() {
+    public void buttonSoundToggle() {
         GameSound sound = new GameSound();
         sound.buttonClickedSoundActivate();
         sound.buttonClickedSoundActivate();
@@ -77,7 +77,7 @@ public class AudioTests {
     }
 
     @Test
-    public void testEatingSoundStopsWhenActivatedIfAlreadyPlaying() {
+    public void eatingSoundToggle() {
         GameSound sound = new GameSound();
         sound.eatingSoundActivate();
         sound.eatingSoundActivate();
