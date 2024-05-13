@@ -15,18 +15,25 @@ import com.badlogic.gdx.utils.Disposable;
 public class Duck extends Entity implements Disposable {
 
     private final int spriteX = 16, spriteY = 16;
-    HeslingtonHustle game;
-    GameMap gameMap;
-    OrthographicCamera camera;
-    CollisionHandler collisionHandler;
-    Animation<TextureRegion> flyAnimation;
-    Texture texture;
+    private HeslingtonHustle game;
+    private GameMap gameMap;
+    private OrthographicCamera camera;
+    private CollisionHandler collisionHandler;
+    private Animation<TextureRegion> flyAnimation;
+    private Texture texture;
 
+    /**
+     * Initialises the mini-game and starts it by running playGame()
+     *
+     * @param game The parental {@link com.badlogic.gdx.Game} reference
+     * @param gameMap The {@link GameMap} of the current level
+     * @param camera The {@link OrthographicCamera} responsible for rendering
+     */
     public Duck(HeslingtonHustle game, GameMap gameMap, OrthographicCamera camera) {
         this.game = game;
         this.gameMap = gameMap;
         this.camera = camera;
-        this.texture = new Texture("map/duck_spritesheet.png"); // uses CC OpenSource license http://creativecommons.org/publicdomain/zero/1.0/ https://opengameart.org/content/16x16-duck
+        this.texture = new Texture("map/duck_spritesheet.png");
         TextureRegion[][] duckSpriteSheet = split(texture, spriteX, spriteY);
         flyAnimation = new Animation<>(0.5f, duckSpriteSheet[0]);
         currentAnimation = flyAnimation;
