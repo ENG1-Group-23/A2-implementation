@@ -3,10 +3,7 @@ package bytemusketeers.heslingtonhustle.screens;
 import bytemusketeers.heslingtonhustle.HeslingtonHustle;
 import bytemusketeers.heslingtonhustle.entity.Player;
 import bytemusketeers.heslingtonhustle.map.GameMap;
-import bytemusketeers.heslingtonhustle.utils.Achievement;
-import bytemusketeers.heslingtonhustle.utils.CollisionHandler;
-import bytemusketeers.heslingtonhustle.utils.Score;
-import bytemusketeers.heslingtonhustle.utils.ScreenType;
+import bytemusketeers.heslingtonhustle.utils.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -57,7 +54,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
     private final Texture feedDuckButton;
     private final Texture counterBackground;
     private final float gameDayLengthInSeconds;
-    private final float secondsPerGameHour;
+    private final GameTime gameTime;
 
     // Non-final attributes
     private Texture energyBar;
@@ -104,9 +101,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
     private int recActivity;
     private int studyHours;
     private int mealCount;
-    private int currentHour;
     private int dailyStudyHours;
-    private float timeElapsed;
     private float fadeTime;
     private float minShade;
     private boolean fadeOut;
@@ -130,7 +125,6 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
         this.game = game;
         this.shader = new Color(0.5f, 0.5f, 0.5f, 1);
         this.gameDayLengthInSeconds = 60f;
-        this.secondsPerGameHour = this.gameDayLengthInSeconds / 16; // Assuming 16 hours in a day
 
         // Initialize final Texture objects
         this.menuButton = new Texture("menu_buttons/menu_icon.png");
@@ -151,8 +145,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
         this.energyCounter = 10;
         this.duration = 1;
         this.dayNum = 1;
-        this.timeElapsed = 0f;
-        this.currentHour = 10;
+        this.gameTime = new GameTime(0f, this.gameDayLengthInSeconds / 16, 10);
         this.fadeTime = 0;
         this.minShade = 0;
         this.dailyStudyHours = 0;
@@ -410,7 +403,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
                 break;
             case "Goodricke_door":
                 int shadeOption;
-                if (currentHour >= 20) {
+                if (gameTime.currentHour >= 20) {
                     popupVisible = true;
                     shadeOption = 0;
                 } else {
@@ -453,8 +446,8 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
         lockPopup = true;
         showMenu = false;
         this.resetPos = resetPos;
-        minShade = timeElapsed / secondsPerGameHour > 11 ? (timeElapsed - 11 * secondsPerGameHour) / (
-                gameDayLengthInSeconds - 11 * secondsPerGameHour) : 0;
+        minShade = gameTime.timeElapsed / gameTime.secondsPerGameHour > 11 ? (gameTime.timeElapsed - 11 * gameTime.secondsPerGameHour) / (
+                gameDayLengthInSeconds - 11 * gameTime.secondsPerGameHour) : 0;
     }
 
     /**
@@ -499,8 +492,8 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
         game.batch.draw(player.getCurrentFrame(), player.worldX, player.worldY, Player.spriteX, Player.spriteY);
         if (!lockPopup) drawPopUpMenu();
         game.batch.end();
-        if (!fadeOut && timeElapsed / secondsPerGameHour > 11) drawShadeOverlay((timeElapsed - 11
-                * secondsPerGameHour) / (gameDayLengthInSeconds - 11 * secondsPerGameHour));
+        if (!fadeOut && gameTime.timeElapsed / gameTime.secondsPerGameHour > 11) drawShadeOverlay((gameTime.timeElapsed - 11
+                * gameTime.secondsPerGameHour) / (gameDayLengthInSeconds - 11 * gameTime.secondsPerGameHour));
         fadeOutStep(delta);
     }
 
@@ -510,7 +503,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
     @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     private void drawUIElements() {
         final String counterString = String.format("Recreation Activities done: " + recActivity + "\nStudy hours: "
-                + studyHours + "\nMeals Eaten: " + mealCount, dayNum, timeElapsed);
+                + studyHours + "\nMeals Eaten: " + mealCount, dayNum, gameTime.timeElapsed);
         game.batch.setProjectionMatrix(game.defaultCamera.combined);
         if (showMenu && !activity.equals("feed-ducks")) drawDurationMenu();
         game.batch.begin();
@@ -528,15 +521,8 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
      *
      * @param delta The time elapsed since the last frame.
      */
-    private void updateGameTime(float delta) {
-        timeElapsed += delta;
-
-        // Calculate the current hour in game time
-        int hoursPassed = (int) (timeElapsed / secondsPerGameHour);
-        currentHour = 8 + hoursPassed; // Starts at 08:00 AM
-
-        // Ensure the hour cycles through the active hours correctly (8 AM to 12 AM)
-        if (currentHour >= 24) { // If it reaches 12 AM, reset to 8 AM the next day
+    public void updateGameTime(float delta) {
+        if (gameTime.isUpdateGameTime(delta)) { // If it reaches 12 AM, reset to 8 AM the next day
             if (dayNum == 7) {
                 score.computeFinalScore(eatAch.getStreak(), sleepAch.getStreak(), recAch.getStreak());
                 game.create();
@@ -563,9 +549,8 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
             score.incrementNoStudy();
         }
 
-        currentHour = 8;
+        gameTime.resetGameTime();
         dayNum++;
-        timeElapsed = 0;
         dailyStudyHours = 0;
         energyCounter += 4;
         hasExercised = false;
@@ -582,7 +567,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
      */
     private void drawGameTime() {
         // Adjust the format if you want to display minutes or seconds
-        String timeString = String.format("Day: %d       Time: %02d:00", dayNum, currentHour % 24);
+        String timeString = String.format("Day: %d       Time: %02d:00", dayNum, gameTime.currentHour % 24);
         game.batch.begin();
         font.draw(game.batch, timeString, game.screenWidth - 320 * game.scaleFactorX, game.screenHeight - 15
                 * game.scaleFactorY);
@@ -665,7 +650,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
                             energyCounter -= (duration + 1) / 2;
                         energyBar.dispose();
                         energyBar = setEnergyBar();
-                        timeElapsed += duration * secondsPerGameHour;
+                        gameTime.updateGameTimeActivity(duration);
                         game.screenManager.setScreen(ScreenType.MINI_GAME, duration);
                     }
 
@@ -706,7 +691,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
                             energyCounter -= duration;
                             energyBar.dispose();
                             energyBar = setEnergyBar();
-                            timeElapsed += duration * secondsPerGameHour;
+                            gameTime.updateGameTimeActivity(duration);
                             duration = 1;
                         }
                     }
