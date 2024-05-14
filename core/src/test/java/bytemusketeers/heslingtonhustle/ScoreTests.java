@@ -1,6 +1,7 @@
 package bytemusketeers.heslingtonhustle;
 
 import bytemusketeers.heslingtonhustle.utils.Score;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -8,7 +9,12 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(GdxTestRunner.class)
 public class ScoreTests {
-    private Score score = new Score();
+    private Score score;
+
+    @Before
+    public void setUp() {
+        score = new Score();
+    }
 
     @Test
     public void testScoreUpdate() {
