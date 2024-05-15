@@ -8,7 +8,6 @@ import bytemusketeers.heslingtonhustle.screens.MainControlScreen;
 import bytemusketeers.heslingtonhustle.screens.MainGameScreen;
 import bytemusketeers.heslingtonhustle.screens.MainMenuScreen;
 import bytemusketeers.heslingtonhustle.screens.MainSettingsScreen;
-import bytemusketeers.heslingtonhustle.screens.TappingGame;
 import bytemusketeers.heslingtonhustle.screens.TypingGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -155,8 +154,6 @@ public class ScreenManager {
                 return new TypingGame(game, (int) args[0]);
             case FEED_DUCKS:
                 return new FeedDucks(game, (OrthographicCamera) args[0], (GameMap) args[1], (Score) args[2]);
-            case EXERCISE_GAME:
-                return new TappingGame(game, (int) args[0]);
             case END_SCREEN:
                 return new EndScreen(game, score, new Achievement[]{eatAch, recAch, sleepAch});
             default:
