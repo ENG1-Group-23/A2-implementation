@@ -265,6 +265,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
         if (collisionHandler.isTouching("Gym_door", player.getHitBox())) return "Gym_door";
         if (collisionHandler.isTouching("Goodricke_door", player.getHitBox())) return "Goodricke_door";
         if (collisionHandler.isTouching("pier", player.getHitBox())) return "pier";
+        if (collisionHandler.isTouching("Ron_cooke_door", player.getHitBox())) return "rch_door";
         return "";
     }
 
