@@ -48,7 +48,6 @@ public enum ScreenType {
      */
     MINI_GAME,
     FEED_DUCKS,
-    EXERCISE_GAME,
 
     /**
      * The game-ending screen, displaying the final result and a limited set of options
