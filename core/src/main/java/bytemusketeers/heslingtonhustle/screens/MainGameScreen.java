@@ -114,6 +114,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
     private boolean dayStudied;
     private boolean hasEaten;
     private boolean hasExercised;
+    private boolean doneDarts;
 
     /**
      * Constructs the main game screen with necessary game components.
@@ -152,6 +153,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
         this.dayStudied = false;
         this.hasEaten = false;
         this.hasExercised = false;
+        this.doneDarts = false;
         this.fadeOut = this.lockTime = this.lockMovement = this.lockPopup = this.resetPos = this.popupVisible =
                 this.showMenu = false;
 
@@ -265,6 +267,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
         if (collisionHandler.isTouching("Gym_door", player.getHitBox())) return "Gym_door";
         if (collisionHandler.isTouching("Goodricke_door", player.getHitBox())) return "Goodricke_door";
         if (collisionHandler.isTouching("pier", player.getHitBox())) return "pier";
+        if (collisionHandler.isTouching("Ron_cooke_door", player.getHitBox())) return "rch_door";
         return "";
     }
 
@@ -281,6 +284,8 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
                 return "Study Schedule";
             case "sleep":
                 return "Sleep Early";
+            case "darts":
+                return "Play Darts";
             case "exercise":
                 return "Exercise";
             default:
@@ -299,6 +304,8 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
                 return menuStudyButton;
             case "sleep":
                 return menuSleepButton;
+            case "darts":
+                return menuGoButton;
             case "exercise":
                 return menuGoButton;
             case "feed-ducks":
@@ -365,7 +372,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
                 activityButtonHeight);
         durationFont.draw(game.batch, title, 0, menuTitleY, game.screenWidth, Align.center, false);
 
-        if (!activity.equals("sleep")) {
+        if (!activity.equals("sleep") && !activity.equals("darts")) {
             game.batch.draw(durationDownButton, durationDownButtonX, durationButtonY, durationDownButtonWidth,
                     durationDownButtonHeight);
             game.batch.draw(durationUpButton, durationUpButtonX, durationButtonY, durationUpButtonWidth,
@@ -411,6 +418,16 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
                     shadeOption = 2;
                 }
                 drawMenuOption(player.worldX + 30, player.worldY + 20, "Sleep", shadeOption);
+                break;
+            case "rch_door":
+                if (!doneDarts) {
+                    popupVisible = true;
+                    drawMenuOption(player.worldX + 30, player.worldY + 20, "Darts", 0);
+                } else {
+                    popupVisible = false;
+                    drawMenuOption(player.worldX + 30, player.worldY + 20, "Darts", 2);
+                }
+
                 break;
             default:
                 popupVisible = false;
@@ -555,6 +572,7 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
         energyCounter += 4;
         hasExercised = false;
         hasEaten = false;
+        doneDarts = false;
         dayStudied = false;
         score.resetMultipliers();
         if (energyCounter > 10) energyCounter = 10;
@@ -697,6 +715,47 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
                     }
                     break;
 
+                case "darts":
+                    if (touchX >= durationUpButtonX && touchX <= durationUpButtonX + durationUpButtonWidth
+                            && touchY >= durationButtonY && touchY <= durationButtonY + durationUpButtonHeight) {
+                        game.gameData.buttonClickedSoundActivate();
+                        if (duration < 4)
+                            duration++;
+                    } else if (touchX >= durationDownButtonX && touchX <= durationDownButtonX + durationDownButtonWidth
+                            && touchY >= durationButtonY && touchY <= durationButtonY + durationDownButtonHeight) {
+                        game.gameData.buttonClickedSoundActivate();
+                        if (duration > 1)
+                            duration--;
+                    } else if (touchX >= menuBackButtonX && touchX <= menuBackButtonX + menuBackButtonWidth
+                            && touchY >= durationMenuButtonY && touchY <= durationMenuButtonY + menuBackButtonHeight) {
+                        game.gameData.buttonClickedSoundActivate();
+                        showMenu = false;
+                        lockMovement = fadeOut;
+                        duration = 1;
+                    } else if (touchX >= activityButtonX && touchX <= activityButtonX + activityButtonWidth
+                            && touchY >= durationMenuButtonY && touchY <= durationMenuButtonY + activityButtonHeight && !doneDarts) {
+                        game.gameData.buttonClickedSoundActivate();
+                        if (energyCounter >= duration) {
+                            executeFadeOut(false);
+                            showMenu = false;
+                            lockMovement = fadeOut;
+                            recActivity++;
+                            score.incrementRec(5);
+
+                            if (!doneDarts) {
+                                doneDarts = true;
+                            }
+
+                            energyCounter -= 2;
+                            energyBar.dispose();
+                            energyBar = setEnergyBar();
+                            gameTime.updateGameTimeActivity(2);
+                            duration = 1;
+                        }
+                    }
+                    break;
+
+
                 case "sleep":
                     if (touchX >= durationUpButtonX && touchX <= durationUpButtonX + durationUpButtonWidth
                             && touchY >= durationButtonY && touchY <= durationButtonY + durationUpButtonHeight) {
@@ -790,6 +849,17 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
                         showMenu = true;
                         lockMovement = true;
                         activity = "exercise";
+                        duration = 1;
+                    }
+                    break;
+
+                case "rch_door":
+                    if (touchX >= studyOpt.x && touchX <= studyOpt.x + popupMenuWidth * zoom && touchY >= studyOpt.y
+                            && touchY <= studyOpt.y + popupMenuHeight * zoom) {
+                        game.gameData.buttonClickedSoundActivate();
+                        showMenu = true;
+                        lockMovement = true;
+                        activity = "darts";
                         duration = 1;
                     }
                     break;
