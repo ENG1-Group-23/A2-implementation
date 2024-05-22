@@ -245,6 +245,9 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             game.pause();
         }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.B)){
+            gameTime.timeElapsed = 55;
+        }
     }
 
 
@@ -542,7 +545,6 @@ public class MainGameScreen extends ScreenAdapter implements Screen, InputProces
         if (gameTime.isUpdateGameTime(delta)) { // If it reaches 12 AM, reset to 8 AM the next day
             if (dayNum == 7) {
                 score.computeFinalScore(eatAch.getStreak(), sleepAch.getStreak(), recAch.getStreak());
-                game.create();
                 game.screenManager.setScreen(ScreenType.END_SCREEN);
             }
             resetDay();
